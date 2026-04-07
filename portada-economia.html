@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Economía — Meridian</title>
+
+  <!--
+    SYX Atlas — Portada económica
+    Generado con: [ATLAS] + [SYX: UX]
+    ─────────────────────────────────────────────
+    Atlas decisions aplicadas:
+      Jerarquía:    N1 (1) · N2 (3 con imagen) · N3 (6 sin imagen) · NP (skin + 300×250)
+      Layout:       Grid 2fr·1fr, colapso progresivo mobile-first
+      Zonas:        Entrada (header+N1) · Desarrollo (N2+sidebar) · Profundidad (N3)
+      Tipografía:   N1 clamp(2rem,4vw,3.25rem) · N2 clamp(1.5rem,2vw,2rem) · N3 1rem fijo
+      Publicidad:   site skin z-index:-1 visible ≥1440px · 300×250 en sidebar en flujo
+      Context-first: DOM order = prioridad de contenido · sidebar después del main
+
+    Responsive:
+      base (320px) : columna única, todo apilado
+      sm   (640px) : N2 cards en 2 columnas
+      lg  (1024px) : grid editorial 2fr·1fr activo
+      xl  (1440px) : site skin visible, contenedor centrado con espacio lateral
+  -->
+
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    CSS LOADING STRATEGY — entorno de pruebas
+    ═══════════════════════════════════════════════════════════════
+    Todos los estilos vienen de .css compilados desde SCSS.
+    El equipo de desarrollo inyectará el CSS crítico como <style>
+    inline en producción usando su propio pipeline (Astro / Next.js
+    / critters). Aquí se cargan todos los bundles como <link> para
+    que el equipo vea exactamente qué archivo cubre cada zona.
+
+    FUENTE DE VERDAD SCSS:
+      scss/_portada-economia-tokens.scss   tokens portada (partial, sin deps SYX)
+      scss/_portada-economia-atoms.scss    átomos portada (mixin)
+      scss/portada-economia-inline.scss    → css/portada-economia-inline.css
+      scss/portada-economia-critical.scss  → css/portada-economia-critical.css
+      scss/portada-economia.scss           → css/portada-economia.css
+
+    Compilar todo:
+      npx sass scss/portada-economia-inline.scss   css/portada-economia-inline.css   --style=compressed --no-source-map
+      npx sass scss/portada-economia-critical.scss css/portada-economia-critical.css --style=compressed --no-source-map
+      npx sass scss/portada-economia.scss          css/portada-economia.css          --style=compressed --no-source-map
+    O de una vez:  npm run build:css
+    ═══════════════════════════════════════════════════════════════
+  -->
+
+  <!--
+    ① CRITICAL INLINE — scss/portada-economia-inline.scss
+    ────────────────────────────────────────────────────────
+    Qué cubre: tokens portada · reset · syx-sr-only · org-site-skin
+               · page-wrapper · org-news-header · mol-ticker
+               · atom-btn · atom-pill · atom-title · atom-txt
+               · atom-link · org-hero-principal · reduced-motion
+    Tamaño:    11.8 KB raw · 2.5 KB gzip
+    En producción: el build tool lee este .css e inyecta su contenido
+    en <style> en el <head> — sin round-trip, sin render-blocking, sin FOUC.
+    En pruebas: se carga como <link> síncrono para inspección.
+  -->
+  <link rel="stylesheet" href="css/portada-economia-inline.css">
+
+  <!--
+    ② CRITICAL DEV REFERENCE — scss/portada-economia-critical.scss
+    ────────────────────────────────────────────────────────
+    Qué cubre: ídem ① + sistema de tokens SYX completo (necesario
+               para compilar con los mixins del DS).
+    Tamaño:    48 KB raw · ~8 KB gzip
+    En producción: NO se carga. Sólo referencia de desarrollo para
+    inspeccionar estilos above-fold con el contexto SYX en DevTools.
+    Descomentar para debug si inline no resuelve algún token SYX.
+  -->
+  <!-- <link rel="stylesheet" href="css/portada-economia-critical.css"> -->
+
+  <!--
+    ③ NON-CRITICAL ASYNC — scss/portada-economia.scss
+    ────────────────────────────────────────────────────────
+    Qué cubre: atom-breadcrumb · mol-card-noticia · mol-noticia-secundaria
+               · mol-datos-mercado · mol-publicidad · org-grid-editorial
+               · org-grid-n2 · org-grid-n3 · org-news-footer
+    Tamaño:    48 KB raw · ~8 KB gzip
+    Carga:     ASYNC — no render-blocking.
+               rel=preload avisa al browser para descarga anticipada.
+               media=print + onload evita el bloqueo del render.
+               <noscript> garantiza la carga sin JS.
+    En producción: se carga exactamente igual (async).
+  -->
+  <link rel="preload" href="css/portada-economia.css" as="style">
+  <link rel="stylesheet" href="css/portada-economia.css"
+        media="print" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="css/portada-economia.css"></noscript>
+
+</head>
+
+<body>
+
+  <!--
+    RESPONSIVE:
+    - base (320px): columna única, todo apilado, sidebar debajo del N3
+    - sm   (640px): N2 cards en 2 columnas
+    - lg  (1024px): org-grid-editorial activo (2fr·1fr), nav visible, sidebar sticky
+    - xl  (1440px): org-site-skin visible (publicidad lateral de fondo)
+
+    DOM ORDER = PRIORIDAD DE CONTENIDO:
+    header → skip-link → [skin: aria-hidden] → header → main (N1 → N2 → N3) → sidebar → footer
+
+    NO-JS STATE:
+    - Ticker: estático, scrollable horizontalmente
+    - Nav: visible como lista (no colapsa)
+    - Menu toggle: visible pero sin función
+    - Datos de mercado: valores estáticos
+  -->
+
+  <!-- ═══════════════════════════════════════════
+       SITE SKIN — Publicidad NP (fondo de página)
+       aria-hidden: puramente decorativo/publicitario
+       Visible solo ≥ 1440px · z-index: -1
+  ═══════════════════════════════════════════ -->
+  <div class="org-site-skin" aria-hidden="true" role="presentation">
+    <div class="org-site-skin__wing org-site-skin__wing--left">
+      <img
+        src="https://placehold.co/220x800/f0f0f0/cccccc?text=Skin+L"
+        alt=""
+        width="220" height="800"
+        loading="lazy"
+      >
+    </div>
+    <div class="org-site-skin__wing org-site-skin__wing--right">
+      <img
+        src="https://placehold.co/220x800/f0f0f0/cccccc?text=Skin+R"
+        alt=""
+        width="220" height="800"
+        loading="lazy"
+      >
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SKIP LINK
+  ═══════════════════════════════════════════ -->
+  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">
+    Ir al contenido principal
+  </a>
+
+  <!-- ═══════════════════════════════════════════
+       ORG-SITE-HEADER
+       Estados: default · .is-scrolled · .is-menu-open (JS)
+       No-JS: nav visible, menu-toggle inerte
+  ═══════════════════════════════════════════ -->
+  <header class="org-news-header" role="banner">
+
+    <!-- Ticker de cotizaciones -->
+    <!--
+      No-JS: lista estática scrollable horizontalmente
+      JS: auto-scroll con pausa al hover/focus y prefers-reduced-motion
+    -->
+    <div class="org-news-header__ticker">
+      <div
+        class="mol-ticker"
+        role="region"
+        aria-label="Cotizaciones en tiempo real"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">IBEX&nbsp;35</span>
+          <span class="mol-ticker__valor">10.842</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 1,24 por ciento">▲ +1,24%</span>
+        </div>
+        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">EUR/USD</span>
+          <span class="mol-ticker__valor">1,0842</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada del 0,32 por ciento">▼ −0,32%</span>
+        </div>
+        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">EUR/GBP</span>
+          <span class="mol-ticker__valor">0,8561</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Sin variación significativa">−0,01%</span>
+        </div>
+        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Brent</span>
+          <span class="mol-ticker__valor">83,40</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,87 por ciento">▲ +0,87%</span>
+        </div>
+        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Oro</span>
+          <span class="mol-ticker__valor">2.318</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,54 por ciento">▲ +0,54%</span>
+        </div>
+        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">10Y&nbsp;ES</span>
+          <span class="mol-ticker__valor">3,21%</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada de 3 puntos básicos">▼ −3pb</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header principal -->
+    <div class="org-news-header__inner">
+      <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
+        <img
+          src="https://placehold.co/160x32/ffffff/111827?text=MERIDIAN"
+          alt="Meridian"
+          width="160" height="32"
+          loading="eager"
+        >
+      </a>
+
+      <!--
+        No-JS: nav visible como lista
+        JS: colapsa en mobile, toggle con aria-expanded
+      -->
+      <nav
+        id="site-nav"
+        class="org-news-header__nav"
+        aria-label="Secciones principales"
+      >
+        <ul role="list">
+          <li><a href="/economia" class="atom-link" aria-current="page">Economía</a></li>
+          <li><a href="/mercados" class="atom-link">Mercados</a></li>
+          <li><a href="/empresas" class="atom-link">Empresas</a></li>
+          <li><a href="/internacional" class="atom-link">Internacional</a></li>
+          <li><a href="/opinion" class="atom-link">Opinión</a></li>
+        </ul>
+      </nav>
+
+      <div class="org-news-header__actions">
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon"
+          type="button"
+          aria-label="Buscar noticias"
+          aria-controls="search-panel"
+          aria-expanded="false"
+        >
+          <!-- Lucide: search -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+
+        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">
+          Suscribirse
+        </a>
+
+        <!--
+          Mobile menu toggle — visible solo < 1024px
+          No-JS: presente pero sin efecto
+          JS: togea .is-menu-open en header + aria-expanded
+        -->
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle"
+          type="button"
+          aria-label="Abrir menú de navegación"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <!-- Lucide: menu -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════
+       MAIN
+  ═══════════════════════════════════════════ -->
+  <main id="main-content" tabindex="-1">
+    <div class="page-wrapper">
+
+      <!-- Breadcrumb / sección -->
+      <nav class="atom-breadcrumb" aria-label="Ubicación en el sitio" style="padding-block: var(--semantic-space-inset-md);">
+        <ol>
+          <li class="atom-breadcrumb__item">
+            <a class="atom-breadcrumb__link" href="/">Inicio</a>
+            <span class="atom-breadcrumb__separator" aria-hidden="true">/</span>
+          </li>
+          <li class="atom-breadcrumb__item">
+            <span aria-current="page">Economía</span>
+          </li>
+        </ol>
+      </nav>
+
+
+      <!-- ─────────────────────────────────────
+           N1 — HERO PRINCIPAL
+           Único N1 de la portada (06.1 §5)
+           Tipografía: atom-title--display + clamp()
+           Imagen: 1200×675 (LCP — eager + fetchpriority)
+      ───────────────────────────────────────── -->
+      <section class="org-hero-principal" aria-label="Noticia principal de economía">
+
+        <figure class="org-hero-principal__imagen">
+          <img
+            src="https://placehold.co/1200x675/f5f5f5/767676?text=Noticia+principal+·+N1"
+            alt="Sede de la Reserva Federal de Estados Unidos en Washington D.C."
+            width="1200" height="675"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </figure>
+
+        <div class="org-hero-principal__content">
+          <div class="org-hero-principal__meta-top">
+            <span class="atom-pill atom-pill--neutral">Macro</span>
+            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06T10:30:00+02:00">
+              6 abr 2026 · 10:30
+            </time>
+          </div>
+
+          <h1 class="atom-title atom-title--display">
+            La Fed mantiene los tipos en máximos de 23 años ante la persistencia de la inflación
+          </h1>
+
+          <p class="atom-txt atom-txt--lead">
+            El banco central estadounidense aplaza de nuevo el inicio del ciclo de bajadas mientras los mercados revisan al alza sus expectativas para 2025 y el dólar cotiza en máximos frente al euro.
+          </p>
+
+          <div class="org-hero-principal__meta-bottom">
+            <address class="atom-txt atom-txt--sm atom-txt--muted">
+              Por <a href="/autor/ana-garcia" class="atom-link" rel="author">Ana García</a>
+            </address>
+            <span class="atom-txt atom-txt--sm atom-txt--muted" aria-label="Tiempo de lectura: 8 minutos">
+              8 min lectura
+            </span>
+            <a href="/economia/fed-tipos-maximos-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">
+              Leer la noticia completa
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────
+           GRID EDITORIAL — 2fr · 1fr
+           DOM: content primero · sidebar después
+           CSS: grid-template-columns: 1fr → 2fr 1fr @ lg
+      ───────────────────────────────────────── -->
+      <div class="org-grid-editorial">
+
+        <!-- ── CONTENT COLUMN (order:1) ── -->
+        <div class="org-grid-editorial__content">
+
+          <!-- ──────────────────────────
+               N2 — NOTICIAS DESTACADAS
+               3 cards con imagen
+               Grid: 1col → 2col@sm → 3col@lg
+          ─────────────────────────────── -->
+          <section class="org-grid-n2" aria-labelledby="n2-heading">
+            <h2 id="n2-heading" class="syx-sr-only">Noticias destacadas</h2>
+
+            <!-- N2 · 1 — Empresas -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/f5f5f5/767676?text=Empresas"
+                  alt="Imagen de noticia sobre resultados de Iberdrola"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Empresas</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/economia/iberdrola-resultados-record-2026" class="atom-link">
+                    Iberdrola bate su récord de beneficio con 5.200 millones en el primer trimestre
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  La eléctrica supera las previsiones del consenso gracias al impulso de su filial de renovables en EEUU y el negocio de redes en Brasil.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/carlos-ruiz" class="atom-link" rel="author">Carlos Ruiz</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2 · 2 — Bolsa -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/f5f5f5/767676?text=Bolsa"
+                  alt="Imagen de noticia sobre el Ibex 35"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Bolsa</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/economia/ibex-35-maximo-2026" class="atom-link">
+                    El Ibex 35 escala a máximos de dos años y supera los 10.800 puntos por primera vez desde 2024
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El selectivo español lidera las ganancias en Europa impulsado por las grandes energéticas y los bancos, que acumulan alzas superiores al 3%.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/maria-lopez" class="atom-link" rel="author">María López</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2 · 3 — Internacional -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/f5f5f5/767676?text=Internacional"
+                  alt="Imagen de noticia sobre economía china"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Internacional</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/economia/china-pib-primer-trimestre-2026" class="atom-link">
+                    China sorprende con un crecimiento del 5,3% en el primer trimestre y alivia los temores de desaceleración
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El dato supera las estimaciones del FMI y refuerza la posición de Pekín en las negociaciones comerciales con Washington.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/jorge-alba" class="atom-link" rel="author">Jorge Alba</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                </div>
+              </div>
+            </article>
+
+          </section>
+
+
+          <!-- ──────────────────────────
+               N3 — NOTICIAS SECUNDARIAS
+               6 ítems sin imagen
+          ─────────────────────────────── -->
+          <section class="org-grid-n3" aria-labelledby="n3-heading">
+            <h2 id="n3-heading" class="atom-title atom-title--sm org-grid-n3__heading">
+              Más noticias de economía
+            </h2>
+
+            <ol class="org-grid-n3__list" role="list">
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Empleo</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/paro-marzo-2026" class="atom-link">
+                      El paro baja por tercer mes consecutivo y roza los 2,8 millones de desempleados
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/m-torres" class="atom-link" rel="author">M. Torres</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">BCE</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/bce-lagarde-tipos-junio-2026" class="atom-link">
+                      Lagarde anticipa una bajada de tipos en junio si la desinflación continúa su curso
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/ana-garcia" class="atom-link" rel="author">A. García</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Vivienda</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/precio-vivienda-record-madrid-2026" class="atom-link">
+                      El precio de la vivienda en Madrid alcanza su máximo histórico con una subida del 12% en un año
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/pablo-vega" class="atom-link" rel="author">P. Vega</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Energía</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/precio-luz-minimo-abril-2026" class="atom-link">
+                      La luz marca un nuevo mínimo de abril con el precio medio por debajo de 40 €/MWh
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/sara-blanco" class="atom-link" rel="author">S. Blanco</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Banca</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/sabadell-bbva-opa-ultima-hora" class="atom-link">
+                      BBVA eleva su oferta por Sabadell en un 8% tras el rechazo del consejo de administración
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/carlos-ruiz" class="atom-link" rel="author">C. Ruiz</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Aranceles</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/economia/aranceles-eeuu-europa-automovil-2026" class="atom-link">
+                      La UE prepara represalias ante los nuevos aranceles del 25% de EEUU al automóvil europeo
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/jorge-alba" class="atom-link" rel="author">J. Alba</a>
+                  </address>
+                </article>
+              </li>
+
+            </ol>
+          </section>
+
+        </div>
+        <!-- /content column -->
+
+
+        <!-- ── SIDEBAR (order:2 — DOM después del contenido) ── -->
+        <aside
+          class="org-grid-editorial__sidebar"
+          aria-label="Datos de mercado y publicidad"
+        >
+
+          <!-- MOL-DATOS-MERCADO -->
+          <section class="mol-datos-mercado" aria-labelledby="mercado-heading">
+            <h2 id="mercado-heading" class="mol-datos-mercado__heading atom-title atom-title--xs">
+              Mercados ahora
+            </h2>
+
+            <ul class="mol-datos-mercado__list" role="list">
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">IBEX 35</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 10.842 puntos">10.842</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
+                    aria-label="Variación: subida del 1,24 por ciento"
+                  >▲ +1,24%</span>
+                </div>
+              </li>
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">DAX</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 18.461 puntos">18.461</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
+                    aria-label="Variación: subida del 0,83 por ciento"
+                  >▲ +0,83%</span>
+                </div>
+              </li>
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/USD</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 1,0842">1,0842</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja"
+                    aria-label="Variación: bajada del 0,32 por ciento"
+                  >▼ −0,32%</span>
+                </div>
+              </li>
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/GBP</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 0,8561">0,8561</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro"
+                    aria-label="Sin variación significativa"
+                  >−0,01%</span>
+                </div>
+              </li>
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Brent</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 83,40 dólares por barril">83,40</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
+                    aria-label="Variación: subida del 0,87 por ciento"
+                  >▲ +0,87%</span>
+                </div>
+              </li>
+
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Oro</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 2.318 dólares por onza">2.318</span>
+                  <span
+                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
+                    aria-label="Variación: subida del 0,54 por ciento"
+                  >▲ +0,54%</span>
+                </div>
+              </li>
+
+            </ul>
+
+            <a href="/mercados" class="atom-btn atom-btn--ghost-dark atom-btn--sm mol-datos-mercado__cta">
+              Ver todos los mercados
+            </a>
+          </section>
+
+
+          <!-- MOL-PUBLICIDAD 300×250 — NP en sidebar -->
+          <!-- Posición: zona de desarrollo, sidebar — permitida por atlas-rules 06.3 -->
+          <div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/300x250/f0f0f0/aaaaaa?text=300×250"
+                alt=""
+                aria-hidden="true"
+                width="300" height="250"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+        </aside>
+        <!-- /sidebar -->
+
+      </div>
+      <!-- /org-grid-editorial -->
+
+    </div>
+    <!-- /page-wrapper -->
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="org-news-footer" role="contentinfo">
+    <div class="org-news-footer__inner">
+      <nav class="org-news-footer__nav" aria-label="Secciones del sitio">
+        <ul role="list">
+          <li><a href="/economia">Economía</a></li>
+          <li><a href="/mercados">Mercados</a></li>
+          <li><a href="/empresas">Empresas</a></li>
+          <li><a href="/internacional">Internacional</a></li>
+          <li><a href="/opinion">Opinión</a></li>
+          <li><a href="/suscripcion">Suscripción</a></li>
+          <li><a href="/privacidad">Privacidad</a></li>
+          <li><a href="/cookies">Cookies</a></li>
+        </ul>
+      </nav>
+      <p class="org-news-footer__copy">
+        &copy; 2026 Meridian. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!--
+  ═══════════════════════════════════════════════════════════════
+  HANDOFF — [SYX: UI]
+  ═══════════════════════════════════════════════════════════════
+
+  Nuevos componentes a implementar en SCSS:
+
+  ORGANISMS (org-):
+    org-hero-principal        — N1 hero editorial con imagen full-width
+    org-grid-editorial        — layout 2fr·1fr con colapso mobile-first
+    org-grid-n2               — grid de 3 cards N2 (1→2→3 cols)
+    org-grid-n3               — lista de noticias secundarias
+    org-site-skin             — wrapper de publicidad page-level (ver excepción CP-01)
+
+  MOLECULES (mol-):
+    mol-card-noticia          — card N2 con imagen, capa de click en h3 a::after
+    mol-noticia-secundaria    — ítem N3 sin imagen
+    mol-datos-mercado         — tabla de cotizaciones con estados alza/baja/neutro
+    mol-publicidad            — bloque publicitario con etiqueta visible (CP-02)
+    mol-ticker                — tira de cotizaciones con scroll y aria-live
+
+  Tokens nuevos necesarios:
+    --component-hero-principal-*          (padding, gap, imagen-radius)
+    --component-card-noticia-*            (bg, border, radius, gap, imagen-ratio)
+    --component-noticia-secundaria-*      (padding-block, border, gap)
+    --component-datos-mercado-*           (bg, border, cambio-alza/baja/neutro)
+    --component-publicidad-*              (border, radius, label-size)
+    --component-ticker-*                  (bg, color, alza, baja)
+    --layout-grid-editorial-columns       (2fr 1fr)
+    --layout-grid-editorial-gap
+
+  Excepción pendiente de registrar (11.0-arbitraje-principios.md):
+    org-site-skin usa position:fixed con z-index:-1
+    Justificación: es el único caso de publicidad como wrapper de página,
+    no un elemento dentro del flujo editorial. No viola el espíritu de CP-01.
+
+  Estados documentados:
+    mol-card-noticia:         default · hover (shadow + img scale) · focus-within
+    mol-noticia-secundaria:   default · hover (color link)
+    mol-datos-mercado:        alza · baja · neutro
+    org-news-header:          default · .is-scrolled · .is-menu-open (JS)
+    mol-ticker:               estático (no-JS) · auto-scroll (JS) · paused (hover/focus)
+  ═══════════════════════════════════════════════════════════════
+  -->
+
+</body>
+</html>

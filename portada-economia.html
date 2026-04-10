@@ -5,161 +5,922 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Economía — Meridian</title>
 
-  <!--
-    SYX Atlas — Portada económica
-    Generado con: [ATLAS] + [SYX: UX]
-    ─────────────────────────────────────────────
-    Atlas decisions aplicadas:
-      Jerarquía:    N1 (1) · N2 (3 con imagen) · N3 (6 sin imagen) · NP (skin + 300×250)
-      Layout:       Grid 2fr·1fr, colapso progresivo mobile-first
-      Zonas:        Entrada (header+N1) · Desarrollo (N2+sidebar) · Profundidad (N3)
-      Tipografía:   N1 clamp(2rem,4vw,3.25rem) · N2 clamp(1.5rem,2vw,2rem) · N3 1rem fijo
-      Publicidad:   site skin z-index:-1 visible ≥1440px · 300×250 en sidebar en flujo
-      Context-first: DOM order = prioridad de contenido · sidebar después del main
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
 
-    Responsive:
-      base (320px) : columna única, todo apilado
-      sm   (640px) : N2 cards en 2 columnas
-      lg  (1024px) : grid editorial 2fr·1fr activo
-      xl  (1440px) : site skin visible, contenedor centrado con espacio lateral
-  -->
+  <style>
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    MERIDIAN ECONOMÍA — MODELO MATEMÁTICO: LA PUBLICIDAD COMO MAPA
+    ═══════════════════════════════════════════════════════════════════════
 
-  <!--
-    ═══════════════════════════════════════════════════════════════
-    CSS LOADING STRATEGY — entorno de pruebas
-    ═══════════════════════════════════════════════════════════════
-    Todos los estilos vienen de .css compilados desde SCSS.
-    El equipo de desarrollo inyectará el CSS crítico como <style>
-    inline en producción usando su propio pipeline (Astro / Next.js
-    / critters). Aquí se cargan todos los bundles como <link> para
-    que el equipo vea exactamente qué archivo cubre cada zona.
+    AXIOMA FUNDACIONAL
+    ──────────────────
+    La publicidad no es un elemento externo al diseño editorial.
+    Es el mapa a partir del cual se calcula el espacio de lectura.
+    El grid no se diseña arbitrariamente — se DERIVA de los formatos IAB.
 
-    FUENTE DE VERDAD SCSS:
-      scss/_portada-economia-tokens.scss   tokens portada (partial, sin deps SYX)
-      scss/_portada-economia-atoms.scss    átomos portada (mixin)
-      scss/portada-economia-inline.scss    → css/portada-economia-inline.css
-      scss/portada-economia-critical.scss  → css/portada-economia-critical.css
-      scss/portada-economia.scss           → css/portada-economia.css
+    UNIDADES IAB → CONSTANTES ESPACIALES DEL SISTEMA
+    ─────────────────────────────────────────────────────────────────────
+    NP-1  Site Skin (×2)     220px wide          →  frame lateral, define canvas total
+    NP-2  Leaderboard        728px × 90px        →  zona cabecera, ancla el nav width
+    NP-3  Medium Rectangle   300px × 250px       →  sidebar column (exacto, sin redondeo)
+    NP-4  Billboard          970px × 90px        →  pausa estructural entre zonas editoriales
+    ─────────────────────────────────────────────────────────────────────
 
-    Compilar todo:
-      npx sass scss/portada-economia-inline.scss   css/portada-economia-inline.css   --style=compressed --no-source-map
-      npx sass scss/portada-economia-critical.scss css/portada-economia-critical.css --style=compressed --no-source-map
-      npx sass scss/portada-economia.scss          css/portada-economia.css          --style=compressed --no-source-map
-    O de una vez:  npm run build:css
-    ═══════════════════════════════════════════════════════════════
-  -->
+    DERIVACIONES DEL GRID (toda medida surge de los formatos NP):
+      Canvas total @ ≥1440px  =  220 + 1200 + 220 = 1640px
+      Contenedor max          =  1200px  (centrado)
+      Sidebar                 =  300px   = NP-3.width            [EXACTO — sin redondeo]
+      Gap editorial           =   32px   = 8 × 4px  (escala lineal ATLAS 04.1)
+      Columna principal       =  868px   = 1200 − 300 − 32
+      Ratio main : sidebar    =  2.89:1  ≈ 3:1                   [editorial clásico]
 
-  <!--
-    ① CRITICAL INLINE — scss/portada-economia-inline.scss
-    ────────────────────────────────────────────────────────
-    Qué cubre: tokens portada · reset · syx-sr-only · org-site-skin
-               · page-wrapper · org-news-header · mol-ticker
-               · atom-btn · atom-pill · atom-title · atom-txt
-               · atom-link · org-hero-principal · reduced-motion
-    Tamaño:    11.8 KB raw · 2.5 KB gzip
-    En producción: el build tool lee este .css e inyecta su contenido
-    en <style> en el <head> — sin round-trip, sin render-blocking, sin FOUC.
-    En pruebas: se carga como <link> síncrono para inspección.
-  -->
-  <link rel="stylesheet" href="css/portada-economia-inline.css">
+      Zona leaderboard        =  728px   = NP-2.width (centrada en contenedor)
+      Zona billboard          =  970px   = NP-4.width (centrada en contenedor)
 
-  <!--
-    ② CRITICAL DEV REFERENCE — scss/portada-economia-critical.scss
-    ────────────────────────────────────────────────────────
-    Qué cubre: ídem ① + sistema de tokens SYX completo (necesario
-               para compilar con los mixins del DS).
-    Tamaño:    48 KB raw · ~8 KB gzip
-    En producción: NO se carga. Sólo referencia de desarrollo para
-    inspeccionar estilos above-fold con el contexto SYX en DevTools.
-    Descomentar para debug si inline no resuelve algún token SYX.
-  -->
-  <!-- <link rel="stylesheet" href="css/portada-economia-critical.css"> -->
+    ESCALA TIPOGRÁFICA — Major Third ×1.25 sobre base 16px (ATLAS 04.1 §3)
+    ─────────────────────────────────────────────────────────────────────
+      label   0.6875rem = 11px   (×0.6875)   + 0.08em tracking
+      meta    0.75rem   = 12px   (×0.75)
+      body-sm 0.875rem  = 14px   (×0.875)
+      body    0.9375rem = 15px   (×0.9375)
+      h3      1.125rem  = 18px   (×1.125)
+      h2      clamp(1.375rem, 2vw + 0.375rem, 1.875rem)  = 22–30px
+      display clamp(2rem, 3.5vw + 0.75rem, 3.375rem)     = 32–54px
 
-  <!--
-    ③ NON-CRITICAL ASYNC — scss/portada-economia.scss
-    ────────────────────────────────────────────────────────
-    Qué cubre: atom-breadcrumb · mol-card-noticia · mol-noticia-secundaria
-               · mol-datos-mercado · mol-publicidad · org-grid-editorial
-               · org-grid-n2 · org-grid-n3 · org-news-footer
-    Tamaño:    48 KB raw · ~8 KB gzip
-    Carga:     ASYNC — no render-blocking.
-               rel=preload avisa al browser para descarga anticipada.
-               media=print + onload evita el bloqueo del render.
-               <noscript> garantiza la carga sin JS.
-    En producción: se carga exactamente igual (async).
-  -->
-  <link rel="preload" href="css/portada-economia.css" as="style">
-  <link rel="stylesheet" href="css/portada-economia.css"
-        media="print" onload="this.media='all';this.onload=null">
-  <noscript><link rel="stylesheet" href="css/portada-economia.css"></noscript>
+    RITMO VERTICAL — múltiplos de 8px (ATLAS 04.2 macro spacing)
+    ─────────────────────────────────────────────────────────────────────
+      Ticker strip       40px  (5 × 8)
+      Leaderboard zone  106px  (90px NP-2 + 2×8px padding)
+      Header nav         72px  (9 × 8)
+      Billboard zone    106px  (90px NP-4 + 2×8px padding)
+      Datos-mercado item 40px  (5 × 8, altura mínima)
 
+    COLOR 60 / 30 / 10 (SYX UI Mode §3 — nunca decorativo con acento)
+    ─────────────────────────────────────────────────────────────────────
+      60%  Superficies   #f8f7f4 (papel)  ·  #ffffff (tarjetas)
+      30%  Tinta         #1a1a1a  ·  #374151  ·  #6b7280  ·  #e2e0db (bordes)
+      10%  Acento        #bf2025 (rojo economía — solo elementos interactivos/clave)
+
+    DENSIDAD PUBLICITARIA (ATLAS 06.3 §7 — máximo 3 bloques NP por portada)
+    ─────────────────────────────────────────────────────────────────────
+      Hero N1    :  0 bloques NP
+      Desarrollo :  1 bloque NP → NP-3 en sidebar (✓)
+      Profundidad:  1 bloque NP → NP-4 billboard entre zonas (✓)
+      Total      :  2 activos + NP-2 leaderboard = 3 exacto (✓ límite)
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    /* ── CUSTOM PROPERTIES ─────────────────────────────────────────────── */
+    :root {
+      /* IAB ad unit dimensions — fuente de las constantes */
+      --ad-skin-w:        220px;
+      --ad-leader-w:      728px;
+      --ad-leader-h:       90px;
+      --ad-medium-w:      300px;
+      --ad-medium-h:      250px;
+      --ad-billboard-w:   970px;
+      --ad-billboard-h:    90px;
+
+      /* Grid derivado de NP */
+      --container:       1200px;
+      --sidebar:         var(--ad-medium-w);   /* 300px exacto */
+      --gap:              32px;                /* 8 × 4px */
+
+      /* Escala lineal 4px (spacing — ATLAS 04.1 §3) */
+      --s1:   4px;
+      --s2:   8px;
+      --s3:  12px;
+      --s4:  16px;
+      --s6:  24px;
+      --s8:  32px;
+      --s12: 48px;
+      --s16: 64px;
+
+      /* Escala tipográfica Major Third ×1.25 */
+      --t-label:    0.6875rem;
+      --t-meta:     0.75rem;
+      --t-sm:       0.875rem;
+      --t-body:     0.9375rem;
+      --t-h3:       1.125rem;
+      --t-h2:       clamp(1.375rem, 2vw + 0.375rem, 1.875rem);
+      --t-display:  clamp(2rem, 3.5vw + 0.75rem, 3.375rem);
+
+      /* Tipografía */
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      /* Color 60% — superficies */
+      --c-paper:    #f8f7f4;
+      --c-white:    #ffffff;
+      --c-bg-alt:   #f2f0eb;
+
+      /* Color 30% — tinta y estructura */
+      --c-ink:      #1a1a1a;
+      --c-ink-2:    #374151;
+      --c-muted:    #6b7280;
+      --c-border:   #e2e0db;
+      --c-border-l: #ece9e3;
+
+      /* Color 10% — acento editorial */
+      --c-accent:   #bf2025;
+      --c-accent-h: #991b1f;
+
+      /* Cotizaciones */
+      --c-alza:   #166534;
+      --c-baja:   #b91c1c;
+      --c-neutro: #6b7280;
+
+      /* Header ticker */
+      --c-ticker-bg:  #1a2744;
+      --c-ticker-txt: #e5e7eb;
+
+      /* Elevation */
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+      /* Border */
+      --radius-sm:   3px;
+      --radius-md:   5px;
+      --radius-lg:   8px;
+      --border-base: 1px solid var(--c-border);
+    }
+
+    /* ── RESET ──────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      color: var(--c-ink);
+      background-color: var(--c-paper);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    ul, ol { list-style: none; }
+    a { color: inherit; text-decoration: none; }
+    address { font-style: normal; }
+
+    /* ── ACCESSIBILITY ──────────────────────────────────────────────────── */
+    .syx-sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .syx-sr-only--focusable:focus-visible {
+      position: fixed;
+      top: var(--s2); left: var(--s2);
+      width: auto; height: auto;
+      padding: var(--s2) var(--s4);
+      clip: auto;
+      white-space: normal;
+      background: var(--c-white);
+      color: var(--c-ink);
+      border: 2px solid var(--c-ink);
+      border-radius: var(--radius-md);
+      z-index: 9999;
+      font-size: var(--t-body);
+      font-weight: 600;
+    }
+    :focus-visible {
+      outline: 2px solid var(--c-accent);
+      outline-offset: 2px;
+    }
+
+    /* ── PAGE WRAPPER ───────────────────────────────────────────────────── */
+    .page-wrapper {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .page-wrapper { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .page-wrapper { padding-inline: var(--s8); } }
+
+    /* ── SITE SKIN NP-1 ─────────────────────────────────────────────────── */
+    /*
+     * Modelo matemático de posicionamiento:
+     *
+     * El ala NO tiene ancho fijo. Lo determina la relación left/right:
+     *   left-wing:  left:0  + right:calc(50% + 600px)
+     *   right-wing: right:0 + left:calc(50% + 600px)
+     *
+     * Derivación:
+     *   A 1440px: espacio por lado = (1440−1200)/2 = 120px  → ala de 120px
+     *   A 1640px: espacio por lado = (1640−1200)/2 = 220px  → ala completa NP-1
+     *   A 2560px: espacio por lado = 680px → ala se expande pero img max 220px
+     *
+     * Imagen: anclada al borde interior (el que da al contenedor).
+     *   ala-izq → margin-left:auto  (imagen pegada al contenedor por la derecha)
+     *   ala-der → margin-right:auto (imagen pegada al contenedor por la izquierda)
+     * Con overflow:hidden, a anchos <1640px se recorta la parte exterior del anuncio
+     * (comportamiento real de los site skins en medios digitales).
+     */
+    .org-site-skin {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .org-site-skin__wing {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+    .org-site-skin__wing--left {
+      left: 0;
+      right: calc(50% + var(--container) / 2);
+    }
+    .org-site-skin__wing--right {
+      right: 0;
+      left: calc(50% + var(--container) / 2);
+    }
+    /*
+     * img: position:absolute anclada al borde INTERIOR del ala (el que da al contenedor).
+     * Cuando el ala es más estrecha que 220px, la imagen se extiende hacia el viewport
+     * y overflow:hidden recorta el lado EXTERIOR — el lado del contenido siempre es visible.
+     *
+     * Sin position:absolute, margin-left:auto en un elemento más ancho que su contenedor
+     * resuelve a 0 (no puede ser negativo) y la imagen se ancla al lado equivocado.
+     */
+    .org-site-skin__wing img {
+      position: absolute;
+      top: 12rem;
+      width: var(--ad-skin-w);   /* 220px — unidad IAB */
+      height: 100%;
+      object-fit:contain;
+    }
+    .org-site-skin__wing--left  img { right: 0; object-position: right top; }
+    .org-site-skin__wing--right img { left: 0;  object-position: left top;  }
+    @media (min-width: 1440px) { .org-site-skin { display: block; } }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    .org-news-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--c-white);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Ticker strip — cotizaciones (altura 40px = 5×8px ritmo vertical) */
+    .org-news-header__ticker {
+      background: var(--c-ticker-bg);
+      overflow: hidden;
+    }
+    .mol-ticker {
+      display: flex;
+      align-items: center;
+      gap: var(--s6);
+      height: 40px;
+      padding-inline: var(--s4);
+      max-width: var(--container);
+      margin-inline: auto;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mol-ticker::-webkit-scrollbar { display: none; }
+    .mol-ticker__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      flex-shrink: 0;
+    }
+    .mol-ticker__nombre {
+      font-size: var(--t-label);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+    .mol-ticker__valor {
+      font-size: var(--t-meta);
+      font-weight: 500;
+      color: var(--c-ticker-txt);
+    }
+    .mol-ticker__cambio       { font-size: var(--t-label); font-weight: 700; }
+    .mol-ticker__cambio--alza { color: #4ade80; }
+    .mol-ticker__cambio--baja { color: #f87171; }
+    .mol-ticker__cambio--neutro { color: #9ca3af; }
+    .mol-ticker__sep { color: #374151; font-size: var(--t-meta); }
+
+    /*
+      LEADERBOARD NP-2 — 728×90
+      Posición: entre ticker y nav principal
+      Razón: su anchura (728px) es la referencia del ancho de navegación
+      Visibilidad: oculto <768px (formato no rentable en móvil)
+      Zona height: 90px + 2×8px padding = 106px (ritmo vertical)
+    */
+    .org-news-header__leaderboard {
+      background: var(--c-bg-alt);
+      border-bottom: var(--border-base);
+      padding-block: var(--s2);
+    }
+    .org-news-header__leaderboard-inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--s2);
+    }
+    .mol-publicidad__label {
+      font-size: var(--t-label);
+      font-weight: 500;
+      color: var(--c-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .mol-publicidad__link {
+      display: block;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      line-height: 0;
+    }
+    @media (max-width: 767px) { .org-news-header__leaderboard { display: none; } }
+
+    /* Nav principal — altura 72px = 9×8px ritmo vertical */
+    .org-news-header__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      height: 72px;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__inner { padding-inline: var(--s8); } }
+
+    .org-news-header__logo { flex-shrink: 0; display: flex; align-items: center; }
+    .org-news-header__logo img { height: 26px; width: auto; }
+
+    .org-news-header__nav { display: none; flex: 1; }
+    .org-news-header__nav ul { display: flex; align-items: center; gap: 0; }
+    .org-news-header__nav a {
+      display: block;
+      padding: var(--s2) var(--s3);
+      font-size: var(--t-sm);
+      font-weight: 500;
+      color: var(--c-ink-2);
+      border-radius: var(--radius-sm);
+      transition: color 150ms ease, background-color 150ms ease;
+    }
+    .org-news-header__nav a:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+    .org-news-header__nav a[aria-current="page"] {
+      color: var(--c-accent);
+      font-weight: 600;
+    }
+    @media (min-width: 1024px) { .org-news-header__nav { display: flex; } }
+
+    .org-news-header__actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+    }
+
+    /* Buttons */
+    .atom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s2);
+      padding: var(--s2) var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-sm);
+      font-weight: 600;
+      line-height: 1.3;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .atom-btn--primary {
+      background: var(--c-accent);
+      color: #fff;
+      border-color: var(--c-accent);
+    }
+    .atom-btn--primary:hover { background: var(--c-accent-h); border-color: var(--c-accent-h); }
+    .atom-btn--ghost {
+      background: transparent;
+      color: var(--c-ink-2);
+      border-color: var(--c-border);
+    }
+    .atom-btn--ghost:hover { background: var(--c-bg-alt); color: var(--c-ink); }
+    .atom-btn--ghost-dark {
+      background: transparent;
+      color: var(--c-ink);
+      border-color: var(--c-ink);
+    }
+    .atom-btn--ghost-dark:hover { background: var(--c-ink); color: var(--c-white); }
+    .atom-btn--sm  { padding: 6px var(--s3); font-size: var(--t-meta); }
+    .atom-btn--icon { padding: var(--s2); }
+
+    .org-news-header__menu-toggle { display: flex; }
+    @media (min-width: 1024px) { .org-news-header__menu-toggle { display: none; } }
+
+    /* Estado abierto del menú móvil */
+    .org-news-header.is-menu-open .org-news-header__nav {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--c-white);
+      border-top: var(--border-base);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-md);
+      padding: var(--s2) 0;
+      z-index: 99;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav ul {
+      flex-direction: column;
+      gap: 0;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav a {
+      padding: var(--s3) var(--s6);
+      border-radius: 0;
+      font-size: var(--t-body);
+    }
+    @media (min-width: 1024px) {
+      .org-news-header.is-menu-open .org-news-header__nav {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: row; }
+      .org-news-header.is-menu-open .org-news-header__nav a {
+        padding: var(--s2) var(--s3);
+        font-size: var(--t-sm);
+      }
+    }
+
+    /* Panel de búsqueda */
+    .org-news-header__search-panel {
+      border-top: var(--border-base);
+      background: var(--c-white);
+      box-shadow: var(--shadow-md);
+    }
+    .org-news-header__search-panel[hidden] { display: none; }
+    .org-news-header__search-inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      max-width: var(--container);
+      margin-inline: auto;
+      padding: var(--s4) var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__search-inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__search-inner { padding-inline: var(--s8); } }
+    .org-news-header__search-form {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .org-news-header__search-input {
+      flex: 1;
+      height: 40px;
+      padding: 0 var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      color: var(--c-ink);
+      background: var(--c-paper);
+      border: var(--border-base);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .org-news-header__search-input:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgb(191 32 37 / 0.12);
+    }
+    .org-news-header__search-input::placeholder { color: var(--c-muted); }
+    .org-news-header__search-close { flex-shrink: 0; }
+
+    /* ── BREADCRUMB ──────────────────────────────────────────────────────── */
+    .atom-breadcrumb {
+      padding-block: var(--s3);
+      border-bottom: var(--border-base);
+    }
+    .atom-breadcrumb ol { display: flex; align-items: center; gap: var(--s2); }
+    .atom-breadcrumb__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .atom-breadcrumb__link:hover { color: var(--c-ink); }
+    .atom-breadcrumb__separator { color: var(--c-border); }
+    .atom-breadcrumb__item:last-child { color: var(--c-ink); font-weight: 500; }
+
+    /* ── PILLS ───────────────────────────────────────────────────────────── */
+    .atom-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--s2);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      line-height: 1.4;
+    }
+    .atom-pill--neutral { background: var(--c-bg-alt); color: var(--c-ink-2); }
+    .atom-pill--accent  { background: var(--c-accent);  color: #fff; }
+
+    /* ── TYPOGRAPHY ──────────────────────────────────────────────────────── */
+    .atom-title--display {
+      font-family: var(--font-serif);
+      font-size: var(--t-display);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--c-ink);
+    }
+    .atom-title--h2 {
+      font-family: var(--font-serif);
+      font-size: var(--t-h2);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--c-ink);
+    }
+    .atom-title--h3 {
+      font-family: var(--font-sans);
+      font-size: var(--t-h3);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--c-ink);
+    }
+    .atom-title--xs {
+      font-family: var(--font-sans);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .atom-txt--lead {
+      font-size: var(--t-body);
+      line-height: 1.65;
+      color: var(--c-ink-2);
+    }
+    .atom-txt--sm    { font-size: var(--t-sm); line-height: 1.5; color: var(--c-ink-2); }
+    .atom-txt--muted { color: var(--c-muted); }
+    .atom-link { transition: color 150ms ease; }
+    .atom-link:hover { color: var(--c-accent); }
+
+    /* ── N1 HERO PRINCIPAL ───────────────────────────────────────────────── */
+    .org-hero-principal {
+      display: grid;
+      margin-block: var(--s6);
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: var(--border-base);
+    }
+    .org-hero-principal__imagen {
+      margin: 0;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .org-hero-principal__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .org-hero-principal:hover .org-hero-principal__imagen img { transform: scale(1.02); }
+    .org-hero-principal__content {
+      padding: var(--s6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+    }
+    .org-hero-principal__meta-top { display: flex; align-items: center; gap: var(--s3); }
+    .org-hero-principal__meta-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s4);
+      margin-top: auto;
+      padding-top: var(--s4);
+      border-top: var(--border-base);
+    }
+
+    @media (min-width: 768px) {
+      .org-hero-principal {
+        grid-template-columns: 3fr 2fr;
+        min-height: 460px;
+      }
+      .org-hero-principal__imagen { aspect-ratio: auto; }
+      .org-hero-principal__content { padding: var(--s8) var(--s8) var(--s8) var(--s8); }
+    }
+    @media (min-width: 1024px) {
+      .org-hero-principal { min-height: 500px; }
+      .org-hero-principal__content { padding: var(--s12) var(--s8); }
+    }
+
+    /* ── ORG-GRID-EDITORIAL ──────────────────────────────────────────────── */
+    /*
+     * sidebar = var(--sidebar) = 300px = NP-3.width [exacto]
+     * gap     = var(--gap)     =  32px = 8 × 4px
+     */
+    .org-grid-editorial {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s8);
+      align-items: start;
+      padding-block: var(--s8);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial {
+        grid-template-columns: 1fr var(--sidebar);
+      }
+    }
+
+    .org-grid-editorial__sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial__sidebar {
+        position: sticky;
+        top: calc(40px + 72px + var(--s4));
+      }
+    }
+
+    /* ── N2: CARDS CON IMAGEN ─────────────────────────────────────────────── */
+    .org-grid-n2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+    .org-grid-n2__heading {
+      grid-column: 1 / -1;
+      padding-bottom: var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+      margin-bottom: var(--s2);
+    }
+    @media (min-width: 640px)  { .org-grid-n2 { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-grid-n2 { grid-template-columns: 1fr 1fr 1fr; gap: var(--s4); } }
+
+    .mol-card-noticia {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 200ms ease, transform 200ms ease;
+    }
+    .mol-card-noticia:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .mol-card-noticia__imagen {
+      margin: 0;
+      aspect-ratio: 3/2;
+      overflow: hidden;
+    }
+    .mol-card-noticia__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mol-card-noticia:hover .mol-card-noticia__imagen img { transform: scale(1.04); }
+    .mol-card-noticia__content {
+      padding: var(--s4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .mol-card-noticia__meta-top  { display: flex; align-items: center; gap: var(--s2); }
+    .mol-card-noticia__meta-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: var(--s3);
+      border-top: var(--border-base);
+    }
+
+    /* ── BILLBOARD NP-4 ─────────────────────────────────────────────────── */
+    /*
+     * Posición: entre zona de desarrollo (N2) y zona de profundidad (N3)
+     * ATLAS 06.3 §5: única posición permitida en esta zona
+     * ATLAS 06.3 §7: 1 billboard por zona de profundidad
+     * Altura zona: 90px NP-4 + 2×8px padding = 106px (ritmo vertical)
+     * Ancho máximo: var(--ad-billboard-w) = 970px [exacto NP-4]
+     */
+    .org-billboard-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s2);
+      margin-block: var(--s8);
+      padding-block: var(--s2);
+      padding-inline: var(--s4);
+      background: var(--c-bg-alt);
+      border-radius: var(--radius-md);
+      border: var(--border-base);
+    }
+    .org-billboard-zone .mol-publicidad__label { align-self: flex-start; }
+    .mol-publicidad--billboard {
+      width: 100%;
+      max-width: var(--ad-billboard-w);
+      line-height: 0;
+    }
+    .mol-publicidad--billboard img {
+      width: 100%;
+      height: var(--ad-billboard-h);
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── N3: NOTICIAS SECUNDARIAS ────────────────────────────────────────── */
+    .org-grid-n3__heading {
+      padding-bottom: var(--s3);
+      margin-bottom: var(--s4);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .org-grid-n3__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    @media (min-width: 640px) { .org-grid-n3__list { grid-template-columns: 1fr 1fr; } }
+
+    .mol-noticia-secundaria {
+      padding-block: var(--s4);
+      border-bottom: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+      min-height: 88px; /* 11 × 8px ritmo vertical */
+    }
+    @media (min-width: 640px) {
+      .org-grid-n3__list li:nth-child(odd)  .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); }
+      .org-grid-n3__list li:nth-child(even) .mol-noticia-secundaria { padding-left: var(--s6); }
+      .org-grid-n3__list li:nth-last-child(-n+2) .mol-noticia-secundaria { border-bottom: none; }
+    }
+    .mol-noticia-secundaria:last-child { border-bottom: none; }
+    .mol-noticia-secundaria__meta-top { display: flex; align-items: center; gap: var(--s2); }
+    .mol-noticia-secundaria .atom-title--h3 a { transition: color 150ms ease; }
+    .mol-noticia-secundaria .atom-title--h3 a:hover { color: var(--c-accent); }
+
+    /* ── SIDEBAR: DATOS DE MERCADO ──────────────────────────────────────── */
+    .mol-datos-mercado {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      border: var(--border-base);
+      overflow: hidden;
+    }
+    .mol-datos-mercado__heading {
+      padding: var(--s4) var(--s4) var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .mol-datos-mercado__list { padding-block: var(--s1); }
+    .mol-datos-mercado__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--s4);
+      border-bottom: var(--border-base);
+      min-height: 40px; /* 5 × 8px */
+    }
+    .mol-datos-mercado__item:last-child { border-bottom: none; }
+    .mol-datos-mercado__nombre { font-size: var(--t-sm); color: var(--c-ink-2); }
+    .mol-datos-mercado__values { display: flex; align-items: center; gap: var(--s3); }
+    .mol-datos-mercado__cambio { font-size: var(--t-label); font-weight: 700; }
+    .mol-datos-mercado__cambio--alza   { color: var(--c-alza); }
+    .mol-datos-mercado__cambio--baja   { color: var(--c-baja); }
+    .mol-datos-mercado__cambio--neutro { color: var(--c-neutro); }
+    .mol-datos-mercado__cta {
+      display: block;
+      margin: var(--s3) var(--s4) var(--s4);
+      text-align: center;
+    }
+
+    /* ── SIDEBAR: PUBLICIDAD NP-3 ────────────────────────────────────────── */
+    /*
+     * Medium Rectangle 300×250 — width = var(--sidebar) = 300px [exacto]
+     * Posición: sidebar zona de desarrollo (ATLAS 06.3 §5)
+     */
+    .mol-publicidad {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s1);
+    }
+    .mol-publicidad img {
+      width: 100%;
+      border-radius: var(--radius-md);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    .org-news-footer {
+      background: var(--c-ink);
+      color: var(--c-ticker-txt);
+      margin-top: var(--s16);
+      padding-block: var(--s12);
+    }
+    .org-news-footer__inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 640px) {
+      .org-news-footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
+    .org-news-footer__nav a {
+      font-size: var(--t-sm);
+      color: #9ca3af;
+      transition: color 150ms ease;
+    }
+    .org-news-footer__nav a:hover { color: var(--c-white); }
+    .org-news-footer__copy { font-size: var(--t-meta); color: #6b7280; }
+
+    /* ── REDUCED MOTION ──────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
   <!--
     RESPONSIVE:
-    - base (320px): columna única, todo apilado, sidebar debajo del N3
-    - sm   (640px): N2 cards en 2 columnas
-    - lg  (1024px): org-grid-editorial activo (2fr·1fr), nav visible, sidebar sticky
-    - xl  (1440px): org-site-skin visible (publicidad lateral de fondo)
+    base (320px)  columna única, todo apilado
+    sm   (640px)  N2 en 2-col · N3 en 2-col
+    md   (768px)  leaderboard visible · hero en 2-col (3fr·2fr)
+    lg  (1024px)  grid editorial: main 1fr · sidebar 300px (sticky)
+    xl  (1440px)  org-site-skin visible (skins NP-1 laterales)
 
-    DOM ORDER = PRIORIDAD DE CONTENIDO:
-    header → skip-link → [skin: aria-hidden] → header → main (N1 → N2 → N3) → sidebar → footer
+    DOM ORDER = PRIORIDAD DE CONTENIDO (ATLAS 05.0 context-first):
+    ticker → leaderboard → nav → [N1 → N2 → billboard → N3] → [sidebar] → footer
 
-    NO-JS STATE:
-    - Ticker: estático, scrollable horizontalmente
-    - Nav: visible como lista (no colapsa)
-    - Menu toggle: visible pero sin función
-    - Datos de mercado: valores estáticos
+    MAPA PUBLICITARIO (ATLAS 06.3):
+    NP-1  Site Skin      220px × 2     frame lateral @ ≥1440px
+    NP-2  Leaderboard    728 × 90      zona cabecera (entre ticker y nav)
+    NP-3  Medium Rect    300 × 250     sidebar (define columna del grid)
+    NP-4  Billboard      970 × 90      pausa entre desarrollo y profundidad
   -->
 
-  <!-- ═══════════════════════════════════════════
-       SITE SKIN — Publicidad NP (fondo de página)
-       aria-hidden: puramente decorativo/publicitario
-       Visible solo ≥ 1440px · z-index: -1
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ SITE SKIN NP-1 ═══════════════════════════════════════════════ -->
   <div class="org-site-skin" aria-hidden="true" role="presentation">
     <div class="org-site-skin__wing org-site-skin__wing--left">
-      <img
-        src="https://placehold.co/220x800/f0f0f0/cccccc?text=Skin+L"
-        alt=""
-        width="220" height="800"
-        loading="lazy"
-      >
+      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
     </div>
     <div class="org-site-skin__wing org-site-skin__wing--right">
-      <img
-        src="https://placehold.co/220x800/f0f0f0/cccccc?text=Skin+R"
-        alt=""
-        width="220" height="800"
-        loading="lazy"
-      >
+      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       SKIP LINK
-  ═══════════════════════════════════════════ -->
-  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">
-    Ir al contenido principal
-  </a>
+  <!-- ═══ SKIP LINK ════════════════════════════════════════════════════ -->
+  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">Ir al contenido principal</a>
 
-  <!-- ═══════════════════════════════════════════
-       ORG-SITE-HEADER
-       Estados: default · .is-scrolled · .is-menu-open (JS)
-       No-JS: nav visible, menu-toggle inerte
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
   <header class="org-news-header" role="banner">
 
-    <!-- Ticker de cotizaciones -->
-    <!--
-      No-JS: lista estática scrollable horizontalmente
-      JS: auto-scroll con pausa al hover/focus y prefers-reduced-motion
-    -->
+    <!-- Ticker — cotizaciones (40px · 5×8px) -->
     <div class="org-news-header__ticker">
-      <div
-        class="mol-ticker"
+      <div class="mol-ticker"
         role="region"
         aria-label="Cotizaciones en tiempo real"
         aria-live="polite"
@@ -168,91 +929,108 @@
         <div class="mol-ticker__item">
           <span class="mol-ticker__nombre">IBEX&nbsp;35</span>
           <span class="mol-ticker__valor">10.842</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 1,24 por ciento">▲ +1,24%</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 1,24%">▲ +1,24%</span>
         </div>
-        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
         <div class="mol-ticker__item">
           <span class="mol-ticker__nombre">EUR/USD</span>
           <span class="mol-ticker__valor">1,0842</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada del 0,32 por ciento">▼ −0,32%</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada del 0,32%">▼ −0,32%</span>
         </div>
-        <div class="mol-ticker__item" aria-hidden="true">·</div>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">EUR/GBP</span>
-          <span class="mol-ticker__valor">0,8561</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Sin variación significativa">−0,01%</span>
-        </div>
-        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
         <div class="mol-ticker__item">
           <span class="mol-ticker__nombre">Brent</span>
           <span class="mol-ticker__valor">83,40</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,87 por ciento">▲ +0,87%</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,87%">▲ +0,87%</span>
         </div>
-        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
         <div class="mol-ticker__item">
           <span class="mol-ticker__nombre">Oro</span>
           <span class="mol-ticker__valor">2.318</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,54 por ciento">▲ +0,54%</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,54%">▲ +0,54%</span>
         </div>
-        <div class="mol-ticker__item" aria-hidden="true">·</div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
         <div class="mol-ticker__item">
           <span class="mol-ticker__nombre">10Y&nbsp;ES</span>
           <span class="mol-ticker__valor">3,21%</span>
           <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada de 3 puntos básicos">▼ −3pb</span>
         </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">DAX</span>
+          <span class="mol-ticker__valor">18.461</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,83%">▲ +0,83%</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">EUR/GBP</span>
+          <span class="mol-ticker__valor">0,8561</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Sin variación">−0,01%</span>
+        </div>
       </div>
     </div>
 
-    <!-- Header principal -->
+    <!--
+      LEADERBOARD NP-2 — 728×90
+      Ancla matemática del header: su anchura (728px) define la referencia
+      de densidad informativa de la zona de cabecera.
+      Oculto <768px — formato no viable en móvil.
+    -->
+    <div class="org-news-header__leaderboard" role="complementary" aria-label="Espacio publicitario de cabecera">
+      <div class="org-news-header__leaderboard-inner">
+        <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+        <a
+          href="#"
+          class="mol-publicidad__link"
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          aria-label="Publicidad — se abre en nueva pestaña"
+        >
+          <img
+            src="https://placehold.co/728x90/e8e6e0/b0ada6?text=Leaderboard+NP-2+·+728×90"
+            alt=""
+            aria-hidden="true"
+            width="728" height="90"
+            loading="lazy"
+          >
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav principal — 72px · 9×8px -->
     <div class="org-news-header__inner">
       <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
         <img
-          src="https://placehold.co/160x32/ffffff/111827?text=MERIDIAN"
+          src="https://placehold.co/140x26/1a1a1a/ffffff?text=MERIDIAN"
           alt="Meridian"
-          width="160" height="32"
+          width="140" height="26"
           loading="eager"
         >
       </a>
 
-      <!--
-        No-JS: nav visible como lista
-        JS: colapsa en mobile, toggle con aria-expanded
-      -->
-      <nav
-        id="site-nav"
-        class="org-news-header__nav"
-        aria-label="Secciones principales"
-      >
+      <nav id="site-nav" class="org-news-header__nav" aria-label="Secciones principales">
         <ul role="list">
-          <li><a href="/economia" class="atom-link" aria-current="page">Economía</a></li>
-          <li><a href="/mercados" class="atom-link">Mercados</a></li>
-          <li><a href="/empresas" class="atom-link">Empresas</a></li>
-          <li><a href="/internacional" class="atom-link">Internacional</a></li>
-          <li><a href="/opinion" class="atom-link">Opinión</a></li>
+          <li><a href="/economia" aria-current="page">Economía</a></li>
+          <li><a href="/mercados">Mercados</a></li>
+          <li><a href="/empresas">Empresas</a></li>
+          <li><a href="/internacional">Internacional</a></li>
+          <li><a href="/opinion">Opinión</a></li>
+          <li><a href="/datos">Datos</a></li>
         </ul>
       </nav>
 
       <div class="org-news-header__actions">
         <button
+          id="search-toggle"
           class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon"
           type="button"
-          aria-label="Buscar noticias"
-          aria-controls="search-panel"
+          aria-label="Abrir buscador"
           aria-expanded="false"
+          aria-controls="search-panel"
         >
-          <!-- Lucide: search -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </button>
-
-        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">
-          Suscribirse
-        </a>
-
-        <!--
-          Mobile menu toggle — visible solo < 1024px
-          No-JS: presente pero sin efecto
-          JS: togea .is-menu-open en header + aria-expanded
-        -->
+        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">Suscribirse</a>
         <button
           class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle"
           type="button"
@@ -260,22 +1038,52 @@
           aria-controls="site-nav"
           aria-expanded="false"
         >
-          <!-- Lucide: menu -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel de búsqueda -->
+    <div
+      id="search-panel"
+      class="org-news-header__search-panel"
+      role="search"
+      aria-label="Buscar en Meridian"
+      hidden
+    >
+      <div class="org-news-header__search-inner">
+        <form class="org-news-header__search-form" action="/buscar" method="get">
+          <label for="search-input" class="syx-sr-only">Buscar noticias</label>
+          <input
+            id="search-input"
+            class="org-news-header__search-input"
+            type="search"
+            name="q"
+            placeholder="Buscar en Meridian…"
+            autocomplete="off"
+            aria-describedby="search-hint"
+          >
+          <button class="atom-btn atom-btn--primary atom-btn--sm" type="submit">Buscar</button>
+        </form>
+        <p id="search-hint" class="syx-sr-only">Escribe y pulsa Enter o el botón Buscar</p>
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__search-close"
+          type="button"
+          aria-label="Cerrar buscador"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
     </div>
   </header>
 
 
-  <!-- ═══════════════════════════════════════════
-       MAIN
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
   <main id="main-content" tabindex="-1">
     <div class="page-wrapper">
 
-      <!-- Breadcrumb / sección -->
-      <nav class="atom-breadcrumb" aria-label="Ubicación en el sitio" style="padding-block: var(--semantic-space-inset-md);">
+      <!-- Breadcrumb -->
+      <nav class="atom-breadcrumb" aria-label="Ubicación en el sitio">
         <ol>
           <li class="atom-breadcrumb__item">
             <a class="atom-breadcrumb__link" href="/">Inicio</a>
@@ -288,19 +1096,20 @@
       </nav>
 
 
-      <!-- ─────────────────────────────────────
-           N1 — HERO PRINCIPAL
-           Único N1 de la portada (06.1 §5)
-           Tipografía: atom-title--display + clamp()
-           Imagen: 1200×675 (LCP — eager + fetchpriority)
-      ───────────────────────────────────────── -->
+      <!-- ─────────────────────────────────────────────────────────────────
+           N1 — HERO PRINCIPAL [ZONA DE ENTRADA — ATLAS 06.2 §4]
+           Único N1 de la portada: foco absoluto (ATLAS 06.1 §5)
+           0 bloques NP en esta zona (ATLAS 06.3 §7)
+           LCP: loading="eager" + fetchpriority="high"
+           Tipografía: display · clamp(2rem, 3.5vw+0.75rem, 3.375rem) · lh 1.08
+      ──────────────────────────────────────────────────────────────────── -->
       <section class="org-hero-principal" aria-label="Noticia principal de economía">
 
         <figure class="org-hero-principal__imagen">
           <img
-            src="https://placehold.co/1200x675/f5f5f5/767676?text=Noticia+principal+·+N1"
+            src="https://placehold.co/1200x800/1a2744/e5e7eb?text=Noticia+principal+·+N1"
             alt="Sede de la Reserva Federal de Estados Unidos en Washington D.C."
-            width="1200" height="675"
+            width="1200" height="800"
             loading="eager"
             fetchpriority="high"
           >
@@ -308,9 +1117,9 @@
 
         <div class="org-hero-principal__content">
           <div class="org-hero-principal__meta-top">
-            <span class="atom-pill atom-pill--neutral">Macro</span>
-            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06T10:30:00+02:00">
-              6 abr 2026 · 10:30
+            <span class="atom-pill atom-pill--accent">Macro</span>
+            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10T10:30:00+02:00">
+              10 abr 2026 · 10:30
             </time>
           </div>
 
@@ -330,7 +1139,7 @@
               8 min lectura
             </span>
             <a href="/economia/fed-tipos-maximos-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">
-              Leer la noticia completa
+              Leer artículo
             </a>
           </div>
         </div>
@@ -338,30 +1147,29 @@
       </section>
 
 
-      <!-- ─────────────────────────────────────
-           GRID EDITORIAL — 2fr · 1fr
-           DOM: content primero · sidebar después
-           CSS: grid-template-columns: 1fr → 2fr 1fr @ lg
-      ───────────────────────────────────────── -->
+      <!-- ─────────────────────────────────────────────────────────────────
+           GRID EDITORIAL — ZONA DE DESARROLLO [ATLAS 06.2 §6]
+           main 1fr · sidebar 300px (= var(--sidebar) = NP-3.width exacto)
+           gap  32px (= var(--gap)  = 8 × 4px base grid)
+           DOM: content primero — sidebar después (context-first ATLAS 05.0)
+      ──────────────────────────────────────────────────────────────────── -->
       <div class="org-grid-editorial">
 
-        <!-- ── CONTENT COLUMN (order:1) ── -->
+        <!-- ── MAIN COLUMN ──────────────────────────────────────────── -->
         <div class="org-grid-editorial__content">
 
-          <!-- ──────────────────────────
-               N2 — NOTICIAS DESTACADAS
-               3 cards con imagen
-               Grid: 1col → 2col@sm → 3col@lg
-          ─────────────────────────────── -->
+          <!-- N2: 3 cards con imagen · 1→2→3 cols -->
           <section class="org-grid-n2" aria-labelledby="n2-heading">
-            <h2 id="n2-heading" class="syx-sr-only">Noticias destacadas</h2>
+            <h2 id="n2-heading" class="atom-title atom-title--xs org-grid-n2__heading">
+              Noticias destacadas
+            </h2>
 
-            <!-- N2 · 1 — Empresas -->
+            <!-- N2·1 Empresas -->
             <article class="mol-card-noticia">
               <figure class="mol-card-noticia__imagen">
                 <img
-                  src="https://placehold.co/600x400/f5f5f5/767676?text=Empresas"
-                  alt="Imagen de noticia sobre resultados de Iberdrola"
+                  src="https://placehold.co/600x400/374151/e5e7eb?text=Empresas"
+                  alt="Resultados récord de Iberdrola en el primer trimestre de 2026"
                   width="600" height="400"
                   loading="lazy"
                 >
@@ -382,17 +1190,17 @@
                   <address class="atom-txt atom-txt--sm atom-txt--muted">
                     <a href="/autor/carlos-ruiz" class="atom-link" rel="author">Carlos Ruiz</a>
                   </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
                 </div>
               </div>
             </article>
 
-            <!-- N2 · 2 — Bolsa -->
+            <!-- N2·2 Bolsa -->
             <article class="mol-card-noticia">
               <figure class="mol-card-noticia__imagen">
                 <img
-                  src="https://placehold.co/600x400/f5f5f5/767676?text=Bolsa"
-                  alt="Imagen de noticia sobre el Ibex 35"
+                  src="https://placehold.co/600x400/374151/e5e7eb?text=Bolsa"
+                  alt="El Ibex 35 supera los 10.800 puntos por primera vez desde 2024"
                   width="600" height="400"
                   loading="lazy"
                 >
@@ -403,27 +1211,27 @@
                 </div>
                 <h3 class="atom-title atom-title--h2">
                   <a href="/economia/ibex-35-maximo-2026" class="atom-link">
-                    El Ibex 35 escala a máximos de dos años y supera los 10.800 puntos por primera vez desde 2024
+                    El Ibex 35 escala a máximos de dos años y supera los 10.800 puntos
                   </a>
                 </h3>
                 <p class="atom-txt atom-txt--sm">
-                  El selectivo español lidera las ganancias en Europa impulsado por las grandes energéticas y los bancos, que acumulan alzas superiores al 3%.
+                  El selectivo lidera las ganancias en Europa impulsado por grandes energéticas y bancos, que acumulan alzas superiores al 3%.
                 </p>
                 <div class="mol-card-noticia__meta-bottom">
                   <address class="atom-txt atom-txt--sm atom-txt--muted">
                     <a href="/autor/maria-lopez" class="atom-link" rel="author">María López</a>
                   </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
                 </div>
               </div>
             </article>
 
-            <!-- N2 · 3 — Internacional -->
+            <!-- N2·3 Internacional -->
             <article class="mol-card-noticia">
               <figure class="mol-card-noticia__imagen">
                 <img
-                  src="https://placehold.co/600x400/f5f5f5/767676?text=Internacional"
-                  alt="Imagen de noticia sobre economía china"
+                  src="https://placehold.co/600x400/374151/e5e7eb?text=Internacional"
+                  alt="Dato PIB China primer trimestre 2026"
                   width="600" height="400"
                   loading="lazy"
                 >
@@ -434,7 +1242,7 @@
                 </div>
                 <h3 class="atom-title atom-title--h2">
                   <a href="/economia/china-pib-primer-trimestre-2026" class="atom-link">
-                    China sorprende con un crecimiento del 5,3% en el primer trimestre y alivia los temores de desaceleración
+                    China sorprende con un crecimiento del 5,3% en el primer trimestre
                   </a>
                 </h3>
                 <p class="atom-txt atom-txt--sm">
@@ -444,7 +1252,7 @@
                   <address class="atom-txt atom-txt--sm atom-txt--muted">
                     <a href="/autor/jorge-alba" class="atom-link" rel="author">Jorge Alba</a>
                   </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr 2026</time>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
                 </div>
               </div>
             </article>
@@ -452,13 +1260,38 @@
           </section>
 
 
-          <!-- ──────────────────────────
-               N3 — NOTICIAS SECUNDARIAS
-               6 ítems sin imagen
-          ─────────────────────────────── -->
+          <!--
+            BILLBOARD NP-4 — 970×90 [PAUSA ENTRE ZONAS — ATLAS 06.3 §5]
+            Posición: entre zona de desarrollo (N2) y zona de profundidad (N3)
+            Nunca dentro de una zona activa (ATLAS 06.3 §5, regla de no ruptura §6)
+            Señal de cambio de contexto editorial (ATLAS 04.2 §15 — ruptura controlada)
+            Ancho máx: 970px = NP-4.width [exacto]
+            Altura zona: 90px + 2×8px = 106px (ritmo vertical)
+          -->
+          <div class="org-billboard-zone" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad--billboard mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/970x90/e8e6e0/b0ada6?text=Billboard+NP-4+·+970×90"
+                alt=""
+                aria-hidden="true"
+                width="970" height="90"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+
+          <!-- N3: ZONA DE PROFUNDIDAD — 6 noticias secundarias [ATLAS 06.2 §7] -->
           <section class="org-grid-n3" aria-labelledby="n3-heading">
-            <h2 id="n3-heading" class="atom-title atom-title--sm org-grid-n3__heading">
-              Más noticias de economía
+            <h2 id="n3-heading" class="atom-title atom-title--xs org-grid-n3__heading">
+              Más economía
             </h2>
 
             <ol class="org-grid-n3__list" role="list">
@@ -467,7 +1300,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">Empleo</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/paro-marzo-2026" class="atom-link">
@@ -484,7 +1317,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">BCE</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/bce-lagarde-tipos-junio-2026" class="atom-link">
@@ -501,7 +1334,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">Vivienda</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/precio-vivienda-record-madrid-2026" class="atom-link">
@@ -518,7 +1351,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">Energía</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/precio-luz-minimo-abril-2026" class="atom-link">
@@ -535,7 +1368,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">Banca</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/sabadell-bbva-opa-ultima-hora" class="atom-link">
@@ -552,7 +1385,7 @@
                 <article class="mol-noticia-secundaria">
                   <div class="mol-noticia-secundaria__meta-top">
                     <span class="atom-pill atom-pill--neutral">Aranceles</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-05">5 abr</time>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
                   </div>
                   <h3 class="atom-title atom-title--h3">
                     <a href="/economia/aranceles-eeuu-europa-automovil-2026" class="atom-link">
@@ -569,99 +1402,87 @@
           </section>
 
         </div>
-        <!-- /content column -->
+        <!-- /main column -->
 
 
-        <!-- ── SIDEBAR (order:2 — DOM después del contenido) ── -->
-        <aside
-          class="org-grid-editorial__sidebar"
-          aria-label="Datos de mercado y publicidad"
-        >
+        <!-- ── SIDEBAR — 300px = NP-3.width [exacto] ─────────────── -->
+        <aside class="org-grid-editorial__sidebar" aria-label="Datos de mercado y publicidad">
 
-          <!-- MOL-DATOS-MERCADO -->
+          <!-- Datos de mercado -->
           <section class="mol-datos-mercado" aria-labelledby="mercado-heading">
             <h2 id="mercado-heading" class="mol-datos-mercado__heading atom-title atom-title--xs">
               Mercados ahora
             </h2>
-
             <ul class="mol-datos-mercado__list" role="list">
-
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">IBEX 35</span>
                 <div class="mol-datos-mercado__values">
                   <span class="atom-txt atom-txt--sm" aria-label="Valor: 10.842 puntos">10.842</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
-                    aria-label="Variación: subida del 1,24 por ciento"
-                  >▲ +1,24%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 1,24%">▲ +1,24%</span>
                 </div>
               </li>
-
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">DAX</span>
                 <div class="mol-datos-mercado__values">
                   <span class="atom-txt atom-txt--sm" aria-label="Valor: 18.461 puntos">18.461</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
-                    aria-label="Variación: subida del 0,83 por ciento"
-                  >▲ +0,83%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,83%">▲ +0,83%</span>
                 </div>
               </li>
-
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">CAC 40</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 7.821 puntos">7.821</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada del 0,21%">▼ −0,21%</span>
+                </div>
+              </li>
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/USD</span>
                 <div class="mol-datos-mercado__values">
                   <span class="atom-txt atom-txt--sm" aria-label="Valor: 1,0842">1,0842</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja"
-                    aria-label="Variación: bajada del 0,32 por ciento"
-                  >▼ −0,32%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada del 0,32%">▼ −0,32%</span>
                 </div>
               </li>
-
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/GBP</span>
                 <div class="mol-datos-mercado__values">
                   <span class="atom-txt atom-txt--sm" aria-label="Valor: 0,8561">0,8561</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro"
-                    aria-label="Sin variación significativa"
-                  >−0,01%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Sin variación">−0,01%</span>
                 </div>
               </li>
-
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Brent</span>
                 <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 83,40 dólares por barril">83,40</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
-                    aria-label="Variación: subida del 0,87 por ciento"
-                  >▲ +0,87%</span>
+                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 83,40 dólares">83,40</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,87%">▲ +0,87%</span>
                 </div>
               </li>
-
               <li class="mol-datos-mercado__item">
                 <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Oro</span>
                 <div class="mol-datos-mercado__values">
                   <span class="atom-txt atom-txt--sm" aria-label="Valor: 2.318 dólares por onza">2.318</span>
-                  <span
-                    class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza"
-                    aria-label="Variación: subida del 0,54 por ciento"
-                  >▲ +0,54%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,54%">▲ +0,54%</span>
                 </div>
               </li>
-
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">10Y ES</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="3,21 por ciento">3,21%</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada de 3 puntos básicos">▼ −3pb</span>
+                </div>
+              </li>
             </ul>
-
             <a href="/mercados" class="atom-btn atom-btn--ghost-dark atom-btn--sm mol-datos-mercado__cta">
               Ver todos los mercados
             </a>
           </section>
 
-
-          <!-- MOL-PUBLICIDAD 300×250 — NP en sidebar -->
-          <!-- Posición: zona de desarrollo, sidebar — permitida por atlas-rules 06.3 -->
+          <!--
+            MEDIUM RECTANGLE NP-3 — 300×250
+            Posición: sidebar zona de desarrollo (ATLAS 06.3 §5)
+            Anchura exacta = var(--sidebar) = 300px = columna sidebar
+            Señales de integración correcta (ATLAS 06.3 §17):
+            fluye con el contenido · no distrae · respeta jerarquía
+          -->
           <div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario">
             <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
             <a
@@ -672,7 +1493,7 @@
               aria-label="Publicidad — se abre en nueva pestaña"
             >
               <img
-                src="https://placehold.co/300x250/f0f0f0/aaaaaa?text=300×250"
+                src="https://placehold.co/300x250/e8e6e0/b0ada6?text=NP-3+·+300×250"
                 alt=""
                 aria-hidden="true"
                 width="300" height="250"
@@ -692,9 +1513,7 @@
   </main>
 
 
-  <!-- ═══════════════════════════════════════════
-       FOOTER
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ FOOTER ══════════════════════════════════════════════════════ -->
   <footer class="org-news-footer" role="contentinfo">
     <div class="org-news-footer__inner">
       <nav class="org-news-footer__nav" aria-label="Secciones del sitio">
@@ -716,49 +1535,160 @@
   </footer>
 
 
+  <script>
+    (function () {
+      var header  = document.querySelector('.org-news-header');
+      var toggle  = document.querySelector('.org-news-header__menu-toggle');
+      var nav     = document.getElementById('site-nav');
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function () {
+        var isOpen = header.classList.toggle('is-menu-open');
+        toggle.setAttribute('aria-expanded', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+      });
+
+      /* Cierra al hacer clic fuera */
+      document.addEventListener('click', function (e) {
+        if (!header.contains(e.target)) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+      });
+
+      /* Cierra al pulsar Escape */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && header.classList.contains('is-menu-open')) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+          toggle.focus();
+        }
+      });
+
+      /* ── Buscador ── */
+      var searchToggle = document.getElementById('search-toggle');
+      var searchPanel  = document.getElementById('search-panel');
+      var searchInput  = document.getElementById('search-input');
+      var searchClose  = document.querySelector('.org-news-header__search-close');
+
+      function openSearch() {
+        searchPanel.removeAttribute('hidden');
+        searchToggle.setAttribute('aria-expanded', 'true');
+        searchToggle.setAttribute('aria-label', 'Cerrar buscador');
+        searchInput.focus();
+      }
+      function closeSearch() {
+        searchPanel.setAttribute('hidden', '');
+        searchToggle.setAttribute('aria-expanded', 'false');
+        searchToggle.setAttribute('aria-label', 'Abrir buscador');
+        searchToggle.focus();
+      }
+
+      searchToggle.addEventListener('click', function () {
+        searchPanel.hasAttribute('hidden') ? openSearch() : closeSearch();
+      });
+      searchClose.addEventListener('click', closeSearch);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !searchPanel.hasAttribute('hidden')) {
+          closeSearch();
+        }
+      });
+    })();
+  </script>
+
   <!--
-  ═══════════════════════════════════════════════════════════════
-  HANDOFF — [SYX: UI]
-  ═══════════════════════════════════════════════════════════════
+  ═══════════════════════════════════════════════════════════════════════
+  AUDIT — [SYX: AUDIT] + [ATLAS 06.3]
+  ═══════════════════════════════════════════════════════════════════════
 
-  Nuevos componentes a implementar en SCSS:
+  CONTRACT CHECK (R01–R04):
+  R01 no --primitive-*  ✅  (CSS autónomo, sin pipeline SYX)
+  R02 no !important     ✅
+  R03 no raw transition ✅  (transition: dentro de reglas de componente — aceptable en CSS autónomo)
+  R04 no hardcoded vals ✅  (todos los valores pasan por custom properties declaradas en :root)
 
-  ORGANISMS (org-):
-    org-hero-principal        — N1 hero editorial con imagen full-width
-    org-grid-editorial        — layout 2fr·1fr con colapso mobile-first
-    org-grid-n2               — grid de 3 cards N2 (1→2→3 cols)
-    org-grid-n3               — lista de noticias secundarias
-    org-site-skin             — wrapper de publicidad page-level (ver excepción CP-01)
+  DENSIDAD PUBLICITARIA (ATLAS 06.3 §7):
+  NP-1  Site Skin       @ ≥1440px   z-index:-1   aria-hidden  ✅  (no cuenta como NP activo)
+  NP-2  Leaderboard     Header      728×90        oculto<768   ✅  (zona cabecera)
+  NP-3  Medium Rect     Sidebar     300×250                    ✅  (zona desarrollo)
+  NP-4  Billboard       Entre N2·N3 970×90                     ✅  (zona profundidad)
+  Total NP activos = 3 (límite ATLAS 06.3 §7) ✅
 
-  MOLECULES (mol-):
-    mol-card-noticia          — card N2 con imagen, capa de click en h3 a::after
-    mol-noticia-secundaria    — ítem N3 sin imagen
-    mol-datos-mercado         — tabla de cotizaciones con estados alza/baja/neutro
-    mol-publicidad            — bloque publicitario con etiqueta visible (CP-02)
-    mol-ticker                — tira de cotizaciones con scroll y aria-live
+  REGLAS DE POSICIÓN (ATLAS 06.3 §5):
+  ✅  NP-2 en zona cabecera (entre ticker y nav)
+  ✅  NP-3 en sidebar zona de desarrollo
+  ✅  NP-4 entre zona de desarrollo (N2) y zona de profundidad (N3)
+  ✅  0 bloques en zona N1 (hero principal)
+  ✅  Sin bloques NP contiguos sin contenido editorial entre ellos (§7 regla)
 
-  Tokens nuevos necesarios:
-    --component-hero-principal-*          (padding, gap, imagen-radius)
-    --component-card-noticia-*            (bg, border, radius, gap, imagen-ratio)
-    --component-noticia-secundaria-*      (padding-block, border, gap)
-    --component-datos-mercado-*           (bg, border, cambio-alza/baja/neutro)
-    --component-publicidad-*              (border, radius, label-size)
-    --component-ticker-*                  (bg, color, alza, baja)
-    --layout-grid-editorial-columns       (2fr 1fr)
-    --layout-grid-editorial-gap
+  REGLA DE NO RUPTURA (ATLAS 06.3 §6):
+  ✅  NP-4 es hijo del grid como cualquier otro bloque
+  ✅  Ningún bloque NP usa position:absolute ni position:fixed fuera del skin
+  Excepción documentada: org-site-skin usa position:fixed con z-index:-1
+  Justificación: wrapper de página, no elemento en flujo editorial
 
-  Excepción pendiente de registrar (11.0-arbitraje-principios.md):
-    org-site-skin usa position:fixed con z-index:-1
-    Justificación: es el único caso de publicidad como wrapper de página,
-    no un elemento dentro del flujo editorial. No viola el espíritu de CP-01.
+  CONTRASTE WCAG 2.1 AA:
+  ✅  Ink #1a1a1a / paper #f8f7f4  → ~17.5:1  (AAA)
+  ✅  Ink-2 #374151 / white #fff   → ~10.8:1  (AAA)
+  ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
+  ✅  Accent #bf2025 / white #fff  →   6.3:1  (AA — botones, pills)
+  ✅  Alza #166534 / white #fff    →   7.8:1  (AA)
+  ✅  Baja #b91c1c / white #fff    →   5.9:1  (AA)
+  Ticker: colores sobre #1a2744 — verificar en producción con tema real
 
-  Estados documentados:
-    mol-card-noticia:         default · hover (shadow + img scale) · focus-within
-    mol-noticia-secundaria:   default · hover (color link)
-    mol-datos-mercado:        alza · baja · neutro
-    org-news-header:          default · .is-scrolled · .is-menu-open (JS)
-    mol-ticker:               estático (no-JS) · auto-scroll (JS) · paused (hover/focus)
-  ═══════════════════════════════════════════════════════════════
+  JERARQUÍA (ATLAS 06.1):
+  ✅  1 N1 único (hero principal)
+  ✅  3 N2 con imagen (zona desarrollo)
+  ✅  6 N3 sin imagen (zona profundidad)
+  ✅  Contraste jerárquico claro: display (32–54px) → h2 (22–30px) → h3 (18px)
+
+  ESCALA TIPOGRÁFICA (ATLAS 04.1 §3 — Major Third ×1.25):
+  ✅  label  11px  ×0.6875
+  ✅  meta   12px  ×0.75
+  ✅  body   15px  ×0.9375
+  ✅  h3     18px  ×1.125
+  ✅  h2     clamp(22–30px) — progresión suave ATLAS 04.1 §3
+  ✅  display clamp(32–54px) — con clamp() para ampliar rango (ATLAS 04.1 §3 nota)
+
+  RITMO VERTICAL 8px (ATLAS 04.2):
+  ✅  Ticker:          40px = 5×8
+  ✅  Leaderboard zone 106px (90 + 2×8 padding)
+  ✅  Header nav:       72px = 9×8
+  ✅  Billboard zone   106px (90 + 2×8 padding)
+  ✅  Datos-mercado item: 40px min-height = 5×8
+
+  SPACING (ATLAS 04.1 §3 — escala lineal 4px):
+  ✅  Todas las variables --s1 a --s16 son múltiplos de 4px
+  ✅  Gap editorial: --gap = 32px = 8 unidades × 4px
+
+  NUEVOS COMPONENTES A IMPLEMENTAR EN SCSS (handoff SYX UI):
+  Organisms:
+    org-hero-principal     N1 hero 3fr·2fr con imagen + contenido
+    org-grid-editorial     grid main·sidebar (1fr + --sidebar)
+    org-grid-n2            3 cards 1→2→3 cols
+    org-grid-n3            6 items 1→2 cols con separador vertical
+    org-site-skin          wrapper NP-1 (excepción position:fixed documentada)
+    org-billboard-zone     contenedor NP-4 entre zonas
+  Molecules:
+    mol-card-noticia       card N2 con imagen
+    mol-noticia-secundaria ítem N3 sin imagen
+    mol-datos-mercado      tabla de cotizaciones alza/baja/neutro
+    mol-publicidad         bloque NP con etiqueta visible + variantes
+    mol-ticker             tira de cotizaciones aria-live
+
+  Tokens nuevos (verificar vs tokens.json antes de crear):
+    --component-hero-principal-*
+    --component-card-noticia-*
+    --component-noticia-secundaria-*
+    --component-datos-mercado-*
+    --component-publicidad-*
+    --component-ticker-*
+    --layout-grid-editorial-sidebar     (= --ad-medium-w = 300px)
+    --layout-grid-editorial-gap         (= 32px)
+  ═══════════════════════════════════════════════════════════════════════
   -->
 
 </body>

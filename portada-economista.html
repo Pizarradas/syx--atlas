@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Economista — Portada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── ATLAS TOKENS — Navy/Gold Edition ─────────────────────────────────── */
+    :root {
+      /* Color: Navy scale */
+      --c-navy-900: #070f1c;
+      --c-navy-800: #0b1a2e;
+      --c-navy-700: #122240;
+      --c-navy-600: #1a3054;
+      --c-navy-500: #24406e;
+      --c-navy-200: #8faac8;
+      --c-navy-100: #c8d8eb;
+      --c-navy-50:  #eaf1f9;
+
+      /* Color: Gold scale */
+      --c-gold-700: #7d620f;
+      --c-gold-600: #a07f15;
+      --c-gold-500: #c9a227;
+      --c-gold-400: #debb4a;
+      --c-gold-300: #efd278;
+      --c-gold-100: #faf0c8;
+      --c-gold-50:  #fdf8e8;
+
+      /* Color: Neutral */
+      --c-white:      #ffffff;
+      --c-cream:      #faf6ef;
+      --c-cream-2:    #f3eadb;
+      --c-paper:      #f0e9de;
+      --c-ink:        #141414;
+      --c-ink-2:      #2d3748;
+      --c-ink-3:      #4a5568;
+      --c-muted:      #718096;
+      --c-border:     #dbd0bc;
+      --c-border-2:   #e8e0d2;
+      --c-border-light: #f0e9de;
+
+      /* Color: Semantic */
+      --c-positive:   #166534;
+      --c-negative:   #b42318;
+      --c-neutral:    #718096;
+
+      /* Semantic aliases */
+      --c-brand:      var(--c-navy-800);
+      --c-accent:     var(--c-gold-500);
+      --c-accent-strong: var(--c-gold-600);
+      --c-accent-text: var(--c-gold-400);
+      --c-surface:    var(--c-white);
+      --c-bg:         var(--c-cream);
+
+      /* Typography */
+      --font-serif: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+      --font-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      /* Type scale */
+      --t-micro:   0.625rem;
+      --t-label:   0.6875rem;
+      --t-meta:    0.75rem;
+      --t-sm:      0.875rem;
+      --t-body:    1rem;
+      --t-lead:    1.125rem;
+      --t-h4:      1.125rem;
+      --t-h3:      1.25rem;
+      --t-h2:      clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+      --t-h1:      clamp(2rem, 1.5rem + 1.5vw, 3.2rem);
+      --t-hero:    clamp(2.8rem, 2rem + 2.5vw, 5rem);
+
+      /* Spacing */
+      --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+      --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
+      --s12: 48px; --s16: 64px;
+
+      /* Layout */
+      --container: 1260px;
+      --rail: 300px;
+      --gap: 28px;
+      --col-rule: 1px solid var(--c-border);
+
+      /* Elevation */
+      --shadow-xs: 0 1px 3px rgb(7 15 28 / 0.06);
+      --shadow-sm: 0 2px 8px rgb(7 15 28 / 0.08), 0 1px 2px rgb(7 15 28 / 0.04);
+      --shadow-md: 0 8px 24px rgb(7 15 28 / 0.10);
+
+      /* Radius */
+      --radius-xs: 2px;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ─── RESET + BASE ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      line-height: 1.6;
+      color: var(--c-ink);
+      background: var(--c-cream);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    ul, ol { list-style: none; margin: 0; padding: 0; }
+    p, h1, h2, h3, h4, h5, h6 { margin: 0; }
+    address { font-style: normal; }
+    :focus-visible { outline: 2px solid var(--c-gold-400); outline-offset: 3px; }
+
+    /* ─── LAYOUT UTILITIES ───────────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .shell { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .shell { padding-inline: var(--s8); } }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0;
+      margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* ─── MARKET TICKER ──────────────────────────────────────────────────────── */
+    .ticker-band {
+      background: var(--c-navy-900);
+      border-bottom: 2px solid var(--c-gold-700);
+      overflow: hidden;
+    }
+    .ticker-inner {
+      display: flex;
+      align-items: stretch;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .ticker-inner::-webkit-scrollbar { display: none; }
+    .ticker-label {
+      display: flex;
+      align-items: center;
+      padding-inline: var(--s4) var(--s5);
+      border-right: 1px solid var(--c-navy-700);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--c-gold-500);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      padding: var(--s2) var(--s5);
+      border-right: 1px solid var(--c-navy-700);
+      flex-shrink: 0;
+    }
+    .ticker-item__name {
+      font-size: var(--t-meta);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-navy-100);
+    }
+    .ticker-item__val {
+      font-size: var(--t-sm);
+      font-weight: 700;
+      color: var(--c-white);
+    }
+    .ticker-item__chg {
+      font-size: var(--t-meta);
+      font-weight: 700;
+    }
+    .up   { color: #4ade80; }
+    .down { color: #f87171; }
+    .flat { color: var(--c-navy-200); }
+
+    /* ─── SITE HEADER ────────────────────────────────────────────────────────── */
+    .site-header {
+      background: var(--c-navy-800);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgb(7 15 28 / 0.4);
+    }
+    .header-main {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--s4);
+      min-height: 68px;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px) { .header-main { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .header-main { padding-inline: var(--s8); } }
+
+    .header-nav {
+      display: none;
+    }
+    .header-nav ul {
+      display: flex;
+      align-items: center;
+      gap: var(--s1);
+    }
+    .header-nav a {
+      display: block;
+      padding: var(--s2) var(--s3);
+      font-size: var(--t-sm);
+      font-weight: 500;
+      color: var(--c-navy-100);
+      border-radius: var(--radius-sm);
+      transition: color 150ms, background 150ms;
+    }
+    .header-nav a:hover { color: var(--c-gold-400); background: rgb(201 162 39 / 0.08); }
+    .header-nav a[aria-current="page"] { color: var(--c-gold-400); }
+    @media (min-width: 1060px) { .header-nav { display: block; } }
+
+    .header-brand {
+      text-align: center;
+      text-decoration: none;
+    }
+    .header-brand__logo {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--c-white);
+    }
+    .header-brand__logo em {
+      font-style: normal;
+      color: var(--c-gold-500);
+    }
+    .header-brand__sub {
+      font-size: var(--t-micro);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-navy-200);
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--s2);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      min-height: 38px;
+      padding: var(--s2) var(--s4);
+      font: inherit;
+      font-size: var(--t-sm);
+      font-weight: 600;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: 150ms;
+    }
+    .btn--gold {
+      background: var(--c-gold-500);
+      border-color: var(--c-gold-500);
+      color: var(--c-navy-900);
+    }
+    .btn--gold:hover { background: var(--c-gold-400); border-color: var(--c-gold-400); }
+    .btn--ghost-light {
+      background: transparent;
+      border-color: var(--c-navy-600);
+      color: var(--c-navy-100);
+    }
+    .btn--ghost-light:hover { border-color: var(--c-gold-500); color: var(--c-gold-400); }
+    .btn--icon {
+      min-height: 38px;
+      width: 38px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      color: var(--c-navy-100);
+      cursor: pointer;
+    }
+    .btn--icon:hover { color: var(--c-gold-400); }
+
+    /* ─── EDITION BAR ────────────────────────────────────────────────────────── */
+    .edition-bar {
+      background: var(--c-navy-700);
+      border-bottom: 1px solid var(--c-navy-600);
+    }
+    .edition-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s4);
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s8);
+      padding-block: var(--s2);
+      font-size: var(--t-meta);
+    }
+    .edition-bar__date { color: var(--c-navy-100); }
+    .edition-bar__date strong { color: var(--c-gold-400); font-weight: 600; }
+    .edition-bar__sections {
+      display: none;
+      align-items: center;
+      gap: var(--s4);
+    }
+    .edition-bar__sections a {
+      color: var(--c-navy-200);
+      font-weight: 500;
+      font-size: var(--t-meta);
+      transition: color 120ms;
+    }
+    .edition-bar__sections a:hover { color: var(--c-gold-400); }
+    @media (min-width: 768px) { .edition-bar__sections { display: flex; } }
+    .edition-bar__edition {
+      color: var(--c-navy-200);
+      white-space: nowrap;
+    }
+
+    /* ─── PAGE BODY ──────────────────────────────────────────────────────────── */
+    .page-body {
+      background: var(--c-cream);
+    }
+
+    /* ─── SECTION RULE (section header) ─────────────────────────────────────── */
+    .sec-rule {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      padding-block: var(--s3);
+      margin-bottom: var(--s5);
+      border-top: 3px solid var(--c-navy-800);
+      border-bottom: var(--col-rule);
+    }
+    .sec-rule__label {
+      font-family: var(--font-sans);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--c-navy-800);
+    }
+    .sec-rule__badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--s2);
+      background: var(--c-gold-500);
+      color: var(--c-navy-900);
+      font-size: var(--t-micro);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: var(--radius-xs);
+    }
+    .sec-rule__more {
+      margin-left: auto;
+      font-size: var(--t-meta);
+      font-weight: 600;
+      color: var(--c-muted);
+      transition: color 120ms;
+    }
+    .sec-rule__more:hover { color: var(--c-navy-800); }
+
+    /* ─── TAG / PILL ─────────────────────────────────────────────────────────── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s1);
+      padding: 2px var(--s2);
+      font-size: var(--t-meta);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: var(--radius-xs);
+    }
+    .tag--accent { background: var(--c-gold-100); color: var(--c-gold-700); }
+    .tag--navy   { background: var(--c-navy-800); color: var(--c-gold-400); }
+    .tag--muted  { background: var(--c-paper); color: var(--c-muted); }
+    .tag--live   { background: #dc2626; color: #fff; }
+    .tag--renta  { background: var(--c-navy-600); color: var(--c-gold-300); }
+
+    /* ─── HERO SECTION ───────────────────────────────────────────────────────── */
+    .hero-band {
+      background: var(--c-white);
+      border-bottom: var(--col-rule);
+      padding-block: var(--s10) var(--s8);
+    }
+    .hero-grid {
+      display: grid;
+      gap: var(--gap);
+      align-items: start;
+    }
+    @media (min-width: 1060px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      }
+    }
+
+    /* Lead story */
+    .hero-lead {
+      display: grid;
+      gap: var(--s5);
+    }
+    .hero-lead__kicker {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      padding-bottom: var(--s3);
+      border-bottom: var(--col-rule);
+    }
+    .hero-lead__headline {
+      font-family: var(--font-serif);
+      font-size: var(--t-hero);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      color: var(--c-navy-800);
+      text-wrap: balance;
+    }
+    .hero-lead__headline em {
+      font-style: italic;
+      color: var(--c-gold-600);
+    }
+    .hero-lead__deck {
+      font-family: var(--font-serif);
+      font-size: var(--t-lead);
+      line-height: 1.5;
+      color: var(--c-ink-2);
+      max-width: 60ch;
+    }
+    .hero-lead__byline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s3);
+      padding-top: var(--s3);
+      border-top: var(--col-rule);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .hero-lead__byline strong { color: var(--c-ink-2); }
+    .hero-lead__img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: var(--c-navy-900);
+    }
+    .hero-lead__img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Hero rail: secondary stories */
+    .hero-rail {
+      display: grid;
+      gap: 0;
+      border: var(--col-rule);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--c-white);
+    }
+    .hero-rail__head {
+      padding: var(--s4) var(--s5);
+      background: var(--c-navy-800);
+      color: var(--c-gold-400);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .hero-rail__story {
+      display: grid;
+      gap: var(--s2);
+      padding: var(--s4) var(--s5);
+      border-bottom: var(--col-rule);
+      transition: background 120ms;
+    }
+    .hero-rail__story:last-child { border-bottom: none; }
+    .hero-rail__story:hover { background: var(--c-cream); }
+    .hero-rail__story-kicker {
+      font-size: var(--t-meta);
+      font-weight: 600;
+      color: var(--c-gold-600);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .hero-rail__story-title {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--c-navy-800);
+    }
+    .hero-rail__story-meta {
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+
+    /* ─── DESTACAMOS: 4-up horizontal strip ─────────────────────────────────── */
+    .strip-band {
+      background: var(--c-cream-2);
+      border-bottom: var(--col-rule);
+      padding-block: var(--s6);
+    }
+    .strip-grid {
+      display: grid;
+      gap: var(--s4);
+    }
+    @media (min-width: 640px)  { .strip-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .strip-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .strip-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+      padding: var(--s4);
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-top: 3px solid var(--c-navy-800);
+      border-radius: var(--radius-md);
+      transition: box-shadow 150ms;
+    }
+    .strip-item:hover { box-shadow: var(--shadow-sm); }
+    .strip-item__tag { }
+    .strip-item__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h4);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--c-navy-800);
+    }
+    .strip-item__meta {
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+      margin-top: auto;
+    }
+
+    /* ─── MAIN CONTENT AREA (with rail) ─────────────────────────────────────── */
+    .content-with-rail {
+      display: grid;
+      gap: var(--gap);
+      align-items: start;
+      padding-block: var(--s8);
+    }
+    @media (min-width: 1060px) {
+      .content-with-rail {
+        grid-template-columns: minmax(0, 1fr) var(--rail);
+      }
+    }
+    .content-main { display: grid; gap: var(--s8); }
+
+    /* ─── MERCADOS SECTION ───────────────────────────────────────────────────── */
+    .mercados-grid {
+      display: grid;
+      gap: var(--s4);
+    }
+    @media (min-width: 720px) {
+      .mercados-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1060px) {
+      .mercados-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── STORY ROW: horizontal story with optional thumb ─────────────────────  */
+    .story-list { display: grid; gap: 0; }
+    .story-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s4);
+      align-items: start;
+      padding-block: var(--s4);
+      border-bottom: var(--col-rule);
+      transition: background 120ms;
+    }
+    .story-row:first-child { padding-top: 0; }
+    .story-row:last-child  { border-bottom: none; }
+    .story-row:hover { background: rgb(201 162 39 / 0.04); }
+    .story-row--nothumbs { grid-template-columns: 1fr; }
+    .story-row__body { display: grid; gap: var(--s2); }
+    .story-row__kicker {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      color: var(--c-gold-600);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .story-row__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h3);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--c-navy-800);
+      letter-spacing: -0.02em;
+    }
+    .story-row__title--sm {
+      font-size: var(--t-h4);
+      font-weight: 600;
+    }
+    .story-row__deck {
+      font-size: var(--t-sm);
+      line-height: 1.55;
+      color: var(--c-ink-3);
+    }
+    .story-row__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .story-row__thumb {
+      width: 96px;
+      height: 72px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--c-paper);
+    }
+    .story-row__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── STORY CARD: vertical card ──────────────────────────────────────────── */
+    .card-grid { display: grid; gap: var(--s5); }
+    .card-grid--2 { grid-template-columns: repeat(1, 1fr); }
+    .card-grid--3 { grid-template-columns: repeat(1, 1fr); }
+    @media (min-width: 640px)  { .card-grid--2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 640px)  { .card-grid--3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .card-grid--3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .story-card {
+      display: grid;
+      gap: var(--s3);
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+      transition: box-shadow 150ms;
+    }
+    .story-card:hover { box-shadow: var(--shadow-sm); }
+    .story-card__img {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--c-navy-900);
+    }
+    .story-card__img img { width: 100%; height: 100%; object-fit: cover; }
+    .story-card__body {
+      display: grid;
+      gap: var(--s2);
+      padding: 0 var(--s4) var(--s4);
+    }
+    .story-card__kicker {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--c-gold-600);
+    }
+    .story-card__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h3);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--c-navy-800);
+      letter-spacing: -0.02em;
+    }
+    .story-card__deck {
+      font-size: var(--t-sm);
+      line-height: 1.55;
+      color: var(--c-ink-3);
+    }
+    .story-card__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s3);
+      padding-top: var(--s3);
+      border-top: var(--col-rule);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+
+    /* ─── RAIL / SIDEBAR ─────────────────────────────────────────────────────── */
+    .rail { display: grid; gap: var(--s5); }
+    .rail-box {
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+    }
+    .rail-box--sticky { position: sticky; top: 88px; }
+    .rail-box__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s4) var(--s5);
+      background: var(--c-navy-800);
+      color: var(--c-gold-400);
+    }
+    .rail-box__head-title {
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .rail-box__head-link {
+      font-size: var(--t-meta);
+      color: var(--c-navy-200);
+      transition: color 120ms;
+    }
+    .rail-box__head-link:hover { color: var(--c-gold-300); }
+    .rail-box__body { padding: var(--s4) var(--s5); }
+    .rail-box__list { display: grid; gap: 0; }
+    .rail-item {
+      display: grid;
+      gap: var(--s2);
+      padding-block: var(--s3);
+      border-bottom: var(--col-rule);
+    }
+    .rail-item:last-child { border-bottom: none; }
+    .rail-item__label {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--c-gold-600);
+    }
+    .rail-item__title {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--c-navy-800);
+    }
+    .rail-item__meta { font-size: var(--t-meta); color: var(--c-muted); }
+
+    /* Market rail */
+    .market-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s3);
+      padding-block: var(--s3);
+      border-bottom: var(--col-rule);
+    }
+    .market-row:last-child { border-bottom: none; }
+    .market-row__name {
+      font-size: var(--t-sm);
+      font-weight: 600;
+      color: var(--c-ink-2);
+    }
+    .market-row__vals { text-align: right; }
+    .market-row__price { font-size: var(--t-sm); font-weight: 700; color: var(--c-ink); }
+    .market-row__change { font-size: var(--t-meta); font-weight: 700; }
+
+    /* Newsletter CTA */
+    .rail-cta {
+      padding: var(--s5);
+      background: linear-gradient(135deg, var(--c-navy-800) 0%, var(--c-navy-600) 100%);
+      border-radius: var(--radius-lg);
+      display: grid;
+      gap: var(--s3);
+      box-shadow: var(--shadow-sm);
+    }
+    .rail-cta__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h3);
+      font-weight: 700;
+      color: var(--c-white);
+      line-height: 1.25;
+    }
+    .rail-cta__title em { font-style: italic; color: var(--c-gold-400); }
+    .rail-cta__text { font-size: var(--t-sm); color: var(--c-navy-100); line-height: 1.5; }
+    .rail-cta__input {
+      width: 100%;
+      min-height: 42px;
+      padding: var(--s2) var(--s3);
+      border: 1px solid var(--c-navy-500);
+      border-radius: var(--radius-sm);
+      background: var(--c-navy-700);
+      color: var(--c-white);
+      font: inherit;
+      font-size: var(--t-sm);
+    }
+    .rail-cta__input::placeholder { color: var(--c-navy-200); }
+
+    /* ─── RENTA CAMPAIGN ─────────────────────────────────────────────────────── */
+    .renta-band {
+      background: linear-gradient(135deg, var(--c-navy-800) 0%, var(--c-navy-600) 100%);
+      padding-block: var(--s10);
+      border-top: 4px solid var(--c-gold-500);
+      border-bottom: 4px solid var(--c-gold-500);
+    }
+    .renta-grid {
+      display: grid;
+      gap: var(--s6);
+      align-items: center;
+    }
+    @media (min-width: 768px) { .renta-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1060px) { .renta-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .renta-intro__eyebrow {
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--c-gold-400);
+      margin-bottom: var(--s3);
+    }
+    .renta-intro__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h1);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--c-white);
+      letter-spacing: -0.03em;
+      margin-bottom: var(--s4);
+    }
+    .renta-intro__title strong { color: var(--c-gold-400); }
+    .renta-intro__text { font-size: var(--t-sm); color: var(--c-navy-100); line-height: 1.65; }
+    .renta-item {
+      display: grid;
+      gap: var(--s3);
+      padding: var(--s5);
+      background: rgb(255 255 255 / 0.06);
+      border: 1px solid rgb(201 162 39 / 0.2);
+      border-radius: var(--radius-lg);
+      transition: background 150ms;
+    }
+    .renta-item:hover { background: rgb(255 255 255 / 0.1); }
+    .renta-item__num {
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      color: var(--c-gold-500);
+      line-height: 1;
+    }
+    .renta-item__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h3);
+      font-weight: 600;
+      color: var(--c-white);
+      line-height: 1.25;
+    }
+    .renta-item__text { font-size: var(--t-sm); color: var(--c-navy-100); line-height: 1.55; }
+
+    /* ─── OPINION STRIP ──────────────────────────────────────────────────────── */
+    .opinion-band {
+      background: var(--c-cream-2);
+      padding-block: var(--s8);
+      border-top: var(--col-rule);
+      border-bottom: var(--col-rule);
+    }
+    .opinion-grid {
+      display: grid;
+      gap: var(--s5);
+    }
+    @media (min-width: 720px)  { .opinion-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .opinion-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .opinion-card {
+      display: grid;
+      gap: var(--s3);
+      padding: var(--s5);
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-left: 4px solid var(--c-gold-500);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+    }
+    .opinion-card__quote {
+      font-family: var(--font-serif);
+      font-size: var(--t-h3);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--c-navy-800);
+    }
+    .opinion-card__author {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      padding-top: var(--s3);
+      border-top: var(--col-rule);
+    }
+    .opinion-card__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--c-navy-900);
+      flex-shrink: 0;
+    }
+    .opinion-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .opinion-card__name {
+      font-size: var(--t-sm);
+      font-weight: 700;
+      color: var(--c-navy-800);
+    }
+    .opinion-card__role {
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .opinion-card__cta {
+      font-size: var(--t-sm);
+      font-weight: 600;
+      color: var(--c-gold-600);
+    }
+
+    /* ─── PODCASTS ───────────────────────────────────────────────────────────── */
+    .podcast-grid {
+      display: grid;
+      gap: var(--s4);
+    }
+    @media (min-width: 640px)  { .podcast-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .podcast-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .podcast-item {
+      display: flex;
+      gap: var(--s3);
+      align-items: flex-start;
+      padding: var(--s4);
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-radius: var(--radius-md);
+      transition: box-shadow 120ms;
+    }
+    .podcast-item:hover { box-shadow: var(--shadow-sm); }
+    .podcast-item__thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-sm);
+      background: var(--c-navy-900);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .podcast-item__thumb svg { opacity: 0.6; }
+    .podcast-item__body { display: grid; gap: var(--s1); }
+    .podcast-item__label {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--c-gold-600);
+    }
+    .podcast-item__title {
+      font-size: var(--t-sm);
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--c-navy-800);
+    }
+    .podcast-item__duration { font-size: var(--t-meta); color: var(--c-muted); }
+
+    /* ─── CCAA SECTION ───────────────────────────────────────────────────────── */
+    .ccaa-grid {
+      display: grid;
+      gap: var(--s3);
+    }
+    @media (min-width: 640px)  { .ccaa-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .ccaa-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .ccaa-item {
+      display: grid;
+      gap: var(--s2);
+      padding: var(--s3) var(--s4);
+      background: var(--c-white);
+      border: var(--col-rule);
+      border-left: 3px solid var(--c-navy-800);
+      border-radius: var(--radius-sm);
+      transition: border-color 120ms;
+    }
+    .ccaa-item:hover { border-left-color: var(--c-gold-500); }
+    .ccaa-item__region {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--c-navy-600);
+    }
+    .ccaa-item__title {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--c-ink);
+    }
+
+    /* ─── LIFESTYLE GRID ─────────────────────────────────────────────────────── */
+    .lifestyle-grid {
+      display: grid;
+      gap: var(--s4);
+    }
+    @media (min-width: 768px)  { .lifestyle-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .lifestyle-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .lifestyle-item {
+      display: grid;
+      gap: var(--s2);
+    }
+    .lifestyle-item__img {
+      aspect-ratio: 3 / 2;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--c-navy-900);
+    }
+    .lifestyle-item__img img { width: 100%; height: 100%; object-fit: cover; }
+    .lifestyle-item__kicker {
+      font-size: var(--t-meta);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--c-gold-600);
+    }
+    .lifestyle-item__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h4);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--c-navy-800);
+    }
+    .lifestyle-item__meta { font-size: var(--t-meta); color: var(--c-muted); }
+
+    /* ─── INFORMALIA ─────────────────────────────────────────────────────────── */
+    .informalia-grid {
+      display: grid;
+      gap: var(--s4);
+    }
+    @media (min-width: 640px)  { .informalia-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .informalia-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* ─── AD ZONES ───────────────────────────────────────────────────────────── */
+    .ad-zone {
+      display: grid;
+      gap: var(--s2);
+      justify-items: center;
+      padding: var(--s5);
+      background: var(--c-cream-2);
+      border: var(--col-rule);
+      border-radius: var(--radius-lg);
+    }
+    .ad-zone__label {
+      font-size: var(--t-label);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      font-weight: 700;
+    }
+    .ad-zone__slot {
+      width: 100%;
+      max-width: 970px;
+      height: 90px;
+      background: var(--c-paper);
+      border: 1px dashed var(--c-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+
+    /* ─── SITE FOOTER ────────────────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--c-navy-900);
+      border-top: 3px solid var(--c-gold-600);
+      padding-block: var(--s10) var(--s8);
+    }
+    .footer-grid {
+      display: grid;
+      gap: var(--s8);
+    }
+    @media (min-width: 640px)  { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1060px) { .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+
+    .footer-brand__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--c-white);
+      margin-bottom: var(--s3);
+    }
+    .footer-brand__logo em { font-style: normal; color: var(--c-gold-500); }
+    .footer-brand__text { font-size: var(--t-sm); color: var(--c-navy-200); line-height: 1.65; }
+    .footer-col__title {
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-gold-500);
+      margin-bottom: var(--s4);
+    }
+    .footer-col__list { display: grid; gap: var(--s2); }
+    .footer-col__list a {
+      font-size: var(--t-sm);
+      color: var(--c-navy-200);
+      transition: color 120ms;
+    }
+    .footer-col__list a:hover { color: var(--c-gold-400); }
+    .footer-bottom {
+      margin-top: var(--s8);
+      padding-top: var(--s5);
+      border-top: 1px solid var(--c-navy-700);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s4);
+      justify-content: space-between;
+      font-size: var(--t-meta);
+      color: var(--c-navy-200);
+    }
+
+    /* ─── DIVIDER UTILITIES ──────────────────────────────────────────────────── */
+    .section-gap { padding-block: var(--s8); }
+    .section-gap--sm { padding-block: var(--s6); }
+    hr.rule { border: none; border-top: var(--col-rule); margin-block: var(--s5); }
+
+    /* ─── IMAGE PLACEHOLDER ──────────────────────────────────────────────────── */
+    .img-ph {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: var(--c-navy-700);
+      font-size: var(--t-meta);
+      color: var(--c-navy-200);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ─── RESPONSIVE UTILITIES ───────────────────────────────────────────────── */
+    @media (max-width: 767px) { .hide-mobile { display: none; } }
+    @media (min-width: 768px) { .show-mobile-only { display: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════
+       MARKET TICKER
+  ════════════════════════════════════════════════════════ -->
+  <div class="ticker-band" role="region" aria-label="Cotizaciones de mercado">
+    <div class="ticker-inner">
+      <span class="ticker-label" aria-hidden="true">Mercados</span>
+
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">IBEX 35</span>
+        <span class="ticker-item__val">11.743,20</span>
+        <span class="ticker-item__chg down" aria-label="bajada">▼ −2,41%</span>
+      </a>
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">EUR/USD</span>
+        <span class="ticker-item__val">1,1355</span>
+        <span class="ticker-item__chg up" aria-label="subida">▲ +0,88%</span>
+      </a>
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">Brent</span>
+        <span class="ticker-item__val">64,82</span>
+        <span class="ticker-item__chg down">▼ −3,14%</span>
+      </a>
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">Oro</span>
+        <span class="ticker-item__val">3.244,70</span>
+        <span class="ticker-item__chg up">▲ +2,07%</span>
+      </a>
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">Bitcoin</span>
+        <span class="ticker-item__val">82.361 $</span>
+        <span class="ticker-item__chg down">▼ −1,98%</span>
+      </a>
+      <a href="#mercados" class="ticker-item">
+        <span class="ticker-item__name">S&amp;P 500</span>
+        <span class="ticker-item__val">5.268,40</span>
+        <span class="ticker-item__chg down">▼ −3,46%</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SITE HEADER
+  ════════════════════════════════════════════════════════ -->
+  <header class="site-header" role="banner">
+    <div class="header-main">
+      <!-- Nav left -->
+      <nav class="header-nav" aria-label="Secciones principales">
+        <ul>
+          <li><a href="#mercados" aria-current="page">Mercados</a></li>
+          <li><a href="#economia">Economía</a></li>
+          <li><a href="#empresas">Empresas</a></li>
+          <li><a href="#opinion">Opinión</a></li>
+          <li><a href="#tecnologia">Tecnología</a></li>
+        </ul>
+      </nav>
+
+      <!-- Brand center -->
+      <a href="/" class="header-brand" aria-label="El Economista — Inicio">
+        <div class="header-brand__logo">El <em>Economista</em></div>
+        <div class="header-brand__sub">Diario económico</div>
+      </a>
+
+      <!-- Actions right -->
+      <div class="header-actions">
+        <button class="btn btn--ghost-light hide-mobile" type="button">Iniciar sesión</button>
+        <a href="#suscripcion" class="btn btn--gold">Suscribirse</a>
+        <button class="btn--icon" type="button" aria-label="Buscar">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M14 14L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="btn--icon show-mobile-only" type="button" aria-label="Menú">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Edition bar -->
+  <div class="edition-bar" role="complementary" aria-label="Información de edición">
+    <div class="edition-bar-inner">
+      <div class="edition-bar__date">
+        <strong>Sábado, 11 de abril de 2026</strong> · Edición nacional
+      </div>
+      <nav class="edition-bar__sections" aria-label="Más secciones">
+        <a href="#renta">Renta 2025</a>
+        <a href="#motor">Motor</a>
+        <a href="#gastro">Gastronomía</a>
+        <a href="#ccaa">Comunidades</a>
+        <a href="#informalia">Informalia</a>
+      </nav>
+      <div class="edition-bar__edition">Número 14.892</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       MAIN PAGE
+  ════════════════════════════════════════════════════════ -->
+  <main id="main-content" role="main">
+
+    <!-- ── AD: Leaderboard ── -->
+    <div class="shell" style="padding-block: var(--s4);">
+      <div class="ad-zone hide-mobile">
+        <span class="ad-zone__label">Publicidad</span>
+        <div class="ad-zone__slot">728 × 90 Leaderboard</div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         HERO SECTION — Portada principal
+    ════════════════════════════════════════════════════ -->
+    <section class="hero-band" aria-label="Noticias destacadas">
+      <div class="shell">
+        <div class="hero-grid">
+
+          <!-- Lead story -->
+          <article class="hero-lead">
+            <div class="hero-lead__kicker">
+              <span class="tag tag--live">En portada</span>
+              <span class="tag tag--accent">Geopolítica</span>
+            </div>
+
+            <h1 class="hero-lead__headline">
+              El conflicto en <em>Oriente Próximo</em> presiona el IPC y agita los mercados globales
+            </h1>
+
+            <p class="hero-lead__deck">
+              La escalada bélica en la región eleva el precio del crudo y dispara las expectativas
+              de inflación en la eurozona, poniendo a prueba la hoja de ruta del BCE para 2026.
+              Los analistas advierten de una corrección prolongada en los activos de riesgo.
+            </p>
+
+            <figure class="hero-lead__img" aria-hidden="true">
+              <div class="img-ph">Imagen editorial principal</div>
+            </figure>
+
+            <footer class="hero-lead__byline">
+              <span>Por <strong>Redacción Economía</strong></span>
+              <span>·</span>
+              <time datetime="2026-04-11">11 abr 2026</time>
+              <span>·</span>
+              <span>8 min de lectura</span>
+            </footer>
+          </article>
+
+          <!-- Rail: secondary stories -->
+          <aside aria-label="Otras noticias destacadas">
+            <div class="hero-rail">
+              <div class="hero-rail__head">Destacados del día</div>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Europa · Política</span>
+                <h2 class="hero-rail__story-title">Trump amplía el intervencionismo sobre Europa y endurece las condiciones comerciales</h2>
+                <span class="hero-rail__story-meta">Hace 1h · Internacional</span>
+              </a>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Renta 2025</span>
+                <h2 class="hero-rail__story-title">Guía completa de la declaración: todo lo que necesitas saber este año fiscal</h2>
+                <span class="hero-rail__story-meta">Hace 2h · Fiscal</span>
+              </a>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Laboral</span>
+                <h2 class="hero-rail__story-title">Oleada de huelgas sacude el transporte y los servicios esenciales antes del verano</h2>
+                <span class="hero-rail__story-meta">Hace 3h · España</span>
+              </a>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Energía</span>
+                <h2 class="hero-rail__story-title">El sector gasista acelera la transición ante la presión regulatoria y el nuevo marco europeo</h2>
+                <span class="hero-rail__story-meta">Hace 4h · Energía</span>
+              </a>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Grifols · Sanidad</span>
+                <h2 class="hero-rail__story-title">Grifols aplica inteligencia artificial al diagnóstico del párkinson en nueva alianza investigadora</h2>
+                <span class="hero-rail__story-meta">Hace 5h · Empresa</span>
+              </a>
+
+              <a href="#" class="hero-rail__story">
+                <span class="hero-rail__story-kicker">Banca</span>
+                <h2 class="hero-rail__story-title">Los bancos intensifican los incentivos sobre nóminas para ganar cuota de cliente en 2026</h2>
+                <span class="hero-rail__story-meta">Hace 6h · Finanzas</span>
+              </a>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         DESTACAMOS strip
+    ════════════════════════════════════════════════════ -->
+    <section class="strip-band" aria-label="Destacamos">
+      <div class="shell">
+        <div class="sec-rule" style="margin-bottom: var(--s4);">
+          <span class="sec-rule__label">Destacamos</span>
+        </div>
+        <div class="strip-grid">
+          <a href="#" class="strip-item">
+            <span class="tag tag--muted">Espacio</span>
+            <h3 class="strip-item__title">La misión Artemis II regresa de la Luna con datos inéditos sobre colonización humana</h3>
+            <span class="strip-item__meta">NASA · Internacional</span>
+          </a>
+          <a href="#" class="strip-item">
+            <span class="tag tag--muted">Irán</span>
+            <h3 class="strip-item__title">Accidente de un Peugeot iraní desata tensión diplomática con París en plena crisis</h3>
+            <span class="strip-item__meta">Oriente Próximo</span>
+          </a>
+          <a href="#" class="strip-item">
+            <span class="tag tag--muted">España</span>
+            <h3 class="strip-item__title">Sánchez llega a la cumbre de la UE como Mario Kart: sin frenos y acelerando</h3>
+            <span class="strip-item__meta">Análisis · Política</span>
+          </a>
+          <a href="#" class="strip-item">
+            <span class="tag tag--muted">EEUU · Defensa</span>
+            <h3 class="strip-item__title">Estados Unidos recupera el servicio militar obligatorio en un debate que divide al Congreso</h3>
+            <span class="strip-item__meta">Washington</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         CONTENT + RAIL
+    ════════════════════════════════════════════════════ -->
+    <div class="shell">
+      <div class="content-with-rail">
+
+        <!-- ── MAIN CONTENT ── -->
+        <div class="content-main">
+
+          <!-- ── AD mid ── -->
+          <div class="ad-zone hide-mobile" style="margin-top: var(--s2);">
+            <span class="ad-zone__label">Publicidad</span>
+            <div class="ad-zone__slot">970 × 90 Billboard</div>
+          </div>
+
+          <!-- ═══ BOLSAS Y MERCADOS ═══ -->
+          <section id="mercados" aria-labelledby="sec-mercados">
+            <div class="sec-rule">
+              <h2 class="sec-rule__label" id="sec-mercados">Bolsas y Mercados</h2>
+              <span class="sec-rule__badge">Hoy</span>
+              <a href="#" class="sec-rule__more">Ver más →</a>
+            </div>
+
+            <div class="mercados-grid">
+              <!-- Story 1: Oro -->
+              <article>
+                <a href="#" class="story-row" style="display: grid; gap: var(--s2); padding-bottom: var(--s5); border-bottom: var(--col-rule);">
+                  <span class="story-row__kicker">Materias primas</span>
+                  <h3 class="story-row__title">El oro alcanza un nuevo hito histórico superando los 3.240 dólares por onza</h3>
+                  <p class="story-row__deck">La incertidumbre geopolítica y la devaluación del dólar catapultan al metal precioso
+                    a máximos nunca vistos. Los fondos de cobertura aumentan posiciones.</p>
+                  <div class="story-row__meta">
+                    <time datetime="2026-04-11">11 abr</time>
+                    <span>·</span>
+                    <span>5 min</span>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Story 2: Software -->
+              <article>
+                <a href="#" class="story-row" style="display: grid; gap: var(--s2); padding-bottom: var(--s5); border-bottom: var(--col-rule);">
+                  <span class="story-row__kicker">Wall Street · Fed</span>
+                  <h3 class="story-row__title">El sector software entra en crisis entre las señales de la Fed y la Casa Blanca</h3>
+                  <p class="story-row__deck">La combinación de tipos restrictivos y políticas arancelarias impacta en los múltiplos
+                    de valoración de las grandes tecnológicas. Nasdaq cede un 4,2% en la semana.</p>
+                  <div class="story-row__meta">
+                    <time datetime="2026-04-11">11 abr</time>
+                    <span>·</span>
+                    <span>4 min</span>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Story 3: Europa > Wall Street -->
+              <article>
+                <a href="#" class="story-row" style="display: grid; gap: var(--s2);">
+                  <span class="story-row__kicker">Renta variable</span>
+                  <h3 class="story-row__title">Europa supera a Wall Street en rentabilidad por primera vez desde 2018</h3>
+                  <p class="story-row__deck">El Eurostoxx 50 encadena su tercera semana de superación relativa frente al S&amp;P 500,
+                    impulsado por la banca y la industria defensiva.</p>
+                  <div class="story-row__meta">
+                    <time datetime="2026-04-11">11 abr</time>
+                    <span>·</span>
+                    <span>3 min</span>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Story 4: Petróleo -->
+              <article>
+                <a href="#" class="story-row" style="display: grid; gap: var(--s2);">
+                  <span class="story-row__kicker">Energía · Petróleo</span>
+                  <h3 class="story-row__title">Trump ordena liberar reservas estratégicas de petróleo para frenar la subida del crudo</h3>
+                  <p class="story-row__deck">El Brent cae un 3% tras el anuncio desde Washington. Los productores de la OPEP+
+                    estudian una respuesta coordinada en su próxima reunión.</p>
+                  <div class="story-row__meta">
+                    <time datetime="2026-04-11">11 abr</time>
+                    <span>·</span>
+                    <span>4 min</span>
+                  </div>
+                </a>
+              </article>
+            </div>
+          </section>
+
+          <!-- ═══ ECONOMÍA ═══ -->
+          <section id="economia" aria-labelledby="sec-economia">
+            <div class="sec-rule">
+              <h2 class="sec-rule__label" id="sec-economia">Economía</h2>
+              <a href="#" class="sec-rule__more">Ver más →</a>
+            </div>
+
+            <div class="story-list">
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">FMI · Tipos</span>
+                  <h3 class="story-row__title story-row__title--sm">El FMI advierte de que los tipos altos prolongados aumentan el riesgo de recesión global en 2027</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">China</span>
+                  <h3 class="story-row__title story-row__title--sm">China acelera la deflación: los precios industriales caen al ritmo más rápido en cuatro años</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">EEUU · Defensa</span>
+                  <h3 class="story-row__title story-row__title--sm">El gasto en servicio militar voluntario en EEUU se dispara mientras debate la obligatoriedad</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb hide-mobile"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">España · Fiscal</span>
+                  <h3 class="story-row__title story-row__title--sm">Hacienda consolida el descuento sobre el gasóleo agrícola ante la presión del sector primario</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb hide-mobile"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Turismo</span>
+                  <h3 class="story-row__title story-row__title--sm">España bate su récord de visitantes internacionales con 15,4 millones en el primer trimestre</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb hide-mobile"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row story-row--nothumbs">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Justicia</span>
+                  <h3 class="story-row__title story-row__title--sm">El juez condena a García Ortiz por filtración de datos del novio de Ayuso</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+              </a>
+            </div>
+          </section>
+
+          <!-- ═══ EMPRESAS Y FINANZAS ═══ -->
+          <section id="empresas" aria-labelledby="sec-empresas">
+            <div class="sec-rule">
+              <h2 class="sec-rule__label" id="sec-empresas">Empresas &amp; Finanzas</h2>
+              <a href="#" class="sec-rule__more">Ver más →</a>
+            </div>
+
+            <div class="card-grid card-grid--3">
+              <article class="story-card">
+                <div class="story-card__img"><div class="img-ph">Refinerías</div></div>
+                <div class="story-card__body">
+                  <span class="story-card__kicker">Energía</span>
+                  <h3 class="story-card__title">Las refinerías españolas aceleran la conversión a biocombustibles para cumplir los objetivos de 2030</h3>
+                  <p class="story-card__deck">Repsol y Cepsa lideran el proceso de adaptación ante las nuevas exigencias de la directiva europea de energías renovables.</p>
+                  <div class="story-card__foot">
+                    <time class="atom-txt--muted" style="font-size:var(--t-meta)">11 abr 2026</time>
+                    <span style="font-size:var(--t-meta); color:var(--c-muted)">4 min</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="story-card">
+                <div class="story-card__img"><div class="img-ph">EDP Japón</div></div>
+                <div class="story-card__body">
+                  <span class="story-card__kicker">Utilities</span>
+                  <h3 class="story-card__title">EDP da el salto a Japón con la compra de un parque eólico marino valorado en 800 millones</h3>
+                  <p class="story-card__deck">La eléctrica portuguesa de capital español entra en el mercado asiático con una alianza con Mitsubishi Power.</p>
+                  <div class="story-card__foot">
+                    <time class="atom-txt--muted" style="font-size:var(--t-meta)">11 abr 2026</time>
+                    <span style="font-size:var(--t-meta); color:var(--c-muted)">3 min</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="story-card">
+                <div class="story-card__img"><div class="img-ph">Santander TSB</div></div>
+                <div class="story-card__body">
+                  <span class="story-card__kicker">Banca</span>
+                  <h3 class="story-card__title">Santander eleva las sinergias por TSB hasta 600M€ y adelanta el calendario de integración</h3>
+                  <p class="story-card__deck">El grupo presidido por Ana Botín acelera el plan de fusión con el banco británico y anticipa un beneficio adicional antes de 2028.</p>
+                  <div class="story-card__foot">
+                    <time class="atom-txt--muted" style="font-size:var(--t-meta)">11 abr 2026</time>
+                    <span style="font-size:var(--t-meta); color:var(--c-muted)">5 min</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- ═══ TECNOLOGÍA ═══ -->
+          <section id="tecnologia" aria-labelledby="sec-tecnologia">
+            <div class="sec-rule">
+              <h2 class="sec-rule__label" id="sec-tecnologia">Tecnología</h2>
+              <a href="#" class="sec-rule__more">Ver más →</a>
+            </div>
+
+            <div class="story-list">
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Innovación</span>
+                  <h3 class="story-row__title story-row__title--sm">El océano, pavimentado con baldosas amarillas: el proyecto que convierte el fondo marino en red energética</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Ciberseguridad</span>
+                  <h3 class="story-row__title story-row__title--sm">Alerta roja: nueva estafa bancaria por inteligencia artificial que suplanta la voz del director</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Japón · Espacio</span>
+                  <h3 class="story-row__title story-row__title--sm">Japón lanza con éxito el primer anillo solar lunar, un hito en la carrera por la energía espacial</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+                <div class="story-row__thumb"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              </a>
+              <a href="#" class="story-row story-row--nothumbs">
+                <div class="story-row__body">
+                  <span class="story-row__kicker">Hogar inteligente</span>
+                  <h3 class="story-row__title story-row__title--sm">El truco definitivo: los electrodomésticos que nunca debes dejar enchufados por la noche</h3>
+                  <div class="story-row__meta"><time>11 abr</time></div>
+                </div>
+              </a>
+            </div>
+          </section>
+
+          <!-- ═══ PODCASTS ═══ -->
+          <section id="podcasts" aria-labelledby="sec-podcasts">
+            <div class="sec-rule">
+              <h2 class="sec-rule__label" id="sec-podcasts">Podcasts</h2>
+              <a href="#" class="sec-rule__more">Ver todos →</a>
+            </div>
+            <div class="podcast-grid">
+              <a href="#" class="podcast-item">
+                <div class="podcast-item__thumb">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                    <circle cx="14" cy="14" r="13" stroke="#c9a227" stroke-width="1.5"/>
+                    <path d="M11 9L20 14L11 19V9Z" fill="#c9a227"/>
+                  </svg>
+                </div>
+                <div class="podcast-item__body">
+                  <span class="podcast-item__label">Cultura</span>
+                  <p class="podcast-item__title">El disco de vinilo: la resurrección de un formato que se niega a morir</p>
+                  <span class="podcast-item__duration">42 min</span>
+                </div>
+              </a>
+              <a href="#" class="podcast-item">
+                <div class="podcast-item__thumb">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                    <circle cx="14" cy="14" r="13" stroke="#c9a227" stroke-width="1.5"/>
+                    <path d="M11 9L20 14L11 19V9Z" fill="#c9a227"/>
+                  </svg>
+                </div>
+                <div class="podcast-item__body">
+                  <span class="podcast-item__label">Inversión</span>
+                  <p class="podcast-item__title">Trump y Wall Street: ¿ha llegado la zona de compra en renta variable americana?</p>
+                  <span class="podcast-item__duration">38 min</span>
+                </div>
+              </a>
+              <a href="#" class="podcast-item">
+                <div class="podcast-item__thumb">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                    <circle cx="14" cy="14" r="13" stroke="#c9a227" stroke-width="1.5"/>
+                    <path d="M11 9L20 14L11 19V9Z" fill="#c9a227"/>
+                  </svg>
+                </div>
+                <div class="podcast-item__body">
+                  <span class="podcast-item__label">Macro</span>
+                  <p class="podcast-item__title">Inflación de guerra: el conflicto en Irán y el coste real para el bolsillo europeo</p>
+                  <span class="podcast-item__duration">51 min</span>
+                </div>
+              </a>
+              <a href="#" class="podcast-item">
+                <div class="podcast-item__thumb">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                    <circle cx="14" cy="14" r="13" stroke="#c9a227" stroke-width="1.5"/>
+                    <path d="M11 9L20 14L11 19V9Z" fill="#c9a227"/>
+                  </svg>
+                </div>
+                <div class="podcast-item__body">
+                  <span class="podcast-item__label">Historia</span>
+                  <p class="podcast-item__title">El código de barras: 50 años del invento que transformó el comercio mundial</p>
+                  <span class="podcast-item__duration">29 min</span>
+                </div>
+              </a>
+            </div>
+          </section>
+
+        </div><!-- /content-main -->
+
+        <!-- ── RAIL / SIDEBAR ── -->
+        <aside class="rail" aria-label="Panel lateral">
+
+          <!-- Markets panel -->
+          <div class="rail-box rail-box--sticky">
+            <div class="rail-box__head">
+              <span class="rail-box__head-title">Mercados ahora</span>
+              <a href="#mercados" class="rail-box__head-link">Ver todos</a>
+            </div>
+            <div class="rail-box__body">
+              <div class="market-row">
+                <span class="market-row__name">IBEX 35</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">11.743,20</div>
+                  <div class="market-row__change down">▼ −2,41%</div>
+                </div>
+              </div>
+              <div class="market-row">
+                <span class="market-row__name">EUR/USD</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">1,1355</div>
+                  <div class="market-row__change up">▲ +0,88%</div>
+                </div>
+              </div>
+              <div class="market-row">
+                <span class="market-row__name">Brent</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">64,82 $</div>
+                  <div class="market-row__change down">▼ −3,14%</div>
+                </div>
+              </div>
+              <div class="market-row">
+                <span class="market-row__name">Oro</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">3.244,70 $</div>
+                  <div class="market-row__change up">▲ +2,07%</div>
+                </div>
+              </div>
+              <div class="market-row">
+                <span class="market-row__name">Bitcoin</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">82.361 $</div>
+                  <div class="market-row__change down">▼ −1,98%</div>
+                </div>
+              </div>
+              <div class="market-row">
+                <span class="market-row__name">S&amp;P 500</span>
+                <div class="market-row__vals">
+                  <div class="market-row__price">5.268,40</div>
+                  <div class="market-row__change down">▼ −3,46%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- More stories rail -->
+          <div class="rail-box">
+            <div class="rail-box__head">
+              <span class="rail-box__head-title">También te interesa</span>
+            </div>
+            <div class="rail-box__body">
+              <div class="rail-box__list">
+                <a href="#" class="rail-item">
+                  <span class="rail-item__label">Aeropuerto Donetsk</span>
+                  <h4 class="rail-item__title">El aeropuerto de Donetsk reabre sus puertas en una señal de normalización del conflicto</h4>
+                  <span class="rail-item__meta">Hace 7h · Ucrania</span>
+                </a>
+                <a href="#" class="rail-item">
+                  <span class="rail-item__label">Artículos Fin de semana</span>
+                  <h4 class="rail-item__title">Kill Bill en versión extendida: las 4 horas de Tarantino que no llegaste a ver</h4>
+                  <span class="rail-item__meta">Cine · Cultura</span>
+                </a>
+                <a href="#" class="rail-item">
+                  <span class="rail-item__label">Evasión</span>
+                  <h4 class="rail-item__title">Incontrolable: un viaje a la vida con Tourette desde el humor y la dignidad</h4>
+                  <span class="rail-item__meta">Series · Crítica</span>
+                </a>
+                <a href="#" class="rail-item">
+                  <span class="rail-item__label">HBO</span>
+                  <h4 class="rail-item__title">Euphoria T3 ya tiene fecha: todo lo que sabemos del regreso de Rue y Jules</h4>
+                  <span class="rail-item__meta">Series · Entertainment</span>
+                </a>
+                <a href="#" class="rail-item">
+                  <span class="rail-item__label">Literatura</span>
+                  <h4 class="rail-item__title">Los Testamentos de Margaret Atwood: la secuela de El Cuento de la Criada llega al teatro</h4>
+                  <span class="rail-item__meta">Libros · Cultura</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Newsletter CTA -->
+          <div class="rail-cta">
+            <h3 class="rail-cta__title">Briefing matinal <em>El Economista</em></h3>
+            <p class="rail-cta__text">Cada mañana, las cinco claves del día en economía, mercados y empresa. Sin ruido.</p>
+            <form>
+              <input class="rail-cta__input" type="email" placeholder="tucorreo@email.com" aria-label="Correo electrónico para newsletter">
+              <button class="btn btn--gold" type="submit" style="width:100%; margin-top: var(--s2);">Suscribirme gratis</button>
+            </form>
+          </div>
+
+        </aside>
+
+      </div><!-- /content-with-rail -->
+    </div><!-- /shell -->
+
+    <!-- ════════════════════════════════════════════════════
+         DECLARACIÓN DE LA RENTA 2025
+    ════════════════════════════════════════════════════ -->
+    <section id="renta" class="renta-band" aria-labelledby="sec-renta">
+      <div class="shell">
+        <div class="renta-grid">
+          <div class="renta-intro">
+            <div class="renta-intro__eyebrow">Especial Fiscal</div>
+            <h2 class="renta-intro__title">Declaración de la<br><strong>Renta 2025</strong></h2>
+            <p class="renta-intro__text">
+              Todo lo que necesitas saber para presentar tu declaración correctamente este año.
+              Novedades, deducciones, plazos y calculadoras interactivas con el asesoramiento
+              de los mejores expertos fiscales del país.
+            </p>
+            <a href="#" class="btn btn--gold" style="margin-top: var(--s5); display: inline-flex;">Ver guía completa →</a>
+          </div>
+
+          <a href="#" class="renta-item">
+            <div class="renta-item__num">01</div>
+            <h3 class="renta-item__title">¿Quién está obligado a declarar este año?</h3>
+            <p class="renta-item__text">Los umbrales de renta y los supuestos de exención que debes conocer antes del 2 de abril.</p>
+          </a>
+
+          <a href="#" class="renta-item">
+            <div class="renta-item__num">02</div>
+            <h3 class="renta-item__title">Las 12 deducciones más rentables que casi nadie aplica</h3>
+            <p class="renta-item__text">Eficiencia energética, planes de pensiones, inversión en startups y mucho más.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         OPINIÓN
+    ════════════════════════════════════════════════════ -->
+    <section id="opinion" class="opinion-band" aria-labelledby="sec-opinion">
+      <div class="shell">
+        <div class="sec-rule" style="border-top-color: var(--c-navy-800);">
+          <h2 class="sec-rule__label" id="sec-opinion">Opinión</h2>
+          <a href="#" class="sec-rule__more">Ver todas las columnas →</a>
+        </div>
+        <div class="opinion-grid">
+          <article class="opinion-card">
+            <blockquote class="opinion-card__quote">
+              "La economía de guerra no es una metáfora. Es la nueva normalidad fiscal que los gobiernos europeos deben asumir ya."
+            </blockquote>
+            <div class="opinion-card__author">
+              <div class="opinion-card__avatar"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              <div>
+                <div class="opinion-card__name">Antonio Ayora</div>
+                <div class="opinion-card__role">Director de El Economista</div>
+              </div>
+            </div>
+            <a href="#" class="opinion-card__cta">Leer columna →</a>
+          </article>
+
+          <article class="opinion-card">
+            <blockquote class="opinion-card__quote">
+              "El modelo fiscal español necesita una cirugía mayor, no más parches. Y el momento es ahora, con los PGE sobre la mesa."
+            </blockquote>
+            <div class="opinion-card__author">
+              <div class="opinion-card__avatar"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              <div>
+                <div class="opinion-card__name">Francisco de la Torre</div>
+                <div class="opinion-card__role">Inspector de Hacienda</div>
+              </div>
+            </div>
+            <a href="#" class="opinion-card__cta">Leer columna →</a>
+          </article>
+
+          <article class="opinion-card">
+            <blockquote class="opinion-card__quote">
+              "Los aranceles de Trump son una apuesta de alto riesgo: pueden funcionar a corto plazo, pero el coste estructural será enorme."
+            </blockquote>
+            <div class="opinion-card__author">
+              <div class="opinion-card__avatar"><div class="img-ph" style="font-size:0.5rem;">Foto</div></div>
+              <div>
+                <div class="opinion-card__name">Nathaniel Karp</div>
+                <div class="opinion-card__role">Economista jefe, BBVA Research</div>
+              </div>
+            </div>
+            <a href="#" class="opinion-card__cta">Leer columna →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         MOTOR + GASTRONOMÍA / VIAJES (lifestyle band)
+    ════════════════════════════════════════════════════ -->
+    <div class="shell section-gap">
+
+      <!-- Motor -->
+      <section id="motor" aria-labelledby="sec-motor">
+        <div class="sec-rule">
+          <h2 class="sec-rule__label" id="sec-motor">Motor</h2>
+          <a href="#" class="sec-rule__more">Ver más →</a>
+        </div>
+        <div class="lifestyle-grid">
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">True VW</div></div>
+            <span class="lifestyle-item__kicker">Volkswagen</span>
+            <h3 class="lifestyle-item__title">True Volkswagen: la apuesta de la marca para recuperar la esencia del Escarabajo en eléctrico</h3>
+            <span class="lifestyle-item__meta">Prueba · Eléctrico</span>
+          </a>
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">BMW X5</div></div>
+            <span class="lifestyle-item__kicker">BMW</span>
+            <h3 class="lifestyle-item__title">El BMW X5 de hidrógeno: conducimos el SUV que podría cambiar las reglas del lujo sostenible</h3>
+            <span class="lifestyle-item__meta">Prueba · Hidrógeno</span>
+          </a>
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">Autobús H2</div></div>
+            <span class="lifestyle-item__kicker">Transporte público</span>
+            <h3 class="lifestyle-item__title">Los autobuses de hidrógeno conquistan Europa: Madrid y Barcelona, entre las primeras ciudades</h3>
+            <span class="lifestyle-item__meta">Movilidad urbana</span>
+          </a>
+        </div>
+      </section>
+
+      <hr class="rule" style="margin-block: var(--s8);" aria-hidden="true">
+
+      <!-- Gastronomía y Viajes -->
+      <section id="gastro" aria-labelledby="sec-gastro">
+        <div class="sec-rule">
+          <h2 class="sec-rule__label" id="sec-gastro">Gastronomía &amp; Viajes</h2>
+          <a href="#" class="sec-rule__more">Ver más →</a>
+        </div>
+        <div class="lifestyle-grid">
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">Filete</div></div>
+            <span class="lifestyle-item__kicker">Gastronomía</span>
+            <h3 class="lifestyle-item__title">El secreto que nadie te cuenta: por qué debes voltear el filete solo una vez</h3>
+            <span class="lifestyle-item__meta">Cocina · Técnica</span>
+          </a>
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">Gabrieles</div></div>
+            <span class="lifestyle-item__kicker">Restaurantes</span>
+            <h3 class="lifestyle-item__title">Taberna Los Gabrieles: historia, solera y una cocina que sigue fiel a sus orígenes</h3>
+            <span class="lifestyle-item__meta">Madrid · Reseña</span>
+          </a>
+          <a href="#" class="lifestyle-item">
+            <div class="lifestyle-item__img"><div class="img-ph">Viajes España</div></div>
+            <span class="lifestyle-item__kicker">Viajes</span>
+            <h3 class="lifestyle-item__title">España como la nueva Grecia: los destinos del litoral que arrasan entre viajeros europeos</h3>
+            <span class="lifestyle-item__meta">Turismo · Tendencias</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         COMUNIDADES AUTÓNOMAS
+    ════════════════════════════════════════════════════ -->
+    <section id="ccaa" aria-labelledby="sec-ccaa" style="background: var(--c-cream-2); border-top: var(--col-rule); border-bottom: var(--col-rule); padding-block: var(--s8);">
+      <div class="shell">
+        <div class="sec-rule">
+          <h2 class="sec-rule__label" id="sec-ccaa">Comunidades Autónomas</h2>
+          <a href="#" class="sec-rule__more">Ver más →</a>
+        </div>
+        <div class="ccaa-grid">
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Cataluña</span>
+            <h3 class="ccaa-item__title">400 empresas catalanas se alían para defender la inversión en defensa ante la nueva normativa europea</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">C. Valenciana</span>
+            <h3 class="ccaa-item__title">XCharge despliega 200 cargadores ultrarrápidos en la Comunitat Valenciana este año</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Andalucía</span>
+            <h3 class="ccaa-item__title">Cobas AM y Atalaya Mining amplían su alianza extractiva con nuevas licencias en Huelva</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">País Vasco</span>
+            <h3 class="ccaa-item__title">El TAV llega a Navarra: el Gobierno vasco y foral firman el acuerdo histórico de alta velocidad</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Castilla y León</span>
+            <h3 class="ccaa-item__title">La meseta impulsa el agro-tech: tres startups de Valladolid lideran la agricultura de precisión</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Extremadura</span>
+            <h3 class="ccaa-item__title">Extremadura atrae el mayor parque solar flotante de Europa con 1.400 MW de potencia</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Galicia</span>
+            <h3 class="ccaa-item__title">El puerto de Vigo lidera la transformación logística del noroeste peninsular</h3>
+          </a>
+          <a href="#" class="ccaa-item">
+            <span class="ccaa-item__region">Aragón</span>
+            <h3 class="ccaa-item__title">Aragón consolida su posición como capital de los centros de datos en España con 12 nuevos proyectos</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         INFORMALIA
+    ════════════════════════════════════════════════════ -->
+    <div class="shell section-gap">
+      <section id="informalia" aria-labelledby="sec-informalia">
+        <div class="sec-rule">
+          <h2 class="sec-rule__label" id="sec-informalia">Informalia</h2>
+          <a href="#" class="sec-rule__more">Ver más →</a>
+        </div>
+        <div class="informalia-grid">
+          <a href="#" class="story-card" style="box-shadow: none; border-color: var(--c-border-2);">
+            <div class="story-card__img"><div class="img-ph">Sanxenxo</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker">Realeza</span>
+              <h3 class="story-card__title">Juan Carlos I vuelve a Sanxenxo: el rey emérito prepara su verano en Galicia</h3>
+              <div class="story-card__foot">
+                <time style="font-size:var(--t-meta);color:var(--c-muted)">11 abr</time>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="story-card" style="box-shadow: none; border-color: var(--c-border-2);">
+            <div class="story-card__img"><div class="img-ph">D&amp;G</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker">Moda</span>
+              <h3 class="story-card__title">Dolce &amp; Gabbana, en crisis: los fundadores anuncian su separación empresarial tras 40 años</h3>
+              <div class="story-card__foot">
+                <time style="font-size:var(--t-meta);color:var(--c-muted)">11 abr</time>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="story-card" style="box-shadow: none; border-color: var(--c-border-2);">
+            <div class="story-card__img"><div class="img-ph">Jessica Alba</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker">Belleza</span>
+              <h3 class="story-card__title">La crema lunar de Jessica Alba: el cosmético que promete revolucionar el antienvejecimiento</h3>
+              <div class="story-card__foot">
+                <time style="font-size:var(--t-meta);color:var(--c-muted)">11 abr</time>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="story-card" style="box-shadow: none; border-color: var(--c-border-2);">
+            <div class="story-card__img"><div class="img-ph">Kiko Rivera</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker">Corazón</span>
+              <h3 class="story-card__title">Kiko Rivera frente a Rossi: el pulso televisivo que mantendrá en vilo a la audiencia este fin de semana</h3>
+              <div class="story-card__foot">
+                <time style="font-size:var(--t-meta);color:var(--c-muted)">11 abr</time>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         COMPRAS DESTACADAS
+    ════════════════════════════════════════════════════ -->
+    <section style="background: var(--c-navy-900); padding-block: var(--s8);" aria-labelledby="sec-compras">
+      <div class="shell">
+        <div class="sec-rule" style="border-top-color: var(--c-gold-500); margin-bottom: var(--s5);">
+          <h2 class="sec-rule__label" id="sec-compras" style="color: var(--c-gold-400);">Compras de la semana</h2>
+          <a href="#" class="sec-rule__more" style="color: var(--c-navy-200);">Ver más →</a>
+        </div>
+        <div class="card-grid card-grid--3">
+          <article class="story-card" style="background: var(--c-navy-700); border-color: var(--c-navy-600);">
+            <div class="story-card__img" style="background: var(--c-navy-900);"><div class="img-ph">The Boys</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker" style="color: var(--c-gold-400);">Series</span>
+              <h3 class="story-card__title" style="color: var(--c-white);">The Boys T5: dónde ver el final de la serie y qué esperar del desenlace definitivo</h3>
+              <div class="story-card__foot" style="border-top-color: var(--c-navy-600);">
+                <span style="font-size:var(--t-meta); color: var(--c-navy-200);">Prime Video</span>
+              </div>
+            </div>
+          </article>
+          <article class="story-card" style="background: var(--c-navy-700); border-color: var(--c-navy-600);">
+            <div class="story-card__img" style="background: var(--c-navy-900);"><div class="img-ph">Xiaomi</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker" style="color: var(--c-gold-400);">Tecnología</span>
+              <h3 class="story-card__title" style="color: var(--c-white);">Xiaomi 15 Ultra: la bestia fotográfica que amenaza al iPhone con precio imbatible</h3>
+              <div class="story-card__foot" style="border-top-color: var(--c-navy-600);">
+                <span style="font-size:var(--t-meta); color: var(--c-navy-200);">Smartphone</span>
+              </div>
+            </div>
+          </article>
+          <article class="story-card" style="background: var(--c-navy-700); border-color: var(--c-navy-600);">
+            <div class="story-card__img" style="background: var(--c-navy-900);"><div class="img-ph">IKEA</div></div>
+            <div class="story-card__body">
+              <span class="story-card__kicker" style="color: var(--c-gold-400);">Hogar</span>
+              <h3 class="story-card__title" style="color: var(--c-white);">El nuevo cambiador de IKEA agota existencias en 48 horas: esto es lo que lo hace diferente</h3>
+              <div class="story-card__foot" style="border-top-color: var(--c-navy-600);">
+                <span style="font-size:var(--t-meta); color: var(--c-navy-200);">Bebés · Diseño</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════
+       SITE FOOTER
+  ════════════════════════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand__logo">El <em>Economista</em></div>
+          <p class="footer-brand__text">
+            Referencia en información económica, financiera y empresarial en España.
+            Fundado en 1989. Presente en 12 comunidades autónomas.
+          </p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col__title">Secciones</div>
+          <ul class="footer-col__list">
+            <li><a href="#mercados">Mercados</a></li>
+            <li><a href="#economia">Economía</a></li>
+            <li><a href="#empresas">Empresas</a></li>
+            <li><a href="#opinion">Opinión</a></li>
+            <li><a href="#tecnologia">Tecnología</a></li>
+            <li><a href="#motor">Motor</a></li>
+            <li><a href="#gastro">Gastronomía</a></li>
+            <li><a href="#ccaa">Comunidades</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col__title">Servicios</div>
+          <ul class="footer-col__list">
+            <li><a href="#renta">Renta 2025</a></li>
+            <li><a href="#podcasts">Podcasts</a></li>
+            <li><a href="#">Newsletter</a></li>
+            <li><a href="#">Hemeroteca</a></li>
+            <li><a href="#">Cotizaciones</a></li>
+            <li><a href="#">Calculadoras</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col__title">Legal</div>
+          <ul class="footer-col__list">
+            <li><a href="#">Aviso legal</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Publicidad</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Suscripciones</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 El Economista. Todos los derechos reservados.</span>
+        <span>ATLAS · SYX Design System v4.1.0</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

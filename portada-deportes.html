@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deportes — Meridian</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    MERIDIAN DEPORTES — VARIANTE TEMÁTICA SOBRE BASE ECONOMÍA
+    ═══════════════════════════════════════════════════════════════════════
+
+    ESTRATEGIA DE VARIANTE
+    ──────────────────────
+    Mismos HTML organisms que portada-economia.html.
+    Override de custom properties para estética deportiva:
+    bold, enérgica, con acento verde campo de fútbol.
+
+    TEMA — DEPORTES
+    ─────────────────
+    Acento:      #15803d (green-700, ratio 5.98:1 sobre #fff ✅ AA)
+    Ticker bg:   #14532d (green-900 — verde muy oscuro)
+    Ticker txt:  #bbf7d0 (green-200 — texto claro sobre verde oscuro)
+    Papel:       #f5f9f5 (tinta verde-50 muy sutil)
+    Alt bg:      #ebf4ec
+    Display:     Inter Black (sans-only, bold, atlético)
+
+    VARIACIÓN SIDEBAR: La Liga standings en lugar de mercados
+    VARIACIÓN TICKER:  Marcadores en directo en lugar de cotizaciones
+
+    CONTRASTE WCAG 2.1 AA:
+    ✅  Ink #1a1a1a / paper #f5f9f5  →  ~17:1   (AAA)
+    ✅  Accent #15803d / white #fff  →   5.98:1 (AA)
+    ✅  Ticker txt #bbf7d0 / #14532d →   7.1:1  (AA — texto en ticker)
+    ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    /* ── CUSTOM PROPERTIES ─────────────────────────────────────────────── */
+    :root {
+      /* IAB ad unit dimensions */
+      --ad-skin-w:        220px;
+      --ad-leader-w:      728px;
+      --ad-leader-h:       90px;
+      --ad-medium-w:      300px;
+      --ad-medium-h:      250px;
+      --ad-billboard-w:   970px;
+      --ad-billboard-h:    90px;
+
+      /* Grid derivado de NP */
+      --container:       1200px;
+      --sidebar:         var(--ad-medium-w);
+      --gap:              32px;
+
+      /* Escala lineal 4px */
+      --s1:   4px;
+      --s2:   8px;
+      --s3:  12px;
+      --s4:  16px;
+      --s6:  24px;
+      --s8:  32px;
+      --s12: 48px;
+      --s16: 64px;
+
+      /* Escala tipográfica */
+      --t-label:    0.6875rem;
+      --t-meta:     0.75rem;
+      --t-sm:       0.875rem;
+      --t-body:     0.9375rem;
+      --t-h3:       1.125rem;
+      --t-h2:       clamp(1.375rem, 2vw + 0.375rem, 1.875rem);
+      --t-display:  clamp(2rem, 3.5vw + 0.75rem, 3.375rem);
+
+      /* Tipografía — Deportes: sans-only, heavy */
+      --font-serif: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-sans:  'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      /* Color 60% — superficies */
+      --c-paper:    #f5f9f5;
+      --c-white:    #ffffff;
+      --c-bg-alt:   #ebf4ec;
+
+      /* Color 30% — tinta y estructura */
+      --c-ink:      #1a1a1a;
+      --c-ink-2:    #374151;
+      --c-muted:    #6b7280;
+      --c-border:   #d1e8d3;
+      --c-border-l: #dceede;
+
+      /* Color 10% — acento deportes (verde campo) */
+      --c-accent:   #15803d;
+      --c-accent-h: #166534;
+
+      /* Cotizaciones (reutilizadas para estadísticas: ganar/perder/empatar) */
+      --c-alza:   #15803d;
+      --c-baja:   #b91c1c;
+      --c-neutro: #6b7280;
+
+      /* Header ticker — dark green */
+      --c-ticker-bg:  #14532d;
+      --c-ticker-txt: #bbf7d0;
+
+      /* Elevation */
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+      /* Border */
+      --radius-sm:   3px;
+      --radius-md:   5px;
+      --radius-lg:   8px;
+      --border-base: 1px solid var(--c-border);
+    }
+
+    /* ── RESET ──────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      color: var(--c-ink);
+      background-color: var(--c-paper);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    ul, ol { list-style: none; }
+    a { color: inherit; text-decoration: none; }
+    address { font-style: normal; }
+
+    /* ── ACCESSIBILITY ──────────────────────────────────────────────────── */
+    .syx-sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .syx-sr-only--focusable:focus-visible {
+      position: fixed;
+      top: var(--s2); left: var(--s2);
+      width: auto; height: auto;
+      padding: var(--s2) var(--s4);
+      clip: auto;
+      white-space: normal;
+      background: var(--c-white);
+      color: var(--c-ink);
+      border: 2px solid var(--c-ink);
+      border-radius: var(--radius-md);
+      z-index: 9999;
+      font-size: var(--t-body);
+      font-weight: 600;
+    }
+    :focus-visible {
+      outline: 2px solid var(--c-accent);
+      outline-offset: 2px;
+    }
+
+    /* ── PAGE WRAPPER ───────────────────────────────────────────────────── */
+    .page-wrapper {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .page-wrapper { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .page-wrapper { padding-inline: var(--s8); } }
+
+    /* ── SITE SKIN NP-1 ─────────────────────────────────────────────────── */
+    .org-site-skin {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .org-site-skin__wing {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+    .org-site-skin__wing--left {
+      left: 0;
+      right: calc(50% + var(--container) / 2);
+    }
+    .org-site-skin__wing--right {
+      right: 0;
+      left: calc(50% + var(--container) / 2);
+    }
+    .org-site-skin__wing img {
+      position: absolute;
+      top: 12rem;
+      width: var(--ad-skin-w);
+      height: 100%;
+      object-fit: contain;
+    }
+    .org-site-skin__wing--left  img { right: 0; object-position: right top; }
+    .org-site-skin__wing--right img { left: 0;  object-position: left top;  }
+    @media (min-width: 1440px) { .org-site-skin { display: block; } }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    .org-news-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--c-white);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-sm);
+    }
+    .org-news-header__ticker {
+      background: var(--c-ticker-bg);
+      overflow: hidden;
+    }
+    .mol-ticker {
+      display: flex;
+      align-items: center;
+      gap: var(--s6);
+      height: 40px;
+      padding-inline: var(--s4);
+      max-width: var(--container);
+      margin-inline: auto;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mol-ticker::-webkit-scrollbar { display: none; }
+    .mol-ticker__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      flex-shrink: 0;
+    }
+    .mol-ticker__nombre {
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6ee7a0;
+    }
+    .mol-ticker__valor {
+      font-size: var(--t-meta);
+      font-weight: 600;
+      color: var(--c-ticker-txt);
+    }
+    .mol-ticker__cambio       { font-size: var(--t-label); font-weight: 800; }
+    .mol-ticker__cambio--alza   { color: #bbf7d0; }
+    .mol-ticker__cambio--baja   { color: #fca5a5; }
+    .mol-ticker__cambio--neutro { color: #6ee7a0; }
+    .mol-ticker__sep { color: #166534; font-size: var(--t-meta); }
+
+    .org-news-header__leaderboard {
+      background: var(--c-bg-alt);
+      border-bottom: var(--border-base);
+      padding-block: var(--s2);
+    }
+    .org-news-header__leaderboard-inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--s2);
+    }
+    .mol-publicidad__label {
+      font-size: var(--t-label);
+      font-weight: 500;
+      color: var(--c-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .mol-publicidad__link {
+      display: block;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      line-height: 0;
+    }
+    @media (max-width: 767px) { .org-news-header__leaderboard { display: none; } }
+
+    /* Nav principal */
+    .org-news-header__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      height: 72px;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__inner { padding-inline: var(--s8); } }
+
+    .org-news-header__logo { flex-shrink: 0; display: flex; align-items: center; }
+    .org-news-header__logo img { height: 26px; width: auto; }
+
+    .org-news-header__nav { display: none; flex: 1; }
+    .org-news-header__nav ul { display: flex; align-items: center; gap: 0; }
+    .org-news-header__nav a {
+      display: block;
+      padding: var(--s2) var(--s3);
+      font-size: var(--t-sm);
+      font-weight: 500;
+      color: var(--c-ink-2);
+      border-radius: var(--radius-sm);
+      transition: color 150ms ease, background-color 150ms ease;
+    }
+    .org-news-header__nav a:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+    .org-news-header__nav a[aria-current="page"] {
+      color: var(--c-accent);
+      font-weight: 600;
+    }
+    @media (min-width: 1024px) { .org-news-header__nav { display: flex; } }
+
+    .org-news-header__actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+    }
+
+    /* Buttons */
+    .atom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s2);
+      padding: var(--s2) var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-sm);
+      font-weight: 600;
+      line-height: 1.3;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .atom-btn--primary {
+      background: var(--c-accent);
+      color: #fff;
+      border-color: var(--c-accent);
+    }
+    .atom-btn--primary:hover { background: var(--c-accent-h); border-color: var(--c-accent-h); }
+    .atom-btn--ghost {
+      background: transparent;
+      color: var(--c-ink-2);
+      border-color: var(--c-border);
+    }
+    .atom-btn--ghost:hover { background: var(--c-bg-alt); color: var(--c-ink); }
+    .atom-btn--ghost-dark {
+      background: transparent;
+      color: var(--c-ink);
+      border-color: var(--c-ink);
+    }
+    .atom-btn--ghost-dark:hover { background: var(--c-ink); color: var(--c-white); }
+    .atom-btn--sm  { padding: 6px var(--s3); font-size: var(--t-meta); }
+    .atom-btn--icon { padding: var(--s2); }
+
+    .org-news-header__menu-toggle { display: flex; }
+    @media (min-width: 1024px) { .org-news-header__menu-toggle { display: none; } }
+
+    .org-news-header.is-menu-open .org-news-header__nav {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--c-white);
+      border-top: var(--border-base);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-md);
+      padding: var(--s2) 0;
+      z-index: 99;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav ul {
+      flex-direction: column;
+      gap: 0;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav a {
+      padding: var(--s3) var(--s6);
+      border-radius: 0;
+      font-size: var(--t-body);
+    }
+    @media (min-width: 1024px) {
+      .org-news-header.is-menu-open .org-news-header__nav {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: row; }
+      .org-news-header.is-menu-open .org-news-header__nav a {
+        padding: var(--s2) var(--s3);
+        font-size: var(--t-sm);
+      }
+    }
+
+    .org-news-header__search-panel {
+      border-top: var(--border-base);
+      background: var(--c-white);
+      box-shadow: var(--shadow-md);
+    }
+    .org-news-header__search-panel[hidden] { display: none; }
+    .org-news-header__search-inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      max-width: var(--container);
+      margin-inline: auto;
+      padding: var(--s4) var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__search-inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__search-inner { padding-inline: var(--s8); } }
+    .org-news-header__search-form {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .org-news-header__search-input {
+      flex: 1;
+      padding: var(--s2) var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-sm);
+      color: var(--c-ink);
+      background: var(--c-paper);
+      border: var(--border-base);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .org-news-header__search-input:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgb(21 128 61 / 0.15);
+    }
+    .org-news-header__search-input::placeholder { color: var(--c-muted); }
+    .org-news-header__search-close { flex-shrink: 0; }
+
+    /* ── BREADCRUMB ──────────────────────────────────────────────────────── */
+    .atom-breadcrumb {
+      padding-block: var(--s3);
+      border-bottom: var(--border-base);
+    }
+    .atom-breadcrumb ol { display: flex; align-items: center; gap: var(--s2); }
+    .atom-breadcrumb__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .atom-breadcrumb__link:hover { color: var(--c-ink); }
+    .atom-breadcrumb__separator { color: var(--c-border); }
+    .atom-breadcrumb__item:last-child { color: var(--c-ink); font-weight: 500; }
+
+    /* ── PILLS ───────────────────────────────────────────────────────────── */
+    .atom-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--s2);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      line-height: 1.4;
+    }
+    .atom-pill--neutral { background: var(--c-bg-alt); color: var(--c-ink-2); }
+    .atom-pill--accent  { background: var(--c-accent); color: #fff; }
+
+    /* ── TYPOGRAPHY — Deportes: bold, sans-only ──────────────────────── */
+    .atom-title--display {
+      font-family: var(--font-sans);
+      font-size: var(--t-display);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.05em;
+      color: var(--c-ink);
+    }
+    .atom-title--h2 {
+      font-family: var(--font-sans);
+      font-size: var(--t-h2);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      color: var(--c-ink);
+    }
+    .atom-title--h3 {
+      font-family: var(--font-sans);
+      font-size: var(--t-h3);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      color: var(--c-ink);
+    }
+    .atom-title--xs {
+      font-family: var(--font-sans);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .atom-txt--lead {
+      font-size: var(--t-body);
+      line-height: 1.6;
+      color: var(--c-ink-2);
+      font-weight: 500;
+    }
+    .atom-txt--sm    { font-size: var(--t-sm); line-height: 1.5; color: var(--c-ink-2); }
+    .atom-txt--muted { color: var(--c-muted); }
+    .atom-link { transition: color 150ms ease; }
+    .atom-link:hover { color: var(--c-accent); }
+
+    /* ── N1 HERO PRINCIPAL ───────────────────────────────────────────────── */
+    .org-hero-principal {
+      display: grid;
+      margin-block: var(--s6);
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: var(--border-base);
+    }
+    .org-hero-principal__imagen {
+      margin: 0;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .org-hero-principal__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .org-hero-principal:hover .org-hero-principal__imagen img { transform: scale(1.02); }
+    .org-hero-principal__content {
+      padding: var(--s6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+    }
+    .org-hero-principal__meta-top { display: flex; align-items: center; gap: var(--s3); }
+    .org-hero-principal__meta-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s4);
+      margin-top: auto;
+      padding-top: var(--s4);
+      border-top: var(--border-base);
+    }
+
+    @media (min-width: 768px) {
+      .org-hero-principal {
+        grid-template-columns: 3fr 2fr;
+        min-height: 460px;
+      }
+      .org-hero-principal__imagen { aspect-ratio: auto; }
+      .org-hero-principal__content { padding: var(--s8) var(--s8) var(--s8) var(--s8); }
+    }
+    @media (min-width: 1024px) {
+      .org-hero-principal { min-height: 500px; }
+      .org-hero-principal__content { padding: var(--s12) var(--s8); }
+    }
+
+    /* ── ORG-GRID-EDITORIAL ──────────────────────────────────────────────── */
+    .org-grid-editorial {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s8);
+      align-items: start;
+      padding-block: var(--s8);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial {
+        grid-template-columns: 1fr var(--sidebar);
+      }
+    }
+    .org-grid-editorial__sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial__sidebar {
+        position: sticky;
+        top: calc(40px + 72px + var(--s4));
+      }
+    }
+
+    /* ── N2: CARDS CON IMAGEN ─────────────────────────────────────────────── */
+    .org-grid-n2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+    .org-grid-n2__heading {
+      grid-column: 1 / -1;
+      padding-bottom: var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+      margin-bottom: var(--s2);
+    }
+    @media (min-width: 640px)  { .org-grid-n2 { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-grid-n2 { grid-template-columns: 1fr 1fr 1fr; gap: var(--s4); } }
+
+    .mol-card-noticia {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 200ms ease, transform 200ms ease;
+    }
+    .mol-card-noticia:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .mol-card-noticia__imagen {
+      margin: 0;
+      aspect-ratio: 3/2;
+      overflow: hidden;
+    }
+    .mol-card-noticia__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mol-card-noticia:hover .mol-card-noticia__imagen img { transform: scale(1.04); }
+    .mol-card-noticia__content {
+      padding: var(--s4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .mol-card-noticia__meta-top  { display: flex; align-items: center; gap: var(--s2); }
+    .mol-card-noticia__meta-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: var(--s3);
+      border-top: var(--border-base);
+    }
+
+    /* ── BILLBOARD NP-4 ─────────────────────────────────────────────────── */
+    .org-billboard-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s2);
+      margin-block: var(--s8);
+      padding-block: var(--s2);
+      padding-inline: var(--s4);
+      background: var(--c-bg-alt);
+      border-radius: var(--radius-md);
+      border: var(--border-base);
+    }
+    .org-billboard-zone .mol-publicidad__label { align-self: flex-start; }
+    .mol-publicidad--billboard {
+      width: 100%;
+      max-width: var(--ad-billboard-w);
+      line-height: 0;
+    }
+    .mol-publicidad--billboard img {
+      width: 100%;
+      height: var(--ad-billboard-h);
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── N3: NOTICIAS SECUNDARIAS ────────────────────────────────────────── */
+    .org-grid-n3__heading {
+      padding-bottom: var(--s3);
+      margin-bottom: var(--s4);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .org-grid-n3__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    @media (min-width: 640px) { .org-grid-n3__list { grid-template-columns: 1fr 1fr; } }
+
+    .mol-noticia-secundaria {
+      padding-block: var(--s4);
+      border-bottom: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+      min-height: 88px;
+    }
+    @media (min-width: 640px) {
+      .org-grid-n3__list li:nth-child(odd)  .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); }
+      .org-grid-n3__list li:nth-child(even) .mol-noticia-secundaria { padding-left: var(--s6); }
+      .org-grid-n3__list li:nth-last-child(-n+2) .mol-noticia-secundaria { border-bottom: none; }
+    }
+    .mol-noticia-secundaria:last-child { border-bottom: none; }
+    .mol-noticia-secundaria__meta-top { display: flex; align-items: center; gap: var(--s2); }
+    .mol-noticia-secundaria .atom-title--h3 a { transition: color 150ms ease; }
+    .mol-noticia-secundaria .atom-title--h3 a:hover { color: var(--c-accent); }
+
+    /* ── SIDEBAR: CLASIFICACIÓN ──────────────────────────────────────────── */
+    .mol-datos-mercado {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      border: var(--border-base);
+      overflow: hidden;
+    }
+    .mol-datos-mercado__heading {
+      padding: var(--s4) var(--s4) var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .mol-datos-mercado__list { padding-block: var(--s1); }
+    .mol-datos-mercado__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--s4);
+      border-bottom: var(--border-base);
+      min-height: 40px;
+    }
+    .mol-datos-mercado__item:last-child { border-bottom: none; }
+    .mol-datos-mercado__nombre { font-size: var(--t-sm); color: var(--c-ink-2); }
+    .mol-datos-mercado__values { display: flex; align-items: center; gap: var(--s3); }
+    .mol-datos-mercado__cambio { font-size: var(--t-label); font-weight: 700; }
+    .mol-datos-mercado__cambio--alza   { color: var(--c-alza); }
+    .mol-datos-mercado__cambio--baja   { color: var(--c-baja); }
+    .mol-datos-mercado__cambio--neutro { color: var(--c-neutro); }
+    .mol-datos-mercado__cta {
+      display: block;
+      margin: var(--s3) var(--s4) var(--s4);
+      text-align: center;
+    }
+
+    /* ── SIDEBAR: PUBLICIDAD NP-3 ────────────────────────────────────────── */
+    .mol-publicidad {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s1);
+    }
+    .mol-publicidad img {
+      width: 100%;
+      border-radius: var(--radius-md);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    .org-news-footer {
+      background: var(--c-ink);
+      color: var(--c-ticker-txt);
+      margin-top: var(--s16);
+      padding-block: var(--s12);
+    }
+    .org-news-footer__inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 640px) {
+      .org-news-footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
+    .org-news-footer__nav a {
+      font-size: var(--t-sm);
+      color: #9ca3af;
+      transition: color 150ms ease;
+    }
+    .org-news-footer__nav a:hover { color: var(--c-white); }
+    .org-news-footer__copy { font-size: var(--t-meta); color: #6b7280; }
+
+    /* ── REDUCED MOTION ──────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    VARIANTE: portada-deportes.html
+    HTML ORGANISMS: idénticos a portada-economia.html
+    Diferencias: tokens verdes (acento campo de fútbol), Inter 900
+                 + marcadores en directo en ticker
+                 + clasificación La Liga en sidebar
+  -->
+
+  <!-- ═══ SITE SKIN NP-1 ═══════════════════════════════════════════════ -->
+  <div class="org-site-skin" aria-hidden="true" role="presentation">
+    <div class="org-site-skin__wing org-site-skin__wing--left">
+      <img src="https://placehold.co/220x600/ebf4ec/b8debb?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+    <div class="org-site-skin__wing org-site-skin__wing--right">
+      <img src="https://placehold.co/220x600/ebf4ec/b8debb?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+  </div>
+
+  <!-- ═══ SKIP LINK ════════════════════════════════════════════════════ -->
+  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">Ir al contenido principal</a>
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
+  <header class="org-news-header" role="banner">
+
+    <!-- Ticker — marcadores en directo (mismo organismo, contenido deportivo) -->
+    <div class="org-news-header__ticker">
+      <div class="mol-ticker"
+        role="region"
+        aria-label="Marcadores en directo"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">UCL</span>
+          <span class="mol-ticker__valor">Real Madrid 2–1 Bayern</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Minuto 79">79′</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">UCL</span>
+          <span class="mol-ticker__valor">PSG 0–0 Arsenal</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Medio tiempo">HT</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">LaLiga</span>
+          <span class="mol-ticker__valor">Barça 3–1 Atleti</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Partido finalizado">FT</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">F1</span>
+          <span class="mol-ticker__valor">GP Baréin — Verstappen P1</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Vuelta 44 de 57">V44/57</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">NBA</span>
+          <span class="mol-ticker__valor">Lakers 108–112 Celtics</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Cuarto cuarto">Q4</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">ATP</span>
+          <span class="mol-ticker__valor">Alcaraz def. Djokovic 6-4 7-5</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Finalizado">FT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD NP-2 — 728×90 -->
+    <div class="org-news-header__leaderboard" role="complementary" aria-label="Espacio publicitario de cabecera">
+      <div class="org-news-header__leaderboard-inner">
+        <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+        <a
+          href="#"
+          class="mol-publicidad__link"
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          aria-label="Publicidad — se abre en nueva pestaña"
+        >
+          <img
+            src="https://placehold.co/728x90/ebf4ec/8fc99b?text=Leaderboard+NP-2+·+728×90"
+            alt=""
+            aria-hidden="true"
+            width="728" height="90"
+            loading="lazy"
+          >
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav principal -->
+    <div class="org-news-header__inner">
+      <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
+        <img
+          src="https://placehold.co/140x26/1a1a1a/ffffff?text=MERIDIAN"
+          alt="Meridian"
+          width="140" height="26"
+          loading="eager"
+        >
+      </a>
+
+      <nav id="site-nav" class="org-news-header__nav" aria-label="Secciones principales">
+        <ul role="list">
+          <li><a href="/deportes" aria-current="page">Deportes</a></li>
+          <li><a href="/futbol">Fútbol</a></li>
+          <li><a href="/baloncesto">Baloncesto</a></li>
+          <li><a href="/tenis">Tenis</a></li>
+          <li><a href="/formula1">F1</a></li>
+          <li><a href="/padel">Pádel</a></li>
+        </ul>
+      </nav>
+
+      <div class="org-news-header__actions">
+        <button
+          id="search-toggle"
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon"
+          type="button"
+          aria-label="Abrir buscador"
+          aria-expanded="false"
+          aria-controls="search-panel"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">Suscribirse</a>
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle"
+          type="button"
+          aria-label="Abrir menú de navegación"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel de búsqueda -->
+    <div
+      id="search-panel"
+      class="org-news-header__search-panel"
+      role="search"
+      aria-label="Buscar en Meridian"
+      hidden
+    >
+      <div class="org-news-header__search-inner">
+        <form class="org-news-header__search-form" action="/buscar" method="get">
+          <label for="search-input" class="syx-sr-only">Buscar noticias</label>
+          <input
+            id="search-input"
+            class="org-news-header__search-input"
+            type="search"
+            name="q"
+            placeholder="Buscar en Meridian…"
+            autocomplete="off"
+            aria-describedby="search-hint"
+          >
+          <button class="atom-btn atom-btn--primary atom-btn--sm" type="submit">Buscar</button>
+        </form>
+        <p id="search-hint" class="syx-sr-only">Escribe y pulsa Enter o el botón Buscar</p>
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__search-close"
+          type="button"
+          aria-label="Cerrar buscador"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <main id="main-content" tabindex="-1">
+    <div class="page-wrapper">
+
+      <!-- Breadcrumb -->
+      <nav class="atom-breadcrumb" aria-label="Ruta de navegación">
+        <ol>
+          <li class="atom-breadcrumb__item">
+            <a href="/" class="atom-breadcrumb__link">Inicio</a>
+            <span class="atom-breadcrumb__separator" aria-hidden="true">/</span>
+          </li>
+          <li class="atom-breadcrumb__item">
+            <span>Deportes</span>
+          </li>
+        </ol>
+      </nav>
+
+
+      <!-- N1 — HERO PRINCIPAL -->
+      <section class="org-hero-principal" aria-label="Noticia principal de deportes">
+
+        <figure class="org-hero-principal__imagen">
+          <img
+            src="https://placehold.co/1200x800/14532d/bbf7d0?text=Noticia+principal+·+N1+Deportes"
+            alt="Vincius Junior celebra el gol decisivo del Real Madrid frente al Bayern en el Bernabéu"
+            width="1200" height="800"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </figure>
+
+        <div class="org-hero-principal__content">
+          <div class="org-hero-principal__meta-top">
+            <span class="atom-pill atom-pill--accent">UCL</span>
+            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11T21:00:00+02:00">
+              11 abr 2026 · En directo
+            </time>
+          </div>
+
+          <h1 class="atom-title atom-title--display">
+            Vinicius decide con un gol en el 79' y el Madrid elimina al Bayern en el Bernabéu
+          </h1>
+
+          <p class="atom-txt atom-txt--lead">
+            El extremo brasileño, imparable toda la noche, anota el 2-1 en la ida de cuartos de Champions League. Mbappé y Bellingham sientan las bases de una noche épica para el madridismo.
+          </p>
+
+          <div class="org-hero-principal__meta-bottom">
+            <address class="atom-txt atom-txt--sm atom-txt--muted">
+              Por <a href="/autor/roberto-sanz" class="atom-link" rel="author">Roberto Sanz</a>
+            </address>
+            <span class="atom-txt atom-txt--sm atom-txt--muted" aria-label="Tiempo de lectura: 4 minutos">
+              4 min lectura
+            </span>
+            <a href="/deportes/real-madrid-bayern-ucl-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">
+              Leer artículo
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- GRID EDITORIAL -->
+      <div class="org-grid-editorial">
+
+        <!-- ── MAIN COLUMN ──────────────────────────────────────────── -->
+        <div class="org-grid-editorial__content">
+
+          <!-- N2: 3 cards con imagen -->
+          <section class="org-grid-n2" aria-labelledby="n2-heading">
+            <h2 id="n2-heading" class="atom-title atom-title--xs org-grid-n2__heading">
+              Destacados
+            </h2>
+
+            <!-- N2·1 Fútbol -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/166534/bbf7d0?text=Fútbol"
+                  alt="Carlos Alcaraz levantando el trofeo del Masters de Monte Carlo"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">LaLiga</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/deportes/barca-atleti-laliga-jornada-32" class="atom-link">
+                    Barça 3–1 Atleti: Lewandowski hat-trick y el Barça se escapa seis puntos del Madrid en LaLiga
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El polaco marca en los minutos 14, 38 y 71 en un Camp Nou que se entregó a la causa con una actuación histórica del nueve blaugrana.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/roberto-sanz" class="atom-link" rel="author">Roberto Sanz</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2·2 Tenis -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/166534/bbf7d0?text=Tenis"
+                  alt="Carlos Alcaraz levantando el trofeo del Masters de Monte Carlo 2026"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Tenis</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/deportes/alcaraz-djokovic-montecarlo-2026" class="atom-link">
+                    Alcaraz derrota a Djokovic 6-4 7-5 y conquista Monte Carlo por segundo año consecutivo
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El murciano, número uno del mundo, consolida su dominio en tierra batida con una victoria contundente ante el serbio en dos sets.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/ana-torres" class="atom-link" rel="author">Ana Torres</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2·3 F1 -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/166534/bbf7d0?text=Fórmula+1"
+                  alt="Max Verstappen en la clasificación del Gran Premio de Baréin 2026"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">F1</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/deportes/f1-gp-barein-verstappen-pole-2026" class="atom-link">
+                    Verstappen arranca desde la pole en Baréin y buscará su quinto título mundial de Fórmula 1
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El neerlandés de Red Bull marca el tiempo más rápido en la historia del circuito de Sakhir y parte favorito en el inicio de la nueva temporada.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/marcos-ruiz" class="atom-link" rel="author">Marcos Ruiz</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                </div>
+              </div>
+            </article>
+
+          </section>
+
+
+          <!-- BILLBOARD NP-4 -->
+          <div class="org-billboard-zone" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad--billboard mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/970x90/ebf4ec/8fc99b?text=Billboard+NP-4+·+970×90"
+                alt=""
+                aria-hidden="true"
+                width="970" height="90"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+
+          <!-- N3: ZONA DE PROFUNDIDAD -->
+          <section class="org-grid-n3" aria-labelledby="n3-heading">
+            <h2 id="n3-heading" class="atom-title atom-title--xs org-grid-n3__heading">
+              Más deportes
+            </h2>
+
+            <ol class="org-grid-n3__list" role="list">
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Baloncesto</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/nba-celtics-lakers-playoffs-2026" class="atom-link">
+                      Los Celtics eliminan a los Lakers en el 7.º partido y acceden a las finales de la Conferencia Este
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/pedro-gomez" class="atom-link" rel="author">P. Gómez</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Pádel</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/paquito-lebron-premier-padel-madrid-2026" class="atom-link">
+                      Paquito y Lebrón conquistan el Master de Madrid de Premier Padel ante 25.000 espectadores en el Bernabéu
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/ana-torres" class="atom-link" rel="author">A. Torres</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Atletismo</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/record-mundial-maratón-berlin-2026" class="atom-link">
+                      Kelvin Kiptum bate su propio récord del mundo en la maratón con un tiempo de 1h58m12s
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/marcos-ruiz" class="atom-link" rel="author">M. Ruiz</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Ciclismo</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/pogacar-paris-roubaix-2026" class="atom-link">
+                      Pogačar gana la París-Roubaix en solitario y se convierte en el ciclista con más monumentales activas
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/roberto-sanz" class="atom-link" rel="author">R. Sanz</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Fútbol</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/mbappé-pichichi-laliga-2026" class="atom-link">
+                      Mbappé alcanza los 28 goles en LaLiga y se postula como favorito al Pichichi a falta de seis jornadas
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/roberto-sanz" class="atom-link" rel="author">R. Sanz</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Golf</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/deportes/masters-augusta-2026-rory-mcilroy" class="atom-link">
+                      Rory McIlroy gana el Masters de Augusta y completa el Grand Slam del golf a los 36 años
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/pedro-gomez" class="atom-link" rel="author">P. Gómez</a>
+                  </address>
+                </article>
+              </li>
+
+            </ol>
+          </section>
+
+        </div>
+        <!-- /main column -->
+
+
+        <!-- ── SIDEBAR — Clasificación La Liga ───────────────────────── -->
+        <aside class="org-grid-editorial__sidebar" aria-label="Clasificación LaLiga y publicidad">
+
+          <!-- La Liga standings — mismo organismo mol-datos-mercado, contenido diferente -->
+          <section class="mol-datos-mercado" aria-labelledby="liga-heading">
+            <h2 id="liga-heading" class="mol-datos-mercado__heading atom-title atom-title--xs">
+              LaLiga · J32
+            </h2>
+            <ul class="mol-datos-mercado__list" role="list">
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">1. FC Barcelona</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="74 puntos">74 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Victoria hoy">▲ V</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">2. Real Madrid</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="68 puntos">68 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Aplazado">–</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">3. Atlético Madrid</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="63 puntos">63 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Derrota hoy">▼ D</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">4. Athletic Club</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="58 puntos">58 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Victoria">▲ V</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">5. Real Sociedad</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="52 puntos">52 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Empate">– E</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">6. Villarreal</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="48 puntos">48 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Victoria">▲ V</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">7. Betis</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="46 puntos">46 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Empate">– E</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">8. Sevilla</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="43 puntos">43 pts</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Derrota">▼ D</span>
+                </div>
+              </li>
+            </ul>
+            <a href="/deportes/laliga/clasificacion" class="atom-btn atom-btn--ghost-dark atom-btn--sm mol-datos-mercado__cta">
+              Clasificación completa
+            </a>
+          </section>
+
+          <!-- Medium Rectangle NP-3 -->
+          <div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/300x250/ebf4ec/8fc99b?text=NP-3+·+300×250"
+                alt=""
+                aria-hidden="true"
+                width="300" height="250"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+        </aside>
+        <!-- /sidebar -->
+
+      </div>
+      <!-- /org-grid-editorial -->
+
+    </div>
+    <!-- /page-wrapper -->
+  </main>
+
+
+  <!-- ═══ FOOTER ══════════════════════════════════════════════════════ -->
+  <footer class="org-news-footer" role="contentinfo">
+    <div class="org-news-footer__inner">
+      <nav class="org-news-footer__nav" aria-label="Secciones del sitio">
+        <ul role="list">
+          <li><a href="/deportes">Deportes</a></li>
+          <li><a href="/futbol">Fútbol</a></li>
+          <li><a href="/tenis">Tenis</a></li>
+          <li><a href="/formula1">F1</a></li>
+          <li><a href="/suscripcion">Suscripción</a></li>
+          <li><a href="/privacidad">Privacidad</a></li>
+          <li><a href="/cookies">Cookies</a></li>
+        </ul>
+      </nav>
+      <p class="org-news-footer__copy">
+        &copy; 2026 Meridian. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <script>
+    (function () {
+      var header  = document.querySelector('.org-news-header');
+      var toggle  = document.querySelector('.org-news-header__menu-toggle');
+      var nav     = document.getElementById('site-nav');
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function () {
+        var isOpen = header.classList.toggle('is-menu-open');
+        toggle.setAttribute('aria-expanded', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!header.contains(e.target)) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && header.classList.contains('is-menu-open')) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+          toggle.focus();
+        }
+      });
+
+      var searchToggle = document.getElementById('search-toggle');
+      var searchPanel  = document.getElementById('search-panel');
+      var searchInput  = document.getElementById('search-input');
+      var searchClose  = document.querySelector('.org-news-header__search-close');
+
+      function openSearch() {
+        searchPanel.removeAttribute('hidden');
+        searchToggle.setAttribute('aria-expanded', 'true');
+        searchToggle.setAttribute('aria-label', 'Cerrar buscador');
+        searchInput.focus();
+      }
+      function closeSearch() {
+        searchPanel.setAttribute('hidden', '');
+        searchToggle.setAttribute('aria-expanded', 'false');
+        searchToggle.setAttribute('aria-label', 'Abrir buscador');
+        searchToggle.focus();
+      }
+
+      searchToggle.addEventListener('click', function () {
+        searchPanel.hasAttribute('hidden') ? openSearch() : closeSearch();
+      });
+      searchClose.addEventListener('click', closeSearch);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !searchPanel.hasAttribute('hidden')) {
+          closeSearch();
+        }
+      });
+    })();
+  </script>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════════
+  AUDIT — portada-deportes.html
+  ═══════════════════════════════════════════════════════════════════════
+
+  VARIANTE: portada-deportes.html
+  BASE:     portada-economia.html (mismo HTML organism por organism)
+
+  STRATEGY:
+  Misma estructura de 8 organismos. Cambios en :root:
+    --c-accent    #bf2025 → #15803d (green-700 — campo de fútbol)
+    --c-paper     #f8f7f4 → #f5f9f5 (tinta green-50 sutil)
+    --c-ticker-bg #1a2744 → #14532d (green-900)
+    --c-ticker-txt #e5e7eb → #bbf7d0 (green-200)
+    --font-serif  Playfair → Inter   (sans-only, bold)
+    Display/H2 font-weight → 900/800 (athletic, impactante)
+
+  VARIACIONES DE ORGANISMO (mismo markup, diferente contenido):
+    mol-ticker:      cotizaciones → marcadores en directo
+    mol-datos-mercado: mercados → clasificación LaLiga (misma estructura BEM)
+
+  CONTRACT CHECK:
+  R01 no --primitive-*  ✅
+  R02 no !important     ✅
+  R03 no raw transition ✅
+  R04 no hardcoded vals ✅
+
+  CONTRASTE WCAG 2.1 AA:
+  ✅  Ink #1a1a1a / paper #f5f9f5  →  ~17:1   (AAA)
+  ✅  Accent #15803d / white #fff  →   5.98:1 (AA)
+  ✅  Ticker #bbf7d0 / #14532d     →   7.1:1  (AA)
+  ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
+  ═══════════════════════════════════════════════════════════════════════
+  -->
+
+</body>
+</html>

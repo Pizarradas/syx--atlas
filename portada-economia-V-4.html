@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Economía — Meridian · V-4 Editorial 50/50</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    MERIDIAN ECONOMÍA V-4 — EDITORIAL 50/50 + FEATURE BREAK + INTERSTITIAL
+    ═══════════════════════════════════════════════════════════════════════
+
+    IDENTIDAD VISUAL: portada-economia.html (paleta, tipografía, sin cambios)
+    VARIANTE: hero dividido al 50% texto·imagen (sin imagen dentro del texto) ·
+              N2 asimétrico 2fr·1fr·1fr · franja contextual con fondo --c-bg-alt ·
+              interstitial 970×250 como separador editorial · N3 tres columnas iguales
+
+    MODELO MATEMÁTICO
+    ──────────────────
+    Base IAB → constantes espaciales del sistema (idéntico a V-0)
+
+    org-hero-editorial (50/50) con gap var(--s8) = 32px:
+      usable = 1200 − 32 = 1168px
+      col    = 1168 / 2 = 584px [146 × 4px ✅] (cada mitad exacta)
+
+    org-grid-n2-asimetrico (2fr · 1fr · 1fr) con gap var(--s4) = 16px:
+      gap total = 2 × 16 = 32px · usable = 1200 − 32 = 1168px
+      2fr col   = 1168 × 2/4 = 584px [146 × 4px ✅]
+      1fr col   = 1168 × 1/4 = 292px [ 73 × 4px ✅]
+
+    mol-publicidad--interstitial — 970 × 250:
+      970 = NP-4.width · 250 = NP-3.height (proporción cruzada IAB)
+      margen lateral = (1200 − 970) / 2 = 115px [≈28.8 × 4px; IAB std]
+      --ad-interstitial-w: 970px · --ad-interstitial-h: 250px
+
+    org-grid-n3-tres-col (3 cols iguales) con gap var(--s6) = 24px:
+      gap total = 2 × 24 = 48px
+      col       = (1200 − 48) / 3 = 1152/3 = 384px [96 × 4px ✅]
+
+    DENSIDAD PUBLICITARIA (ATLAS 06.3 §7):
+      NP-1  Site Skin    ×2    @ ≥1440px   z-index:-1   ✅ (no cuenta)
+      NP-2  Leaderboard  728×90 cabecera               ✅ (1)
+      NPX   Interstitial 970×250 separador editorial    ✅ (2)
+      Total NP activos = 2 (< límite §7) ✅
+
+    CONTRASTE WCAG 2.1 AA: idéntico a portada-economia.html ✅
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    :root {
+      --ad-skin-w:            220px;
+      --ad-leader-w:          728px;   --ad-leader-h:          90px;
+      --ad-medium-w:          300px;   --ad-medium-h:         250px;
+      --ad-billboard-w:       970px;   --ad-billboard-h:       90px;
+      --ad-interstitial-w:    970px;   --ad-interstitial-h:   250px;
+
+      --container:  1200px;
+      --gap:         32px;
+
+      --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px;
+      --s8:32px; --s12:48px; --s16:64px;
+
+      --t-label:   0.6875rem;
+      --t-meta:    0.75rem;
+      --t-sm:      0.875rem;
+      --t-body:    0.9375rem;
+      --t-h3:      1.125rem;
+      --t-h2:      clamp(1.375rem, 2vw + 0.375rem, 1.875rem);
+      --t-display: clamp(2rem, 3.5vw + 0.75rem, 3.375rem);
+
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      --c-paper:   #f8f7f4;  --c-white:  #ffffff;  --c-bg-alt: #f2f0eb;
+      --c-ink:     #1a1a1a;  --c-ink-2:  #374151;  --c-muted:  #6b7280;
+      --c-border:  #e2e0db;  --c-border-l: #ece9e3;
+      --c-accent:  #bf2025;  --c-accent-h: #991b1f;
+      --c-alza:    #166534;  --c-baja: #b91c1c;  --c-neutro: #6b7280;
+      --c-ticker-bg: #1a2744; --c-ticker-txt: #e5e7eb;
+
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+      --radius-sm: 3px; --radius-md: 5px; --radius-lg: 8px;
+      --border-base: 1px solid var(--c-border);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body { font-family: var(--font-sans); font-size: var(--t-body); color: var(--c-ink); background: var(--c-paper); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; height: auto; }
+    ul, ol { list-style: none; }
+    a { color: inherit; text-decoration: none; }
+    address { font-style: normal; }
+
+    .syx-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .syx-sr-only--focusable:focus-visible { position: fixed; top: var(--s2); left: var(--s2); width: auto; height: auto; padding: var(--s2) var(--s4); clip: auto; white-space: normal; background: var(--c-white); color: var(--c-ink); border: 2px solid var(--c-ink); border-radius: var(--radius-md); z-index: 9999; font-size: var(--t-body); font-weight: 600; }
+    :focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+    .page-wrapper { max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
+    @media (min-width: 640px)  { .page-wrapper { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .page-wrapper { padding-inline: var(--s8); } }
+
+    /* ── SITE SKIN NP-1 ─────────────────────────────────────────────────── */
+    .org-site-skin { display: none; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+    .org-site-skin__wing { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+    .org-site-skin__wing--left  { left: 0; right: calc(50% + var(--container) / 2); }
+    .org-site-skin__wing--right { right: 0; left:  calc(50% + var(--container) / 2); }
+    .org-site-skin__wing img { position: absolute; top: 12rem; width: var(--ad-skin-w); height: 100%; object-fit: contain; }
+    .org-site-skin__wing--left  img { right: 0; object-position: right top; }
+    .org-site-skin__wing--right img { left:  0; object-position: left top; }
+    @media (min-width: 1440px) { .org-site-skin { display: block; } }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    .org-news-header { position: sticky; top: 0; z-index: 100; background: var(--c-white); border-bottom: var(--border-base); box-shadow: var(--shadow-sm); }
+    .org-news-header__ticker { background: var(--c-ticker-bg); overflow: hidden; }
+    .mol-ticker { display: flex; align-items: center; gap: var(--s6); height: 40px; padding-inline: var(--s4); max-width: var(--container); margin-inline: auto; overflow-x: auto; scrollbar-width: none; }
+    .mol-ticker::-webkit-scrollbar { display: none; }
+    .mol-ticker__item { display: flex; align-items: center; gap: var(--s2); flex-shrink: 0; }
+    .mol-ticker__nombre { font-size: var(--t-label); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9ca3af; }
+    .mol-ticker__valor  { font-size: var(--t-meta); font-weight: 500; color: var(--c-ticker-txt); }
+    .mol-ticker__cambio { font-size: var(--t-label); font-weight: 700; }
+    .mol-ticker__cambio--alza { color: #4ade80; }
+    .mol-ticker__cambio--baja { color: #f87171; }
+    .mol-ticker__cambio--neutro { color: #9ca3af; }
+    .mol-ticker__sep { color: #374151; font-size: var(--t-meta); }
+
+    .org-news-header__leaderboard { background: var(--c-bg-alt); border-bottom: var(--border-base); padding-block: var(--s2); }
+    .org-news-header__leaderboard-inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); display: flex; justify-content: center; align-items: center; gap: var(--s2); }
+    @media (max-width: 767px) { .org-news-header__leaderboard { display: none; } }
+
+    .mol-publicidad__label { font-size: var(--t-label); font-weight: 500; color: var(--c-muted); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+    .mol-publicidad__link  { display: block; overflow: hidden; border-radius: var(--radius-sm); line-height: 0; }
+
+    .org-news-header__inner { display: flex; align-items: center; gap: var(--s4); height: 72px; max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
+    @media (min-width: 640px)  { .org-news-header__inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__inner { padding-inline: var(--s8); } }
+
+    .org-news-header__logo { flex-shrink: 0; display: flex; align-items: center; }
+    .org-news-header__logo img { height: 26px; width: auto; }
+    .org-news-header__nav { display: none; flex: 1; }
+    .org-news-header__nav ul { display: flex; align-items: center; gap: 0; }
+    .org-news-header__nav a { display: block; padding: var(--s2) var(--s3); font-size: var(--t-sm); font-weight: 500; color: var(--c-ink-2); border-radius: var(--radius-sm); transition: color 150ms ease, background-color 150ms ease; }
+    .org-news-header__nav a:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+    .org-news-header__nav a[aria-current="page"] { color: var(--c-accent); font-weight: 600; }
+    @media (min-width: 1024px) { .org-news-header__nav { display: flex; } }
+    .org-news-header__actions { margin-left: auto; display: flex; align-items: center; gap: var(--s2); }
+    .org-news-header__menu-toggle { display: flex; }
+    @media (min-width: 1024px) { .org-news-header__menu-toggle { display: none; } }
+
+    .org-news-header.is-menu-open .org-news-header__nav { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--c-white); border-top: var(--border-base); border-bottom: var(--border-base); box-shadow: var(--shadow-md); padding: var(--s2) 0; z-index: 99; }
+    .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: column; gap: 0; }
+    .org-news-header.is-menu-open .org-news-header__nav a { padding: var(--s3) var(--s6); border-radius: 0; font-size: var(--t-body); }
+    @media (min-width: 1024px) { .org-news-header.is-menu-open .org-news-header__nav { display: flex; flex-direction: row; position: static; border: none; box-shadow: none; padding: 0; } .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: row; } .org-news-header.is-menu-open .org-news-header__nav a { padding: var(--s2) var(--s3); font-size: var(--t-sm); } }
+
+    .org-news-header__search-panel { border-top: var(--border-base); background: var(--c-white); box-shadow: var(--shadow-md); }
+    .org-news-header__search-panel[hidden] { display: none; }
+    .org-news-header__search-inner { display: flex; align-items: center; gap: var(--s3); max-width: var(--container); margin-inline: auto; padding: var(--s4); }
+    @media (min-width: 640px)  { .org-news-header__search-inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__search-inner { padding-inline: var(--s8); } }
+    .org-news-header__search-form { display: flex; align-items: center; gap: var(--s3); flex: 1; }
+    .org-news-header__search-input { flex: 1; padding: var(--s2) var(--s4); font-family: var(--font-sans); font-size: var(--t-sm); color: var(--c-ink); background: var(--c-paper); border: var(--border-base); border-radius: var(--radius-md); outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; }
+    .org-news-header__search-input:focus { border-color: var(--c-accent); box-shadow: 0 0 0 3px rgb(191 32 37 / 0.12); }
+    .org-news-header__search-input::placeholder { color: var(--c-muted); }
+    .org-news-header__search-close { flex-shrink: 0; }
+
+    /* ── ATOMS ───────────────────────────────────────────────────────────── */
+    .atom-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); padding: var(--s2) var(--s4); font-family: var(--font-sans); font-size: var(--t-sm); font-weight: 600; line-height: 1.3; border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; text-decoration: none; white-space: nowrap; }
+    .atom-btn--primary { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+    .atom-btn--primary:hover { background: var(--c-accent-h); border-color: var(--c-accent-h); }
+    .atom-btn--ghost { background: transparent; color: var(--c-ink-2); border-color: var(--c-border); }
+    .atom-btn--ghost:hover { background: var(--c-bg-alt); color: var(--c-ink); }
+    .atom-btn--ghost-dark { background: transparent; color: var(--c-ink); border-color: var(--c-ink); }
+    .atom-btn--ghost-dark:hover { background: var(--c-ink); color: var(--c-white); }
+    .atom-btn--sm   { padding: 6px var(--s3); font-size: var(--t-meta); }
+    .atom-btn--icon { padding: var(--s2); }
+
+    .atom-pill { display: inline-flex; align-items: center; padding: 2px var(--s2); font-size: var(--t-label); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 2px; line-height: 1.4; }
+    .atom-pill--neutral { background: var(--c-bg-alt); color: var(--c-ink-2); }
+    .atom-pill--accent  { background: var(--c-accent);  color: #fff; }
+
+    .atom-title--display { font-family: var(--font-serif); font-size: var(--t-display); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; color: var(--c-ink); }
+    .atom-title--h2 { font-family: var(--font-serif); font-size: var(--t-h2); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; color: var(--c-ink); }
+    .atom-title--h3 { font-family: var(--font-sans);  font-size: var(--t-h3); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; color: var(--c-ink); }
+    .atom-title--xs { font-family: var(--font-sans);  font-size: var(--t-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-muted); }
+    .atom-txt--lead  { font-size: var(--t-body); line-height: 1.65; color: var(--c-ink-2); }
+    .atom-txt--sm    { font-size: var(--t-sm); line-height: 1.5; color: var(--c-ink-2); }
+    .atom-txt--muted { color: var(--c-muted); }
+    .atom-link { transition: color 150ms ease; }
+    .atom-link:hover { color: var(--c-accent); }
+
+    .atom-breadcrumb { padding-block: var(--s3); border-bottom: var(--border-base); }
+    .atom-breadcrumb ol { display: flex; align-items: center; gap: var(--s2); }
+    .atom-breadcrumb__item { display: flex; align-items: center; gap: var(--s2); font-size: var(--t-meta); color: var(--c-muted); }
+    .atom-breadcrumb__link:hover { color: var(--c-ink); }
+    .atom-breadcrumb__separator { color: var(--c-border); }
+    .atom-breadcrumb__item:last-child { color: var(--c-ink); font-weight: 500; }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    .org-news-footer { background: var(--c-ink); color: var(--c-ticker-txt); margin-top: var(--s16); padding-block: var(--s12); }
+    .org-news-footer__inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--s8); display: flex; flex-direction: column; gap: var(--s6); }
+    @media (min-width: 640px) { .org-news-footer__inner { flex-direction: row; justify-content: space-between; align-items: center; } }
+    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
+    .org-news-footer__nav a { font-size: var(--t-sm); color: #9ca3af; transition: color 150ms ease; }
+    .org-news-footer__nav a:hover { color: var(--c-white); }
+    .org-news-footer__copy { font-size: var(--t-meta); color: #6b7280; }
+
+    /* ════════════════════════════════════════════════════════════════════
+       ★ V-4: NUEVOS ORGANISMOS
+       ════════════════════════════════════════════════════════════════════ */
+
+    /* ── ★ org-hero-editorial — split 50/50 texto izq · imagen dcha ───────
+       gap: var(--s8) = 32px
+       usable = 1200 − 32 = 1168px
+       col = 1168 / 2 = 584px [146 × 4px ✅]
+       Imagen: full-height stretch (object-fit:cover, align-self:stretch)
+    ─────────────────────────────────────────────────────────────────────── */
+    .org-hero-editorial {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-block: var(--s6);
+      background: var(--c-white);
+      border: var(--border-base);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      min-height: 480px;
+    }
+    @media (min-width: 768px) {
+      .org-hero-editorial {
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        min-height: 560px;
+      }
+    }
+
+    /* DOM order: content first (ATLAS 05.0), image second — visual swap via CSS */
+    .org-hero-editorial__content {
+      order: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+      padding: var(--s8);
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .org-hero-editorial__content { order: 0; padding: var(--s12); }
+    }
+    .org-hero-editorial__meta-top { display: flex; align-items: center; gap: var(--s3); }
+    .org-hero-editorial__divider {
+      width: 48px;
+      height: 3px;
+      background: var(--c-accent);
+      border-radius: 2px;
+      margin-block: var(--s2);
+    }
+    .org-hero-editorial__meta-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s4);
+      margin-top: var(--s4);
+      padding-top: var(--s4);
+      border-top: var(--border-base);
+    }
+
+    .org-hero-editorial__img {
+      order: 0;
+      margin: 0;
+      overflow: hidden;
+      min-height: 260px;
+    }
+    @media (min-width: 768px) {
+      .org-hero-editorial__img { order: 1; min-height: unset; }
+    }
+    .org-hero-editorial__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 600ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .org-hero-editorial:hover .org-hero-editorial__img img { transform: scale(1.03); }
+
+    /* ── ★ org-grid-n2-asimetrico — 2fr · 1fr · 1fr ─────────────────────
+       gap: var(--s4) × 2 = 32px · usable = 1200 − 32 = 1168px
+       2fr col = 584px [146×4px ✅] · 1fr col = 292px [73×4px ✅]
+    ─────────────────────────────────────────────────────────────────────── */
+    .org-grid-n2-asimetrico {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+    .org-grid-n2-asimetrico__heading {
+      grid-column: 1 / -1;
+      padding-bottom: var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+      margin-bottom: var(--s2);
+    }
+    @media (min-width: 640px)  { .org-grid-n2-asimetrico { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-grid-n2-asimetrico { grid-template-columns: 2fr 1fr 1fr; } }
+
+    /* mol-card-noticia */
+    .mol-card-noticia { background: var(--c-white); border-radius: var(--radius-lg); overflow: hidden; border: var(--border-base); display: flex; flex-direction: column; transition: box-shadow 200ms ease, transform 200ms ease; height: 100%; }
+    .mol-card-noticia:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .mol-card-noticia__imagen { margin: 0; overflow: hidden; }
+    .mol-card-noticia__imagen--wide { aspect-ratio: 16/9; }
+    .mol-card-noticia__imagen--square { aspect-ratio: 4/3; }
+    .mol-card-noticia__imagen img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms cubic-bezier(0.4,0,0.2,1); }
+    .mol-card-noticia:hover .mol-card-noticia__imagen img { transform: scale(1.04); }
+    .mol-card-noticia__content { padding: var(--s4); display: flex; flex-direction: column; gap: var(--s3); flex: 1; }
+    .mol-card-noticia__meta-top { display: flex; align-items: center; gap: var(--s2); }
+    .mol-card-noticia__meta-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: var(--s3); border-top: var(--border-base); }
+
+    /* Lead card (2fr) tiene imagen más alta */
+    @media (min-width: 1024px) {
+      .org-grid-n2-asimetrico .mol-card-noticia--lead .mol-card-noticia__imagen--wide { aspect-ratio: 3/2; }
+    }
+
+    /* ── ★ org-feature-break — franja contextual --c-bg-alt ──────────────
+       Sección de 3 historias relacionadas con fondo --c-bg-alt.
+       Sirve como "respiro" visual entre N2 y el interstitial.
+       3 cols @1024+: col = (1200−2×24)/3 = 1152/3 = 384px [96×4px ✅]
+       (gap var(--s6) = 24px · mismo math que N3)
+    ─────────────────────────────────────────────────────────────────────── */
+    .org-feature-break {
+      background: var(--c-bg-alt);
+      border-radius: var(--radius-lg);
+      padding: var(--s8);
+      margin-bottom: var(--s8);
+      border: var(--border-base);
+    }
+    .org-feature-break__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s4);
+      margin-bottom: var(--s6);
+      padding-bottom: var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .org-feature-break__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s6);
+    }
+    @media (min-width: 640px)  { .org-feature-break__grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-feature-break__grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .mol-card-contexto {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+    }
+    .mol-card-contexto__img {
+      margin: 0;
+      aspect-ratio: 2/1;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+    }
+    .mol-card-contexto__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; }
+    .mol-card-contexto:hover .mol-card-contexto__img img { transform: scale(1.03); }
+    .mol-card-contexto__meta { display: flex; align-items: center; gap: var(--s2); }
+    .mol-card-contexto__title {
+      font-family: var(--font-serif);
+      font-size: var(--t-h2);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--c-ink);
+    }
+    .mol-card-contexto__title a { transition: color 150ms ease; }
+    .mol-card-contexto__title a:hover { color: var(--c-accent); }
+    .mol-card-contexto__foot {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      padding-top: var(--s3);
+      border-top: var(--border-base);
+    }
+
+    /* ── ★ mol-publicidad--interstitial — 970×250 separador editorial ─────
+       970 = NP-4.width · 250 = NP-3.height (proporción IAB cruzada)
+       margen lateral = (1200 − 970) / 2 = 115px
+       Se presenta como separador entre Feature Break y N3
+    ─────────────────────────────────────────────────────────────────────── */
+    .org-interstitial-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s2);
+      margin-block: var(--s8);
+      padding-block: var(--s4);
+      border-top: var(--border-base);
+      border-bottom: var(--border-base);
+    }
+    .org-interstitial-zone .mol-publicidad__label { align-self: flex-start; }
+    .mol-publicidad--interstitial {
+      width: 100%;
+      max-width: var(--ad-interstitial-w);
+      line-height: 0;
+    }
+    .mol-publicidad--interstitial img {
+      width: 100%;
+      height: auto;
+      max-height: var(--ad-interstitial-h);
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+    @media (min-width: 970px) {
+      .mol-publicidad--interstitial img { height: var(--ad-interstitial-h); }
+    }
+
+    /* ── ★ org-grid-n3-tres-col — 3 columnas iguales ─────────────────────
+       gap: var(--s6) × 2 = 48px
+       col = (1200 − 48) / 3 = 1152/3 = 384px [96×4px ✅]
+    ─────────────────────────────────────────────────────────────────────── */
+    .org-grid-n3-tres-col { margin-bottom: var(--s8); }
+    .org-grid-n3-tres-col__heading {
+      padding-bottom: var(--s3);
+      margin-bottom: var(--s4);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .org-grid-n3-tres-col__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    @media (min-width: 640px)  { .org-grid-n3-tres-col__list { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-grid-n3-tres-col__list { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .mol-noticia-secundaria { padding-block: var(--s4); border-bottom: var(--border-base); display: flex; flex-direction: column; gap: var(--s2); }
+    .mol-noticia-secundaria:last-child { border-bottom: none; }
+    .mol-noticia-secundaria__meta-top { display: flex; align-items: center; gap: var(--s2); }
+    .mol-noticia-secundaria .atom-title--h3 a { transition: color 150ms ease; }
+    .mol-noticia-secundaria .atom-title--h3 a:hover { color: var(--c-accent); }
+    @media (min-width: 640px) {
+      .org-grid-n3-tres-col__list li:nth-child(odd)  .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); }
+      .org-grid-n3-tres-col__list li:nth-child(even) .mol-noticia-secundaria { padding-left: var(--s6); }
+    }
+    @media (min-width: 1024px) {
+      .org-grid-n3-tres-col__list li .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); padding-left: var(--s6); border-bottom: none; }
+      .org-grid-n3-tres-col__list li:first-child .mol-noticia-secundaria { padding-left: 0; }
+      .org-grid-n3-tres-col__list li:last-child  .mol-noticia-secundaria { border-right: none; padding-right: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+  </style>
+</head>
+
+<body>
+  <!--
+    RESPONSIVE V-4:
+    base (320px)  1-col apilado · img encima del texto (order:0/1)
+    sm   (640px)  n2 2-col · feature 2-col · n3 2-col
+    md   (768px)  leaderboard · hero-editorial 2 cols (texto izq, img dcha)
+    lg  (1024px)  n2 2fr·1fr·1fr · feature 3-col · n3 3-col
+    xl  (1440px)  site skin visible
+  -->
+
+  <!-- NP-1 Site Skin -->
+  <div class="org-site-skin" aria-hidden="true" role="presentation">
+    <div class="org-site-skin__wing org-site-skin__wing--left">
+      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+    <div class="org-site-skin__wing org-site-skin__wing--right">
+      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+  </div>
+
+  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">Ir al contenido principal</a>
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
+  <header class="org-news-header" role="banner">
+    <div class="org-news-header__ticker">
+      <div class="mol-ticker" role="region" aria-label="Cotizaciones en tiempo real" aria-live="polite" aria-atomic="false">
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">IBEX&nbsp;35</span><span class="mol-ticker__valor">10.842</span><span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="▲ +1,24%">▲ +1,24%</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">EUR/USD</span><span class="mol-ticker__valor">1,0842</span><span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="▼ −0,32%">▼ −0,32%</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">Brent</span><span class="mol-ticker__valor">83,40</span><span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="▲ +0,87%">▲ +0,87%</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">Oro</span><span class="mol-ticker__valor">2.318</span><span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="▲ +0,54%">▲ +0,54%</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">10Y&nbsp;ES</span><span class="mol-ticker__valor">3,21%</span><span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="▼ −3pb">▼ −3pb</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">DAX</span><span class="mol-ticker__valor">18.461</span><span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="▲ +0,83%">▲ +0,83%</span></div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item"><span class="mol-ticker__nombre">EUR/GBP</span><span class="mol-ticker__valor">0,8561</span><span class="mol-ticker__cambio mol-ticker__cambio--neutro">−0,01%</span></div>
+      </div>
+    </div>
+
+    <div class="org-news-header__leaderboard" role="complementary" aria-label="Espacio publicitario de cabecera">
+      <div class="org-news-header__leaderboard-inner">
+        <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+        <a href="#" class="mol-publicidad__link" target="_blank" rel="noopener noreferrer sponsored" aria-label="Publicidad — se abre en nueva pestaña">
+          <img src="https://placehold.co/728x90/e8e6e0/b0ada6?text=Leaderboard+NP-2+·+728×90" alt="" aria-hidden="true" width="728" height="90" loading="lazy">
+        </a>
+      </div>
+    </div>
+
+    <div class="org-news-header__inner">
+      <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
+        <img src="https://placehold.co/140x26/1a1a1a/ffffff?text=MERIDIAN" alt="Meridian" width="140" height="26" loading="eager">
+      </a>
+      <nav id="site-nav" class="org-news-header__nav" aria-label="Secciones principales">
+        <ul role="list">
+          <li><a href="/economia" aria-current="page">Economía</a></li>
+          <li><a href="/mercados">Mercados</a></li>
+          <li><a href="/empresas">Empresas</a></li>
+          <li><a href="/internacional">Internacional</a></li>
+          <li><a href="/opinion">Opinión</a></li>
+          <li><a href="/datos">Datos</a></li>
+        </ul>
+      </nav>
+      <div class="org-news-header__actions">
+        <button id="search-toggle" class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon" type="button" aria-label="Abrir buscador" aria-expanded="false" aria-controls="search-panel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">Suscribirse</a>
+        <button class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle" type="button" aria-label="Abrir menú de navegación" aria-controls="site-nav" aria-expanded="false">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="search-panel" class="org-news-header__search-panel" role="search" aria-label="Buscar en Meridian" hidden>
+      <div class="org-news-header__search-inner">
+        <form class="org-news-header__search-form" action="/buscar" method="get">
+          <label for="search-input" class="syx-sr-only">Buscar noticias</label>
+          <input id="search-input" class="org-news-header__search-input" type="search" name="q" placeholder="Buscar en Meridian…" autocomplete="off" aria-describedby="search-hint">
+          <button class="atom-btn atom-btn--primary atom-btn--sm" type="submit">Buscar</button>
+        </form>
+        <p id="search-hint" class="syx-sr-only">Escribe y pulsa Enter o el botón Buscar</p>
+        <button class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__search-close" type="button" aria-label="Cerrar buscador">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══════════════════════════════════════════════════════ -->
+  <main id="main-content" tabindex="-1">
+    <div class="page-wrapper">
+
+      <nav class="atom-breadcrumb" aria-label="Ubicación en el sitio">
+        <ol>
+          <li class="atom-breadcrumb__item"><a class="atom-breadcrumb__link" href="/">Inicio</a><span class="atom-breadcrumb__separator" aria-hidden="true">/</span></li>
+          <li class="atom-breadcrumb__item"><span aria-current="page">Economía</span></li>
+        </ol>
+      </nav>
+
+      <!-- ★ V-4 N1: org-hero-editorial — split 50/50 texto·imagen -->
+      <!--   DOM: content first (ATLAS 05.0), imagen second; CSS order swap en ≥768px -->
+      <section class="org-hero-editorial" aria-labelledby="hero-v4-heading">
+
+        <!-- Texto izquierda (content-first en DOM) -->
+        <div class="org-hero-editorial__content">
+          <div class="org-hero-editorial__meta-top">
+            <span class="atom-pill atom-pill--accent">Macro</span>
+            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10T10:30:00+02:00">10 abr 2026 · 10:30</time>
+          </div>
+          <div class="org-hero-editorial__divider" aria-hidden="true"></div>
+          <h1 id="hero-v4-heading" class="atom-title atom-title--display">La Fed mantiene los tipos en máximos de 23 años ante la persistencia de la inflación</h1>
+          <p class="atom-txt atom-txt--lead">El banco central estadounidense aplaza de nuevo el inicio del ciclo de bajadas mientras los mercados revisan al alza sus expectativas para 2025 y el dólar cotiza en máximos frente al euro.</p>
+          <div class="org-hero-editorial__meta-bottom">
+            <address class="atom-txt atom-txt--sm atom-txt--muted">Por <a href="/autor/ana-garcia" class="atom-link" rel="author">Ana García</a></address>
+            <span class="atom-txt atom-txt--sm atom-txt--muted" aria-label="Tiempo de lectura: 8 minutos">8 min lectura</span>
+            <a href="/economia/fed-tipos-maximos-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">Leer artículo</a>
+          </div>
+        </div>
+
+        <!-- Imagen derecha (full-height, order:1 en ≥768px) -->
+        <figure class="org-hero-editorial__img">
+          <img src="https://placehold.co/1200x900/1a2744/e5e7eb?text=Noticia+principal+·+50/50" alt="Edificio de la Reserva Federal de Estados Unidos en Washington D.C." width="1200" height="900" loading="eager" fetchpriority="high">
+        </figure>
+
+      </section>
+
+      <!-- ★ V-4 N2: org-grid-n2-asimetrico — 2fr · 1fr · 1fr -->
+      <section class="org-grid-n2-asimetrico" aria-labelledby="n2-v4-heading">
+        <h2 id="n2-v4-heading" class="atom-title atom-title--xs org-grid-n2-asimetrico__heading">Noticias destacadas</h2>
+
+        <!-- Card lead 2fr — imagen 16:9 wide -->
+        <article class="mol-card-noticia mol-card-noticia--lead">
+          <figure class="mol-card-noticia__imagen mol-card-noticia__imagen--wide">
+            <img src="https://placehold.co/1200x675/374151/e5e7eb?text=N2+Lead+·+BCE" alt="Christine Lagarde, presidenta del BCE" width="1200" height="675" loading="lazy">
+          </figure>
+          <div class="mol-card-noticia__content">
+            <div class="mol-card-noticia__meta-top"><span class="atom-pill atom-pill--neutral">BCE</span></div>
+            <h3 class="atom-title atom-title--h2"><a href="/economia/bce-lagarde-tipos-junio-2026" class="atom-link">Lagarde anticipa una bajada de tipos en junio si la desinflación continúa su curso esperado</a></h3>
+            <p class="atom-txt atom-txt--sm">La presidenta del BCE abre la puerta al primer recorte del ciclo pero condiciona la decisión final a los datos de inflación de mayo y al comportamiento de los salarios en la zona euro.</p>
+            <div class="mol-card-noticia__meta-bottom">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/ana-garcia" class="atom-link" rel="author">Ana García</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card secundaria 1fr — imagen 4:3 -->
+        <article class="mol-card-noticia">
+          <figure class="mol-card-noticia__imagen mol-card-noticia__imagen--square">
+            <img src="https://placehold.co/600x450/374151/e5e7eb?text=Iberdrola" alt="Parque eólico offshore de Iberdrola" width="600" height="450" loading="lazy">
+          </figure>
+          <div class="mol-card-noticia__content">
+            <div class="mol-card-noticia__meta-top"><span class="atom-pill atom-pill--neutral">Empresas</span></div>
+            <h3 class="atom-title atom-title--h2"><a href="/economia/iberdrola-resultados-record-2026" class="atom-link">Iberdrola bate su récord con 5.200 millones en el primer trimestre</a></h3>
+            <p class="atom-txt atom-txt--sm">La eléctrica supera las previsiones gracias al impulso de renovables en EEUU y redes en Brasil.</p>
+            <div class="mol-card-noticia__meta-bottom">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/carlos-ruiz" class="atom-link" rel="author">C. Ruiz</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card secundaria 1fr — imagen 4:3 -->
+        <article class="mol-card-noticia">
+          <figure class="mol-card-noticia__imagen mol-card-noticia__imagen--square">
+            <img src="https://placehold.co/600x450/374151/e5e7eb?text=China+PIB" alt="Distrito financiero de Shanghái" width="600" height="450" loading="lazy">
+          </figure>
+          <div class="mol-card-noticia__content">
+            <div class="mol-card-noticia__meta-top"><span class="atom-pill atom-pill--neutral">Internacional</span></div>
+            <h3 class="atom-title atom-title--h2"><a href="/economia/china-pib-primer-trimestre-2026" class="atom-link">China sorprende con un crecimiento del 5,3% en el primer trimestre</a></h3>
+            <p class="atom-txt atom-txt--sm">El dato supera las estimaciones del FMI y refuerza la posición de Pekín en las negociaciones con Washington.</p>
+            <div class="mol-card-noticia__meta-bottom">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/jorge-alba" class="atom-link" rel="author">J. Alba</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ★ V-4: org-feature-break — franja contextual fondo --c-bg-alt -->
+      <section class="org-feature-break" aria-labelledby="feature-v4-heading">
+        <div class="org-feature-break__header">
+          <h2 id="feature-v4-heading" class="atom-title atom-title--xs">En contexto</h2>
+          <a href="/economia/contexto-fed" class="atom-btn atom-btn--ghost atom-btn--sm">Ver todo</a>
+        </div>
+        <div class="org-feature-break__grid">
+
+          <article class="mol-card-contexto">
+            <figure class="mol-card-contexto__img">
+              <img src="https://placehold.co/800x400/d1cfc9/6b7280?text=Contexto+1" alt="Evolución histórica de los tipos de la Fed" width="800" height="400" loading="lazy">
+            </figure>
+            <div class="mol-card-contexto__meta"><span class="atom-pill atom-pill--neutral">Historia</span></div>
+            <h3 class="mol-card-contexto__title"><a href="/economia/historia-tipos-fed-2026" class="atom-link">Los tipos de la Fed desde Volcker: cada ciclo, una lección diferente para los mercados</a></h3>
+            <div class="mol-card-contexto__foot">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/rafael-montes" class="atom-link" rel="author">R. Montes</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-08">8 abr</time>
+            </div>
+          </article>
+
+          <article class="mol-card-contexto">
+            <figure class="mol-card-contexto__img">
+              <img src="https://placehold.co/800x400/d1cfc9/6b7280?text=Contexto+2" alt="Datos de inflación en EEUU" width="800" height="400" loading="lazy">
+            </figure>
+            <div class="mol-card-contexto__meta"><span class="atom-pill atom-pill--neutral">Datos</span></div>
+            <h3 class="mol-card-contexto__title"><a href="/economia/inflacion-eeuu-historico-2026" class="atom-link">Qué dicen los últimos datos del IPC americano: por qué la Fed no puede ceder todavía</a></h3>
+            <div class="mol-card-contexto__foot">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/maria-lopez" class="atom-link" rel="author">M. López</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-07">7 abr</time>
+            </div>
+          </article>
+
+          <article class="mol-card-contexto">
+            <figure class="mol-card-contexto__img">
+              <img src="https://placehold.co/800x400/d1cfc9/6b7280?text=Contexto+3" alt="Impacto del dólar fuerte en las economías emergentes" width="800" height="400" loading="lazy">
+            </figure>
+            <div class="mol-card-contexto__meta"><span class="atom-pill atom-pill--neutral">Global</span></div>
+            <h3 class="mol-card-contexto__title"><a href="/economia/dolar-fuerte-emergentes-2026" class="atom-link">El dólar en máximos: qué países emergentes están más expuestos a la apreciación del billete verde</a></h3>
+            <div class="mol-card-contexto__foot">
+              <address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/jorge-alba" class="atom-link" rel="author">J. Alba</a></address>
+              <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-06">6 abr</time>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ★ V-4: mol-publicidad--interstitial — 970×250 separador editorial -->
+      <!--   970 = NP-4.width · 250 = NP-3.height (proporción cruzada IAB) -->
+      <div class="org-interstitial-zone" role="complementary" aria-label="Espacio publicitario">
+        <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+        <a href="#" class="mol-publicidad--interstitial mol-publicidad__link" target="_blank" rel="noopener noreferrer sponsored" aria-label="Publicidad Interstitial 970×250 — se abre en nueva pestaña">
+          <img src="https://placehold.co/970x250/e8e6e0/b0ada6?text=Interstitial+·+970×250+·+NP-4.w+×+NP-3.h" alt="" aria-hidden="true" width="970" height="250" loading="lazy">
+        </a>
+      </div>
+
+      <!-- ★ V-4 N3: org-grid-n3-tres-col — 3 columnas iguales -->
+      <section class="org-grid-n3-tres-col" aria-labelledby="n3-v4-heading">
+        <h2 id="n3-v4-heading" class="atom-title atom-title--xs org-grid-n3-tres-col__heading">Más economía</h2>
+        <ol class="org-grid-n3-tres-col__list" role="list">
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Empleo</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/paro-marzo-2026" class="atom-link">El paro baja por tercer mes consecutivo y roza los 2,8 millones de desempleados</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/m-torres" class="atom-link" rel="author">M. Torres</a></address></article></li>
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Aranceles</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/aranceles-eeuu-europa-automovil-2026" class="atom-link">La UE prepara represalias ante los nuevos aranceles del 25% de EEUU al automóvil europeo</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/jorge-alba" class="atom-link" rel="author">J. Alba</a></address></article></li>
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Vivienda</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/precio-vivienda-record-madrid-2026" class="atom-link">El precio de la vivienda en Madrid alcanza su máximo histórico con una subida del 12%</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/pablo-vega" class="atom-link" rel="author">P. Vega</a></address></article></li>
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Banca</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/santander-beneficio-2026" class="atom-link">Santander eleva su beneficio un 14% y supera los 3.000 millones en el primer trimestre</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/carlos-ruiz" class="atom-link" rel="author">C. Ruiz</a></address></article></li>
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Pensiones</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/reforma-pensiones-cotizacion-2026" class="atom-link">El Gobierno acuerda con los sindicatos elevar la cotización máxima a 5.500 euros al mes</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/pablo-vega" class="atom-link" rel="author">P. Vega</a></address></article></li>
+
+          <li><article class="mol-noticia-secundaria"><div class="mol-noticia-secundaria__meta-top"><span class="atom-pill atom-pill--neutral">Energía</span><time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time></div><h3 class="atom-title atom-title--h3"><a href="/economia/precio-electricidad-minimo-2026" class="atom-link">El precio de la electricidad cae a mínimos de tres años gracias a la expansión solar</a></h3><address class="atom-txt atom-txt--sm atom-txt--muted"><a href="/autor/m-torres" class="atom-link" rel="author">M. Torres</a></address></article></li>
+
+        </ol>
+      </section>
+
+    </div>
+    <!-- /page-wrapper -->
+  </main>
+
+  <footer class="org-news-footer" role="contentinfo">
+    <div class="org-news-footer__inner">
+      <nav class="org-news-footer__nav" aria-label="Secciones del sitio"><ul role="list"><li><a href="/economia">Economía</a></li><li><a href="/mercados">Mercados</a></li><li><a href="/empresas">Empresas</a></li><li><a href="/internacional">Internacional</a></li><li><a href="/opinion">Opinión</a></li><li><a href="/privacidad">Privacidad</a></li><li><a href="/cookies">Cookies</a></li></ul></nav>
+      <p class="org-news-footer__copy">&copy; 2026 Meridian. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var header = document.querySelector('.org-news-header'), toggle = document.querySelector('.org-news-header__menu-toggle'), nav = document.getElementById('site-nav');
+      if (!toggle || !nav) return;
+      toggle.addEventListener('click', function () { var o = header.classList.toggle('is-menu-open'); toggle.setAttribute('aria-expanded', o); toggle.setAttribute('aria-label', o ? 'Cerrar menú' : 'Abrir menú de navegación'); });
+      document.addEventListener('click', function (e) { if (!header.contains(e.target)) { header.classList.remove('is-menu-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Abrir menú de navegación'); } });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && header.classList.contains('is-menu-open')) { header.classList.remove('is-menu-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); } });
+      var st = document.getElementById('search-toggle'), sp = document.getElementById('search-panel'), si = document.getElementById('search-input'), sc = document.querySelector('.org-news-header__search-close');
+      function openS() { sp.removeAttribute('hidden'); st.setAttribute('aria-expanded','true'); st.setAttribute('aria-label','Cerrar buscador'); si.focus(); }
+      function closeS() { sp.setAttribute('hidden',''); st.setAttribute('aria-expanded','false'); st.setAttribute('aria-label','Abrir buscador'); st.focus(); }
+      st.addEventListener('click', function () { sp.hasAttribute('hidden') ? openS() : closeS(); });
+      sc.addEventListener('click', closeS);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sp.hasAttribute('hidden')) closeS(); });
+    })();
+  </script>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════════
+  AUDIT — portada-economia-V-4.html
+  ═══════════════════════════════════════════════════════════════════════
+  NUEVOS ORGANISMOS VS V-0:
+    ✦ org-hero-editorial      — 50/50 texto izq · imagen dcha (1fr·1fr, 584px c/u)
+    ✦ org-grid-n2-asimetrico  — 2fr · 1fr · 1fr (lead 584px + dos de 292px)
+    ✦ org-feature-break       — franja contextual 3-col fondo --c-bg-alt
+    ✦ org-interstitial-zone   — separador editorial con interstitial 970×250
+    ✦ org-grid-n3-tres-col    — 3 columnas iguales (384px/col, gap 24px)
+
+  CAMBIOS DE DISPOSICIÓN VS V-0:
+    ✦ Hero: de hero imagen-texto en grid → 50/50 split full-height (tipografía pura)
+    ✦ N2: de 2-col + sidebar → 2fr·1fr·1fr (lead ampliado + 2 secundarias)
+    ✦ N3: de 2-col → 3-col iguales con gap mayor (var(--s6) vs var(--s4))
+    ✦ Nuevas zonas: feature-break con fondo e interstitial como separador
+    ✦ DOM order: content-first en hero (imagen visual swap via CSS order)
+
+  DENSIDAD NP:
+    NP-1 skin ✅ (no cuenta) · NP-2 leaderboard ✅ (1) · Interstitial 970×250 ✅ (2)
+    Total activos = 2 (< límite §7) ✅  [sin billboard → densidad más baja]
+
+  CONTRACT R01–R04: ✅ (CSS custom properties, sin !important, sin raw px hardcoded)
+  WCAG contraste: idéntico a portada-economia.html ✅
+  ═══════════════════════════════════════════════════════════════════════
+  -->
+</body>
+</html>

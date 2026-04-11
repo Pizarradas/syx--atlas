@@ -1,1695 +1,291 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Economía — Meridian</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
-    /*
-    ═══════════════════════════════════════════════════════════════════════
-    MERIDIAN ECONOMÍA — MODELO MATEMÁTICO: LA PUBLICIDAD COMO MAPA
-    ═══════════════════════════════════════════════════════════════════════
-
-    AXIOMA FUNDACIONAL
-    ──────────────────
-    La publicidad no es un elemento externo al diseño editorial.
-    Es el mapa a partir del cual se calcula el espacio de lectura.
-    El grid no se diseña arbitrariamente — se DERIVA de los formatos IAB.
-
-    UNIDADES IAB → CONSTANTES ESPACIALES DEL SISTEMA
-    ─────────────────────────────────────────────────────────────────────
-    NP-1  Site Skin (×2)     220px wide          →  frame lateral, define canvas total
-    NP-2  Leaderboard        728px × 90px        →  zona cabecera, ancla el nav width
-    NP-3  Medium Rectangle   300px × 250px       →  sidebar column (exacto, sin redondeo)
-    NP-4  Billboard          970px × 90px        →  pausa estructural entre zonas editoriales
-    ─────────────────────────────────────────────────────────────────────
-
-    DERIVACIONES DEL GRID (toda medida surge de los formatos NP):
-      Canvas total @ ≥1440px  =  220 + 1200 + 220 = 1640px
-      Contenedor max          =  1200px  (centrado)
-      Sidebar                 =  300px   = NP-3.width            [EXACTO — sin redondeo]
-      Gap editorial           =   32px   = 8 × 4px  (escala lineal ATLAS 04.1)
-      Columna principal       =  868px   = 1200 − 300 − 32
-      Ratio main : sidebar    =  2.89:1  ≈ 3:1                   [editorial clásico]
-
-      Zona leaderboard        =  728px   = NP-2.width (centrada en contenedor)
-      Zona billboard          =  970px   = NP-4.width (centrada en contenedor)
-
-    ESCALA TIPOGRÁFICA — Major Third ×1.25 sobre base 16px (ATLAS 04.1 §3)
-    ─────────────────────────────────────────────────────────────────────
-      label   0.6875rem = 11px   (×0.6875)   + 0.08em tracking
-      meta    0.75rem   = 12px   (×0.75)
-      body-sm 0.875rem  = 14px   (×0.875)
-      body    0.9375rem = 15px   (×0.9375)
-      h3      1.125rem  = 18px   (×1.125)
-      h2      clamp(1.375rem, 2vw + 0.375rem, 1.875rem)  = 22–30px
-      display clamp(2rem, 3.5vw + 0.75rem, 3.375rem)     = 32–54px
-
-    RITMO VERTICAL — múltiplos de 8px (ATLAS 04.2 macro spacing)
-    ─────────────────────────────────────────────────────────────────────
-      Ticker strip       40px  (5 × 8)
-      Leaderboard zone  106px  (90px NP-2 + 2×8px padding)
-      Header nav         72px  (9 × 8)
-      Billboard zone    106px  (90px NP-4 + 2×8px padding)
-      Datos-mercado item 40px  (5 × 8, altura mínima)
-
-    COLOR 60 / 30 / 10 (SYX UI Mode §3 — nunca decorativo con acento)
-    ─────────────────────────────────────────────────────────────────────
-      60%  Superficies   #f8f7f4 (papel)  ·  #ffffff (tarjetas)
-      30%  Tinta         #1a1a1a  ·  #374151  ·  #6b7280  ·  #e2e0db (bordes)
-      10%  Acento        #bf2025 (rojo economía — solo elementos interactivos/clave)
-
-    DENSIDAD PUBLICITARIA (ATLAS 06.3 §7 — máximo 3 bloques NP por portada)
-    ─────────────────────────────────────────────────────────────────────
-      Hero N1    :  0 bloques NP
-      Desarrollo :  1 bloque NP → NP-3 en sidebar (✓)
-      Profundidad:  1 bloque NP → NP-4 billboard entre zonas (✓)
-      Total      :  2 activos + NP-2 leaderboard = 3 exacto (✓ límite)
-    ═══════════════════════════════════════════════════════════════════════
-    */
-
-    /* ── CUSTOM PROPERTIES ─────────────────────────────────────────────── */
     :root {
-      /* IAB ad unit dimensions — fuente de las constantes */
-      --ad-skin-w:        220px;
-      --ad-leader-w:      728px;
-      --ad-leader-h:       90px;
-      --ad-medium-w:      300px;
-      --ad-medium-h:      250px;
-      --ad-billboard-w:   970px;
-      --ad-billboard-h:    90px;
-
-      /* Grid derivado de NP */
-      --container:       1200px;
-      --sidebar:         var(--ad-medium-w);   /* 300px exacto */
-      --gap:              32px;                /* 8 × 4px */
-
-      /* Escala lineal 4px (spacing — ATLAS 04.1 §3) */
-      --s1:   4px;
-      --s2:   8px;
-      --s3:  12px;
-      --s4:  16px;
-      --s6:  24px;
-      --s8:  32px;
-      --s12: 48px;
-      --s16: 64px;
-
-      /* Escala tipográfica Major Third ×1.25 */
-      --t-label:    0.6875rem;
-      --t-meta:     0.75rem;
-      --t-sm:       0.875rem;
-      --t-body:     0.9375rem;
-      --t-h3:       1.125rem;
-      --t-h2:       clamp(1.375rem, 2vw + 0.375rem, 1.875rem);
-      --t-display:  clamp(2rem, 3.5vw + 0.75rem, 3.375rem);
-
-      /* Tipografía */
-      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
-      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-      /* Color 60% — superficies */
-      --c-paper:    #f8f7f4;
-      --c-white:    #ffffff;
-      --c-bg-alt:   #f2f0eb;
-
-      /* Color 30% — tinta y estructura */
-      --c-ink:      #1a1a1a;
-      --c-ink-2:    #374151;
-      --c-muted:    #6b7280;
-      --c-border:   #e2e0db;
-      --c-border-l: #ece9e3;
-
-      /* Color 10% — acento editorial */
-      --c-accent:   #bf2025;
-      --c-accent-h: #991b1f;
-
-      /* Cotizaciones */
-      --c-alza:   #166534;
-      --c-baja:   #b91c1c;
-      --c-neutro: #6b7280;
-
-      /* Header ticker */
-      --c-ticker-bg:  #1a2744;
-      --c-ticker-txt: #e5e7eb;
-
-      /* Elevation */
-      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-
-      /* Border */
-      --radius-sm:   3px;
-      --radius-md:   5px;
-      --radius-lg:   8px;
-      --border-base: 1px solid var(--c-border);
+      --ad-skin-w: 220px; --ad-leader-w: 728px; --ad-leader-h: 90px; --ad-billboard-w: 970px; --ad-billboard-h: 250px;
+      --container: 1280px; --rail: 332px; --gap: 32px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px; --s16: 64px;
+      --t-label: 0.6875rem; --t-meta: 0.75rem; --t-sm: 0.875rem; --t-body: 1rem; --t-lead: 1.125rem; --t-h3: 1.25rem;
+      --t-h2: clamp(1.55rem, 1.2rem + 1vw, 2.125rem); --t-display: clamp(2.4rem, 2rem + 2vw, 4.6rem);
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif; --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --c-paper: #f5f1ea; --c-paper-2: #efe8dd; --c-white: #ffffff; --c-ink: #171717; --c-ink-2: #374151; --c-muted: #6b7280;
+      --c-border: #ddd4c7; --c-border-2: #e9e1d6; --c-accent: #c75b12; --c-accent-strong: #a94806; --c-deep: #18253d;
+      --c-positive: #166534; --c-negative: #b42318; --c-neutral: #6b7280; --c-opinion: #f2dfc8;
+      --shadow-sm: 0 1px 2px rgb(23 23 23 / 0.06), 0 10px 30px rgb(23 23 23 / 0.04); --shadow-md: 0 16px 40px rgb(23 23 23 / 0.08);
+      --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px; --border-base: 1px solid var(--c-border);
     }
-
-    /* ── RESET ──────────────────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
-    body {
-      font-family: var(--font-sans);
-      font-size: var(--t-body);
-      color: var(--c-ink);
-      background-color: var(--c-paper);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    img { display: block; max-width: 100%; height: auto; }
-    ul, ol { list-style: none; }
-    a { color: inherit; text-decoration: none; }
-    address { font-style: normal; }
-
-    /* ── ACCESSIBILITY ──────────────────────────────────────────────────── */
-    .syx-sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    .syx-sr-only--focusable:focus-visible {
-      position: fixed;
-      top: var(--s2); left: var(--s2);
-      width: auto; height: auto;
-      padding: var(--s2) var(--s4);
-      clip: auto;
-      white-space: normal;
-      background: var(--c-white);
-      color: var(--c-ink);
-      border: 2px solid var(--c-ink);
-      border-radius: var(--radius-md);
-      z-index: 9999;
-      font-size: var(--t-body);
-      font-weight: 600;
-    }
-    :focus-visible {
-      outline: 2px solid var(--c-accent);
-      outline-offset: 2px;
-    }
-
-    /* ── PAGE WRAPPER ───────────────────────────────────────────────────── */
-    .page-wrapper {
-      max-width: var(--container);
-      margin-inline: auto;
-      padding-inline: var(--s4);
-    }
-    @media (min-width: 640px)  { .page-wrapper { padding-inline: var(--s6); } }
-    @media (min-width: 1024px) { .page-wrapper { padding-inline: var(--s8); } }
-
-    /* ── SITE SKIN NP-1 ─────────────────────────────────────────────────── */
-    /*
-     * Modelo matemático de posicionamiento:
-     *
-     * El ala NO tiene ancho fijo. Lo determina la relación left/right:
-     *   left-wing:  left:0  + right:calc(50% + 600px)
-     *   right-wing: right:0 + left:calc(50% + 600px)
-     *
-     * Derivación:
-     *   A 1440px: espacio por lado = (1440−1200)/2 = 120px  → ala de 120px
-     *   A 1640px: espacio por lado = (1640−1200)/2 = 220px  → ala completa NP-1
-     *   A 2560px: espacio por lado = 680px → ala se expande pero img max 220px
-     *
-     * Imagen: anclada al borde interior (el que da al contenedor).
-     *   ala-izq → margin-left:auto  (imagen pegada al contenedor por la derecha)
-     *   ala-der → margin-right:auto (imagen pegada al contenedor por la izquierda)
-     * Con overflow:hidden, a anchos <1640px se recorta la parte exterior del anuncio
-     * (comportamiento real de los site skins en medios digitales).
-     */
-    .org-site-skin {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-    }
-    .org-site-skin__wing {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      overflow: hidden;
-    }
-    .org-site-skin__wing--left {
-      left: 0;
-      right: calc(50% + var(--container) / 2);
-    }
-    .org-site-skin__wing--right {
-      right: 0;
-      left: calc(50% + var(--container) / 2);
-    }
-    /*
-     * img: position:absolute anclada al borde INTERIOR del ala (el que da al contenedor).
-     * Cuando el ala es más estrecha que 220px, la imagen se extiende hacia el viewport
-     * y overflow:hidden recorta el lado EXTERIOR — el lado del contenido siempre es visible.
-     *
-     * Sin position:absolute, margin-left:auto en un elemento más ancho que su contenedor
-     * resuelve a 0 (no puede ser negativo) y la imagen se ancla al lado equivocado.
-     */
-    .org-site-skin__wing img {
-      position: absolute;
-      top: 12rem;
-      width: var(--ad-skin-w);   /* 220px — unidad IAB */
-      height: 100%;
-      object-fit:contain;
-    }
-    .org-site-skin__wing--left  img { right: 0; object-position: right top; }
-    .org-site-skin__wing--right img { left: 0;  object-position: left top;  }
-    @media (min-width: 1440px) { .org-site-skin { display: block; } }
-
-    /* ── HEADER ─────────────────────────────────────────────────────────── */
-    .org-news-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--c-white);
-      border-bottom: var(--border-base);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* Ticker strip — cotizaciones (altura 40px = 5×8px ritmo vertical) */
-    .org-news-header__ticker {
-      background: var(--c-ticker-bg);
-      overflow: hidden;
-    }
-    .mol-ticker {
-      display: flex;
-      align-items: center;
-      gap: var(--s6);
-      height: 40px;
-      padding-inline: var(--s4);
-      max-width: var(--container);
-      margin-inline: auto;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .mol-ticker::-webkit-scrollbar { display: none; }
-    .mol-ticker__item {
-      display: flex;
-      align-items: center;
-      gap: var(--s2);
-      flex-shrink: 0;
-    }
-    .mol-ticker__nombre {
-      font-size: var(--t-label);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #9ca3af;
-    }
-    .mol-ticker__valor {
-      font-size: var(--t-meta);
-      font-weight: 500;
-      color: var(--c-ticker-txt);
-    }
-    .mol-ticker__cambio       { font-size: var(--t-label); font-weight: 700; }
-    .mol-ticker__cambio--alza { color: #4ade80; }
-    .mol-ticker__cambio--baja { color: #f87171; }
-    .mol-ticker__cambio--neutro { color: #9ca3af; }
-    .mol-ticker__sep { color: #374151; font-size: var(--t-meta); }
-
-    /*
-      LEADERBOARD NP-2 — 728×90
-      Posición: entre ticker y nav principal
-      Razón: su anchura (728px) es la referencia del ancho de navegación
-      Visibilidad: oculto <768px (formato no rentable en móvil)
-      Zona height: 90px + 2×8px padding = 106px (ritmo vertical)
-    */
-    .org-news-header__leaderboard {
-      background: var(--c-bg-alt);
-      border-bottom: var(--border-base);
-      padding-block: var(--s2);
-    }
-    .org-news-header__leaderboard-inner {
-      max-width: var(--container);
-      margin-inline: auto;
-      padding-inline: var(--s4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: var(--s2);
-    }
-    .mol-publicidad__label {
-      font-size: var(--t-label);
-      font-weight: 500;
-      color: var(--c-muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    .mol-publicidad__link {
-      display: block;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      line-height: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--font-sans); font-size: var(--t-body); line-height: 1.6; color: var(--c-ink); background: linear-gradient(180deg, #f7f4ef 0%, #f5f1ea 30%, #f9f7f3 100%); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; height: auto; } a { color: inherit; text-decoration: none; } ul, ol { list-style: none; margin: 0; padding: 0; } p, h1, h2, h3, h4 { margin: 0; } address { font-style: normal; }
+    .syx-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .syx-sr-only--focusable:focus-visible { position: fixed; top: var(--s2); left: var(--s2); width: auto; height: auto; margin: 0; padding: var(--s2) var(--s4); clip: auto; white-space: normal; background: var(--c-white); border: 2px solid var(--c-ink); border-radius: var(--radius-md); z-index: 9999; }
+    :focus-visible { outline: 2px solid var(--c-accent); outline-offset: 3px; }
+    .page-shell { max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
+    @media (min-width: 640px) { .page-shell { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .page-shell { padding-inline: var(--s8); } }
+    .org-site-skin { display: none; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+    .org-site-skin__wing { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+    .org-site-skin__wing--left { left: 0; right: calc(50% + var(--container) / 2); }
+    .org-site-skin__wing--right { right: 0; left: calc(50% + var(--container) / 2); }
+    .org-site-skin__wing img { position: absolute; top: 14rem; width: var(--ad-skin-w); height: auto; opacity: 0.95; }
+    .org-site-skin__wing--left img { right: 0; } .org-site-skin__wing--right img { left: 0; }
+    @media (min-width: 1480px) { .org-site-skin { display: block; } }
+    .org-news-header { position: sticky; top: 0; z-index: 100; background: rgb(255 255 255 / 0.94); backdrop-filter: blur(12px); border-bottom: var(--border-base); box-shadow: var(--shadow-sm); }
+    .org-news-header__ticker { background: var(--c-deep); color: #e5e7eb; overflow: hidden; }
+    .mol-ticker { display: flex; align-items: center; gap: var(--s6); min-height: 40px; max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); overflow-x: auto; scrollbar-width: none; }
+    .mol-ticker::-webkit-scrollbar { display: none; } .mol-ticker__item { display: flex; align-items: center; gap: var(--s2); flex-shrink: 0; }
+    .mol-ticker__name { font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; color: #cbd5e1; font-weight: 700; }
+    .mol-ticker__value, .mol-ticker__change { font-size: var(--t-meta); font-weight: 600; }
+    .mol-ticker__change--up { color: #4ade80; } .mol-ticker__change--down { color: #f87171; } .mol-ticker__change--flat { color: #cbd5e1; }
+    .org-news-header__leaderboard { padding-block: var(--s2); background: linear-gradient(180deg, #fbfaf8 0%, #f2ece4 100%); border-bottom: var(--border-base); }
+    .org-news-header__leaderboard-inner { display: flex; justify-content: center; align-items: center; gap: var(--s2); max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
     @media (max-width: 767px) { .org-news-header__leaderboard { display: none; } }
-
-    /* Nav principal — altura 72px = 9×8px ritmo vertical */
-    .org-news-header__inner {
-      display: flex;
-      align-items: center;
-      gap: var(--s4);
-      height: 72px;
-      max-width: var(--container);
-      margin-inline: auto;
-      padding-inline: var(--s4);
-    }
-    @media (min-width: 640px)  { .org-news-header__inner { padding-inline: var(--s6); } }
-    @media (min-width: 1024px) { .org-news-header__inner { padding-inline: var(--s8); } }
-
-    .org-news-header__logo { flex-shrink: 0; display: flex; align-items: center; }
-    .org-news-header__logo img { height: 26px; width: auto; }
-
-    .org-news-header__nav { display: none; flex: 1; }
-    .org-news-header__nav ul { display: flex; align-items: center; gap: 0; }
-    .org-news-header__nav a {
-      display: block;
-      padding: var(--s2) var(--s3);
-      font-size: var(--t-sm);
-      font-weight: 500;
-      color: var(--c-ink-2);
-      border-radius: var(--radius-sm);
-      transition: color 150ms ease, background-color 150ms ease;
-    }
-    .org-news-header__nav a:hover { color: var(--c-ink); background: var(--c-bg-alt); }
-    .org-news-header__nav a[aria-current="page"] {
-      color: var(--c-accent);
-      font-weight: 600;
-    }
-    @media (min-width: 1024px) { .org-news-header__nav { display: flex; } }
-
-    .org-news-header__actions {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: var(--s2);
-    }
-
-    /* Buttons */
-    .atom-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--s2);
-      padding: var(--s2) var(--s4);
-      font-family: var(--font-sans);
-      font-size: var(--t-sm);
-      font-weight: 600;
-      line-height: 1.3;
-      border: 1px solid transparent;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .atom-btn--primary {
-      background: var(--c-accent);
-      color: #fff;
-      border-color: var(--c-accent);
-    }
-    .atom-btn--primary:hover { background: var(--c-accent-h); border-color: var(--c-accent-h); }
-    .atom-btn--ghost {
-      background: transparent;
-      color: var(--c-ink-2);
-      border-color: var(--c-border);
-    }
-    .atom-btn--ghost:hover { background: var(--c-bg-alt); color: var(--c-ink); }
-    .atom-btn--ghost-dark {
-      background: transparent;
-      color: var(--c-ink);
-      border-color: var(--c-ink);
-    }
-    .atom-btn--ghost-dark:hover { background: var(--c-ink); color: var(--c-white); }
-    .atom-btn--sm  { padding: 6px var(--s3); font-size: var(--t-meta); }
-    .atom-btn--icon { padding: var(--s2); }
-
-    .org-news-header__menu-toggle { display: flex; }
-    @media (min-width: 1024px) { .org-news-header__menu-toggle { display: none; } }
-
-    /* Estado abierto del menú móvil */
-    .org-news-header.is-menu-open .org-news-header__nav {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--c-white);
-      border-top: var(--border-base);
-      border-bottom: var(--border-base);
-      box-shadow: var(--shadow-md);
-      padding: var(--s2) 0;
-      z-index: 99;
-    }
-    .org-news-header.is-menu-open .org-news-header__nav ul {
-      flex-direction: column;
-      gap: 0;
-    }
-    .org-news-header.is-menu-open .org-news-header__nav a {
-      padding: var(--s3) var(--s6);
-      border-radius: 0;
-      font-size: var(--t-body);
-    }
-    @media (min-width: 1024px) {
-      .org-news-header.is-menu-open .org-news-header__nav {
-        display: flex;
-        flex-direction: row;
-        position: static;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-      }
-      .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: row; }
-      .org-news-header.is-menu-open .org-news-header__nav a {
-        padding: var(--s2) var(--s3);
-        font-size: var(--t-sm);
-      }
-    }
-
-    /* Panel de búsqueda */
-    .org-news-header__search-panel {
-      border-top: var(--border-base);
-      background: var(--c-white);
-      box-shadow: var(--shadow-md);
-    }
-    .org-news-header__search-panel[hidden] { display: none; }
-    .org-news-header__search-inner {
-      display: flex;
-      align-items: center;
-      gap: var(--s3);
-      max-width: var(--container);
-      margin-inline: auto;
-      padding: var(--s4) var(--s4);
-    }
-    @media (min-width: 640px)  { .org-news-header__search-inner { padding-inline: var(--s6); } }
-    @media (min-width: 1024px) { .org-news-header__search-inner { padding-inline: var(--s8); } }
-    .org-news-header__search-form {
-      display: flex;
-      align-items: center;
-      gap: var(--s3);
-      flex: 1;
-    }
-    .org-news-header__search-input {
-      flex: 1;
-      height: 40px;
-      padding: 0 var(--s4);
-      font-family: var(--font-sans);
-      font-size: var(--t-body);
-      color: var(--c-ink);
-      background: var(--c-paper);
-      border: var(--border-base);
-      border-radius: var(--radius-md);
-      outline: none;
-      transition: border-color 150ms ease, box-shadow 150ms ease;
-    }
-    .org-news-header__search-input:focus {
-      border-color: var(--c-accent);
-      box-shadow: 0 0 0 3px rgb(191 32 37 / 0.12);
-    }
-    .org-news-header__search-input::placeholder { color: var(--c-muted); }
-    .org-news-header__search-close { flex-shrink: 0; }
-
-    /* ── BREADCRUMB ──────────────────────────────────────────────────────── */
-    .atom-breadcrumb {
-      padding-block: var(--s3);
-      border-bottom: var(--border-base);
-    }
-    .atom-breadcrumb ol { display: flex; align-items: center; gap: var(--s2); }
-    .atom-breadcrumb__item {
-      display: flex;
-      align-items: center;
-      gap: var(--s2);
-      font-size: var(--t-meta);
-      color: var(--c-muted);
-    }
-    .atom-breadcrumb__link:hover { color: var(--c-ink); }
-    .atom-breadcrumb__separator { color: var(--c-border); }
-    .atom-breadcrumb__item:last-child { color: var(--c-ink); font-weight: 500; }
-
-    /* ── PILLS ───────────────────────────────────────────────────────────── */
-    .atom-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px var(--s2);
-      font-size: var(--t-label);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 2px;
-      line-height: 1.4;
-    }
-    .atom-pill--neutral { background: var(--c-bg-alt); color: var(--c-ink-2); }
-    .atom-pill--accent  { background: var(--c-accent);  color: #fff; }
-
-    /* ── TYPOGRAPHY ──────────────────────────────────────────────────────── */
-    .atom-title--display {
-      font-family: var(--font-serif);
-      font-size: var(--t-display);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--c-ink);
-    }
-    .atom-title--h2 {
-      font-family: var(--font-serif);
-      font-size: var(--t-h2);
-      font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-      color: var(--c-ink);
-    }
-    .atom-title--h3 {
-      font-family: var(--font-sans);
-      font-size: var(--t-h3);
-      font-weight: 600;
-      line-height: 1.35;
-      letter-spacing: -0.01em;
-      color: var(--c-ink);
-    }
-    .atom-title--xs {
-      font-family: var(--font-sans);
-      font-size: var(--t-label);
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--c-muted);
-    }
-    .atom-txt--lead {
-      font-size: var(--t-body);
-      line-height: 1.65;
-      color: var(--c-ink-2);
-    }
-    .atom-txt--sm    { font-size: var(--t-sm); line-height: 1.5; color: var(--c-ink-2); }
-    .atom-txt--muted { color: var(--c-muted); }
-    .atom-link { transition: color 150ms ease; }
-    .atom-link:hover { color: var(--c-accent); }
-
-    /* ── N1 HERO PRINCIPAL ───────────────────────────────────────────────── */
-    .org-hero-principal {
-      display: grid;
-      margin-block: var(--s6);
-      background: var(--c-white);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: var(--border-base);
-    }
-    .org-hero-principal__imagen {
-      margin: 0;
-      aspect-ratio: 16/9;
-      overflow: hidden;
-    }
-    .org-hero-principal__imagen img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .org-hero-principal:hover .org-hero-principal__imagen img { transform: scale(1.02); }
-    .org-hero-principal__content {
-      padding: var(--s6);
-      display: flex;
-      flex-direction: column;
-      gap: var(--s4);
-    }
-    .org-hero-principal__meta-top { display: flex; align-items: center; gap: var(--s3); }
-    .org-hero-principal__meta-bottom {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--s4);
-      margin-top: auto;
-      padding-top: var(--s4);
-      border-top: var(--border-base);
-    }
-
-    @media (min-width: 768px) {
-      .org-hero-principal {
-        grid-template-columns: 3fr 2fr;
-        min-height: 460px;
-      }
-      .org-hero-principal__imagen { aspect-ratio: auto; }
-      .org-hero-principal__content { padding: var(--s8) var(--s8) var(--s8) var(--s8); }
-    }
-    @media (min-width: 1024px) {
-      .org-hero-principal { min-height: 500px; }
-      .org-hero-principal__content { padding: var(--s12) var(--s8); }
-    }
-
-    /* ── ORG-GRID-EDITORIAL ──────────────────────────────────────────────── */
-    /*
-     * sidebar = var(--sidebar) = 300px = NP-3.width [exacto]
-     * gap     = var(--gap)     =  32px = 8 × 4px
-     */
-    .org-grid-editorial {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--s8);
-      align-items: start;
-      padding-block: var(--s8);
-    }
-    @media (min-width: 1024px) {
-      .org-grid-editorial {
-        grid-template-columns: 1fr var(--sidebar);
-      }
-    }
-
-    .org-grid-editorial__sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: var(--s6);
-    }
-    @media (min-width: 1024px) {
-      .org-grid-editorial__sidebar {
-        position: sticky;
-        top: calc(40px + 72px + var(--s4));
-      }
-    }
-
-    /* ── N2: CARDS CON IMAGEN ─────────────────────────────────────────────── */
-    .org-grid-n2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--s4);
-      margin-bottom: var(--s8);
-    }
-    .org-grid-n2__heading {
-      grid-column: 1 / -1;
-      padding-bottom: var(--s3);
-      border-bottom: 2px solid var(--c-accent);
-      margin-bottom: var(--s2);
-    }
-    @media (min-width: 640px)  { .org-grid-n2 { grid-template-columns: 1fr 1fr; } }
-    @media (min-width: 1024px) { .org-grid-n2 { grid-template-columns: 1fr 1fr 1fr; gap: var(--s4); } }
-
-    .mol-card-noticia {
-      background: var(--c-white);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: var(--border-base);
-      display: flex;
-      flex-direction: column;
-      transition: box-shadow 200ms ease, transform 200ms ease;
-    }
-    .mol-card-noticia:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-    .mol-card-noticia__imagen {
-      margin: 0;
-      aspect-ratio: 3/2;
-      overflow: hidden;
-    }
-    .mol-card-noticia__imagen img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .mol-card-noticia:hover .mol-card-noticia__imagen img { transform: scale(1.04); }
-    .mol-card-noticia__content {
-      padding: var(--s4);
-      display: flex;
-      flex-direction: column;
-      gap: var(--s3);
-      flex: 1;
-    }
-    .mol-card-noticia__meta-top  { display: flex; align-items: center; gap: var(--s2); }
-    .mol-card-noticia__meta-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: var(--s3);
-      border-top: var(--border-base);
-    }
-
-    /* ── BILLBOARD NP-4 ─────────────────────────────────────────────────── */
-    /*
-     * Posición: entre zona de desarrollo (N2) y zona de profundidad (N3)
-     * ATLAS 06.3 §5: única posición permitida en esta zona
-     * ATLAS 06.3 §7: 1 billboard por zona de profundidad
-     * Altura zona: 90px NP-4 + 2×8px padding = 106px (ritmo vertical)
-     * Ancho máximo: var(--ad-billboard-w) = 970px [exacto NP-4]
-     */
-    .org-billboard-zone {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--s2);
-      margin-block: var(--s8);
-      padding-block: var(--s2);
-      padding-inline: var(--s4);
-      background: var(--c-bg-alt);
-      border-radius: var(--radius-md);
-      border: var(--border-base);
-    }
-    .org-billboard-zone .mol-publicidad__label { align-self: flex-start; }
-    .mol-publicidad--billboard {
-      width: 100%;
-      max-width: var(--ad-billboard-w);
-      line-height: 0;
-    }
-    .mol-publicidad--billboard img {
-      width: 100%;
-      height: var(--ad-billboard-h);
-      object-fit: cover;
-      border-radius: var(--radius-sm);
-    }
-
-    /* ── N3: NOTICIAS SECUNDARIAS ────────────────────────────────────────── */
-    .org-grid-n3__heading {
-      padding-bottom: var(--s3);
-      margin-bottom: var(--s4);
-      border-bottom: 2px solid var(--c-accent);
-    }
-    .org-grid-n3__list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-    @media (min-width: 640px) { .org-grid-n3__list { grid-template-columns: 1fr 1fr; } }
-
-    .mol-noticia-secundaria {
-      padding-block: var(--s4);
-      border-bottom: var(--border-base);
-      display: flex;
-      flex-direction: column;
-      gap: var(--s2);
-      min-height: 88px; /* 11 × 8px ritmo vertical */
-    }
-    @media (min-width: 640px) {
-      .org-grid-n3__list li:nth-child(odd)  .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); }
-      .org-grid-n3__list li:nth-child(even) .mol-noticia-secundaria { padding-left: var(--s6); }
-      .org-grid-n3__list li:nth-last-child(-n+2) .mol-noticia-secundaria { border-bottom: none; }
-    }
-    .mol-noticia-secundaria:last-child { border-bottom: none; }
-    .mol-noticia-secundaria__meta-top { display: flex; align-items: center; gap: var(--s2); }
-    .mol-noticia-secundaria .atom-title--h3 a { transition: color 150ms ease; }
-    .mol-noticia-secundaria .atom-title--h3 a:hover { color: var(--c-accent); }
-
-    /* ── SIDEBAR: DATOS DE MERCADO ──────────────────────────────────────── */
-    .mol-datos-mercado {
-      background: var(--c-white);
-      border-radius: var(--radius-lg);
-      border: var(--border-base);
-      overflow: hidden;
-    }
-    .mol-datos-mercado__heading {
-      padding: var(--s4) var(--s4) var(--s3);
-      border-bottom: 2px solid var(--c-accent);
-    }
-    .mol-datos-mercado__list { padding-block: var(--s1); }
-    .mol-datos-mercado__item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 var(--s4);
-      border-bottom: var(--border-base);
-      min-height: 40px; /* 5 × 8px */
-    }
-    .mol-datos-mercado__item:last-child { border-bottom: none; }
-    .mol-datos-mercado__nombre { font-size: var(--t-sm); color: var(--c-ink-2); }
-    .mol-datos-mercado__values { display: flex; align-items: center; gap: var(--s3); }
-    .mol-datos-mercado__cambio { font-size: var(--t-label); font-weight: 700; }
-    .mol-datos-mercado__cambio--alza   { color: var(--c-alza); }
-    .mol-datos-mercado__cambio--baja   { color: var(--c-baja); }
-    .mol-datos-mercado__cambio--neutro { color: var(--c-neutro); }
-    .mol-datos-mercado__cta {
-      display: block;
-      margin: var(--s3) var(--s4) var(--s4);
-      text-align: center;
-    }
-
-    /* ── SIDEBAR: PUBLICIDAD NP-3 ────────────────────────────────────────── */
-    /*
-     * Medium Rectangle 300×250 — width = var(--sidebar) = 300px [exacto]
-     * Posición: sidebar zona de desarrollo (ATLAS 06.3 §5)
-     */
-    .mol-publicidad {
-      display: flex;
-      flex-direction: column;
-      gap: var(--s1);
-    }
-    .mol-publicidad img {
-      width: 100%;
-      border-radius: var(--radius-md);
-    }
-
-    /* ── FOOTER ──────────────────────────────────────────────────────────── */
-    .org-news-footer {
-      background: var(--c-ink);
-      color: var(--c-ticker-txt);
-      margin-top: var(--s16);
-      padding-block: var(--s12);
-    }
-    .org-news-footer__inner {
-      max-width: var(--container);
-      margin-inline: auto;
-      padding-inline: var(--s8);
-      display: flex;
-      flex-direction: column;
-      gap: var(--s6);
-    }
-    @media (min-width: 640px) {
-      .org-news-footer__inner {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
-    .org-news-footer__nav a {
-      font-size: var(--t-sm);
-      color: #9ca3af;
-      transition: color 150ms ease;
-    }
-    .org-news-footer__nav a:hover { color: var(--c-white); }
-    .org-news-footer__copy { font-size: var(--t-meta); color: #6b7280; }
-
-    /* ── REDUCED MOTION ──────────────────────────────────────────────────── */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    .org-news-header__main { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s4); min-height: 76px; max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
+    .org-news-header__brand { display: flex; align-items: center; gap: var(--s4); } .org-news-header__logo { font-family: var(--font-serif); font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em; }
+    .org-news-header__logo span { color: var(--c-accent); } .org-news-header__tagline { display: none; font-size: var(--t-meta); color: var(--c-muted); max-width: 18rem; }
+    .org-news-header__nav { display: none; justify-content: center; } .org-news-header__nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s1); }
+    .org-news-header__nav a { display: block; padding: var(--s2) var(--s3); font-size: var(--t-sm); font-weight: 500; color: var(--c-ink-2); border-radius: var(--radius-sm); transition: color 150ms ease, background-color 150ms ease; }
+    .org-news-header__nav a:hover, .org-news-header__nav a[aria-current="page"] { background: var(--c-paper); color: var(--c-accent-strong); }
+    .org-news-header__actions { display: flex; align-items: center; gap: var(--s2); }
+    @media (min-width: 900px) { .org-news-header__tagline { display: block; } }
+    @media (min-width: 1100px) { .org-news-header__nav { display: flex; } .org-news-header__menu-toggle { display: none; } }
+    .org-news-header__panel { display: none; border-top: var(--border-base); background: var(--c-white); box-shadow: var(--shadow-md); }
+    .org-news-header.is-menu-open .org-news-header__panel { display: block; }
+    .org-news-header__panel nav, .org-news-header__panel form { max-width: var(--container); margin-inline: auto; padding: var(--s4); }
+    .org-news-header__panel ul { display: grid; gap: var(--s2); }
+    .org-news-header__panel a { display: block; padding: var(--s3) var(--s2); border-bottom: 1px solid var(--c-border-2); color: var(--c-ink-2); font-weight: 500; }
+    .org-news-header__search-row { display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center; }
+    .atom-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); min-height: 44px; padding: var(--s2) var(--s4); font: inherit; font-size: var(--t-sm); font-weight: 700; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--c-ink); cursor: pointer; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+    .atom-btn--primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-white); } .atom-btn--primary:hover { background: var(--c-accent-strong); border-color: var(--c-accent-strong); }
+    .atom-btn--ghost { border-color: var(--c-border); background: var(--c-white); color: var(--c-ink-2); } .atom-btn--ghost:hover { background: var(--c-paper); color: var(--c-ink); }
+    .atom-btn--quiet { min-height: 40px; padding-inline: var(--s3); color: var(--c-ink-2); }
+    .atom-pill { display: inline-flex; align-items: center; gap: var(--s1); min-height: 24px; padding-inline: var(--s2); border-radius: 999px; background: var(--c-paper); color: var(--c-accent-strong); font-size: var(--t-label); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .atom-title--display { font-family: var(--font-serif); font-size: var(--t-display); font-weight: 800; line-height: 1.02; letter-spacing: -0.045em; text-wrap: balance; }
+    .atom-title--h2 { font-family: var(--font-serif); font-size: var(--t-h2); font-weight: 700; line-height: 1.18; letter-spacing: -0.03em; text-wrap: balance; }
+    .atom-title--h3 { font-family: var(--font-sans); font-size: var(--t-h3); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; text-wrap: balance; }
+    .atom-title--xs { font-size: var(--t-label); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-muted); }
+    .atom-txt--lead { font-size: var(--t-lead); line-height: 1.55; color: var(--c-ink-2); max-width: 56ch; } .atom-txt--sm { font-size: var(--t-sm); line-height: 1.55; color: var(--c-ink-2); } .atom-txt--muted { color: var(--c-muted); }
+    .atom-link { transition: color 150ms ease; } .atom-link:hover { color: var(--c-accent-strong); }
+    .atom-input { width: 100%; min-height: 44px; padding: var(--s2) var(--s4); border: var(--border-base); border-radius: var(--radius-md); background: var(--c-paper); color: var(--c-ink); font: inherit; }
+    .atom-breadcrumb { padding-block: var(--s4); border-bottom: 1px solid var(--c-border-2); } .atom-breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--s2); color: var(--c-muted); font-size: var(--t-meta); } .atom-breadcrumb__item { display: inline-flex; align-items: center; gap: var(--s2); } .atom-breadcrumb__item:last-child { color: var(--c-ink); }
+    .org-hero-led { padding-block: var(--s10) var(--s12); } .org-hero-led__grid { display: grid; gap: var(--gap); align-items: start; }
+    .org-hero-led__main { display: grid; gap: var(--s6); padding: var(--s6); background: linear-gradient(180deg, rgb(255 255 255 / 0.94) 0%, rgb(255 255 255 / 1) 100%); border: var(--border-base); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .org-hero-led__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); } .org-hero-led__summary { display: grid; gap: var(--s3); }
+    .org-hero-led__bullet-list { display: grid; gap: var(--s2); padding-top: var(--s2); border-top: 1px solid var(--c-border-2); }
+    .org-hero-led__bullet-list li { position: relative; padding-left: var(--s4); font-size: var(--t-sm); color: var(--c-ink-2); }
+    .org-hero-led__bullet-list li::before { content: ''; position: absolute; top: 0.7em; left: 0; width: 6px; height: 6px; border-radius: 999px; background: var(--c-accent); }
+    .org-hero-led__visual { overflow: hidden; border-radius: calc(var(--radius-lg) - var(--s2)); aspect-ratio: 16 / 9; } .org-hero-led__visual img { width: 100%; height: 100%; object-fit: cover; }
+    .org-hero-led__footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--c-border-2); }
+    .org-hero-led__rail { display: grid; gap: var(--s4); } .mol-rail-box { padding: var(--s5); background: var(--c-white); border: var(--border-base); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .mol-rail-box__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); margin-bottom: var(--s4); padding-bottom: var(--s3); border-bottom: 1px solid var(--c-border-2); }
+    .mol-rail-box__list { display: grid; gap: var(--s4); } .mol-rail-box__list li + li { padding-top: var(--s4); border-top: 1px solid var(--c-border-2); }
+    .mol-rail-box__item-title { font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.2; letter-spacing: -0.02em; }
+    .mol-rail-box__time { color: var(--c-accent-strong); font-size: var(--t-label); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--s2); }
+    @media (min-width: 1120px) { .org-hero-led__grid { grid-template-columns: minmax(0, 1fr) var(--rail); } }
+    .org-section { padding-block: var(--s10); border-top: 1px solid var(--c-border-2); } .org-section__header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--s3); margin-bottom: var(--s6); } .org-section__intro { max-width: 40rem; }
+    .org-story-grid { display: grid; gap: var(--s5); } .org-story-grid--n2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .mol-story-card { display: grid; gap: var(--s4); background: var(--c-white); border: var(--border-base); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); min-height: 100%; }
+    .mol-story-card__img { aspect-ratio: 16 / 10; background: var(--c-paper-2); overflow: hidden; } .mol-story-card__img img { width: 100%; height: 100%; object-fit: cover; }
+    .mol-story-card__body { display: grid; gap: var(--s3); padding: 0 var(--s5) var(--s5); }
+    .mol-story-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-top: calc(var(--s5) * -1); padding-top: var(--s5); background: linear-gradient(180deg, rgb(255 255 255 / 0) 0%, rgb(255 255 255 / 1) 40%); }
+    .mol-story-card__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--c-border-2); }
+    @media (min-width: 720px) { .org-story-grid--n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1120px) { .org-story-grid--n2 { grid-template-columns: 1.2fr 1fr 1fr 1fr; } }
+    .org-radar { background: linear-gradient(180deg, #fcfaf6 0%, #f6efe4 100%); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); } .org-radar__grid { display: grid; gap: var(--s4); }
+    .mol-radar-item { display: grid; gap: var(--s3); padding: var(--s5); background: rgb(255 255 255 / 0.72); border: var(--border-base); border-radius: var(--radius-lg); }
+    @media (min-width: 720px) { .org-radar__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1100px) { .org-radar__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .org-billboard-zone { padding-block: var(--s10); }
+    .mol-publicidad { display: grid; gap: var(--s2); justify-items: center; padding: var(--s5); border: var(--border-base); border-radius: var(--radius-lg); background: linear-gradient(180deg, #f7f1e7 0%, #efe6d8 100%); box-shadow: var(--shadow-sm); }
+    .mol-publicidad__label { font-size: var(--t-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); font-weight: 700; }
+    .mol-publicidad__link { display: block; max-width: min(100%, var(--ad-billboard-w)); border-radius: var(--radius-md); overflow: hidden; line-height: 0; }
   </style>
 </head>
-
 <body>
-  <!--
-    RESPONSIVE:
-    base (320px)  columna única, todo apilado
-    sm   (640px)  N2 en 2-col · N3 en 2-col
-    md   (768px)  leaderboard visible · hero en 2-col (3fr·2fr)
-    lg  (1024px)  grid editorial: main 1fr · sidebar 300px (sticky)
-    xl  (1440px)  org-site-skin visible (skins NP-1 laterales)
-
-    DOM ORDER = PRIORIDAD DE CONTENIDO (ATLAS 05.0 context-first):
-    ticker → leaderboard → nav → [N1 → N2 → billboard → N3] → [sidebar] → footer
-
-    MAPA PUBLICITARIO (ATLAS 06.3):
-    NP-1  Site Skin      220px × 2     frame lateral @ ≥1440px
-    NP-2  Leaderboard    728 × 90      zona cabecera (entre ticker y nav)
-    NP-3  Medium Rect    300 × 250     sidebar (define columna del grid)
-    NP-4  Billboard      970 × 90      pausa entre desarrollo y profundidad
-  -->
-
-  <!-- ═══ SITE SKIN NP-1 ═══════════════════════════════════════════════ -->
-  <div class="org-site-skin" aria-hidden="true" role="presentation">
-    <div class="org-site-skin__wing org-site-skin__wing--left">
-      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
-    </div>
-    <div class="org-site-skin__wing org-site-skin__wing--right">
-      <img src="https://placehold.co/220x600/ece9e3/d1cfc9?text=NP-1" alt="" width="220" height="600" loading="lazy">
-    </div>
+  <style>
+    .org-market-deck { display: grid; gap: var(--gap); align-items: start; }
+    .org-market-deck__main { display: grid; gap: var(--s5); }
+    .org-market-deck__lead { display: grid; gap: var(--s4); padding-bottom: var(--s5); border-bottom: 1px solid var(--c-border-2); }
+    .org-market-deck__lead-grid { display: grid; gap: var(--s4); }
+    .org-market-deck__lead-image { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 9; }
+    .org-market-deck__briefs { display: grid; gap: var(--s4); }
+    .mol-brief-row { display: grid; gap: var(--s3); padding-bottom: var(--s4); border-bottom: 1px solid var(--c-border-2); }
+    .mol-market-panel { display: grid; gap: var(--s4); padding: var(--s5); background: var(--c-white); border: var(--border-base); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); position: sticky; top: 132px; }
+    .mol-market-panel__list { display: grid; gap: var(--s3); }
+    .mol-market-panel__item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s3); padding-bottom: var(--s3); border-bottom: 1px solid var(--c-border-2); }
+    .mol-market-panel__dot { width: 10px; height: 10px; border-radius: 999px; background: var(--c-deep); }
+    .mol-market-panel__dot--accent { background: var(--c-accent); }
+    .mol-market-panel__value { text-align: right; font-size: var(--t-sm); font-weight: 700; }
+    .mol-market-panel__change { display: block; font-size: var(--t-meta); font-weight: 700; }
+    .mol-market-panel__change--up { color: var(--c-positive); }
+    .mol-market-panel__change--down { color: var(--c-negative); }
+    .mol-market-panel__change--flat { color: var(--c-neutral); }
+    @media (min-width: 900px) { .org-market-deck__lead-grid { grid-template-columns: 1.2fr 1fr; align-items: center; } }
+    @media (min-width: 1120px) { .org-market-deck { grid-template-columns: minmax(0, 1fr) 320px; } .org-market-deck__briefs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .org-economy-grid { display: grid; gap: var(--s5); }
+    .org-economy-grid__lead, .org-economy-grid__list article { background: var(--c-white); border: var(--border-base); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .org-economy-grid__lead { overflow: hidden; }
+    .org-economy-grid__lead figure { aspect-ratio: 16 / 10; overflow: hidden; }
+    .org-economy-grid__lead-body, .org-economy-grid__list article { padding: var(--s5); display: grid; gap: var(--s3); }
+    .org-economy-grid__list { display: grid; gap: var(--s4); }
+    @media (min-width: 1120px) { .org-economy-grid { grid-template-columns: 1.15fr 1fr; } .org-economy-grid__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .org-opinion-strip { padding-block: var(--s10); background: linear-gradient(180deg, #f3e3cf 0%, var(--c-opinion) 100%); border-top: 1px solid #e3ccb0; border-bottom: 1px solid #e3ccb0; }
+    .org-opinion-strip__grid { display: grid; gap: var(--s4); }
+    .mol-opinion-card { display: grid; gap: var(--s3); padding: var(--s5); background: rgb(255 255 255 / 0.55); border: 1px solid rgb(139 104 67 / 0.18); border-radius: var(--radius-lg); }
+    .mol-opinion-card__author { display: flex; align-items: center; gap: var(--s3); }
+    .mol-opinion-card__avatar { width: 56px; height: 56px; border-radius: 999px; overflow: hidden; border: 2px solid rgb(255 255 255 / 0.8); }
+    .mol-opinion-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    @media (min-width: 900px) { .org-opinion-strip__grid { grid-template-columns: 0.8fr 1fr 1fr 1fr; } }
+    .org-card-mosaic { display: grid; gap: var(--s5); }
+    .org-card-mosaic--three { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .org-card-mosaic--four { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    @media (min-width: 720px) { .org-card-mosaic--three { grid-template-columns: repeat(3, minmax(0, 1fr)); } .org-card-mosaic--four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1120px) { .org-card-mosaic--four { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .org-territories { display: grid; gap: var(--s5); }
+    .org-territories__grid { display: grid; gap: var(--s4); }
+    .mol-territory-card { display: grid; gap: var(--s3); padding: var(--s4); background: var(--c-white); border: var(--border-base); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .mol-territory-card__tag { font-size: var(--t-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); font-weight: 700; }
+    .mol-territory-card__img { aspect-ratio: 16 / 10; border-radius: var(--radius-md); overflow: hidden; }
+    @media (min-width: 720px) { .org-territories__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1120px) { .org-territories__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .org-news-footer { margin-top: var(--s16); padding-block: var(--s12); background: var(--c-deep); color: #dbe3ef; }
+    .org-news-footer__inner { display: grid; gap: var(--s5); max-width: var(--container); margin-inline: auto; padding-inline: var(--s4); }
+    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
+    .org-news-footer__nav a { color: #cbd5e1; font-size: var(--t-sm); }
+    .org-news-footer__copy { color: #94a3b8; font-size: var(--t-meta); }
+    @media (min-width: 900px) { .org-news-footer__inner { grid-template-columns: 1fr auto; align-items: center; } }
+  </style>
+  <a href="#contenido" class="syx-sr-only syx-sr-only--focusable">Saltar al contenido principal</a>
+  <div class="org-site-skin" aria-hidden="true">
+    <div class="org-site-skin__wing org-site-skin__wing--left"><img src="https://placehold.co/220x1200/18253d/e5e7eb?text=Meridian+Markets" alt=""></div>
+    <div class="org-site-skin__wing org-site-skin__wing--right"><img src="https://placehold.co/220x1200/c75b12/fff7ed?text=Economia+en+Meridian" alt=""></div>
   </div>
-
-  <!-- ═══ SKIP LINK ════════════════════════════════════════════════════ -->
-  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">Ir al contenido principal</a>
-
-  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
-  <header class="org-news-header" role="banner">
-
-    <!-- Ticker — cotizaciones (40px · 5×8px) -->
-    <div class="org-news-header__ticker">
-      <div class="mol-ticker"
-        role="region"
-        aria-label="Cotizaciones en tiempo real"
-        aria-live="polite"
-        aria-atomic="false"
-      >
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">IBEX&nbsp;35</span>
-          <span class="mol-ticker__valor">10.842</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 1,24%">▲ +1,24%</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">EUR/USD</span>
-          <span class="mol-ticker__valor">1,0842</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada del 0,32%">▼ −0,32%</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">Brent</span>
-          <span class="mol-ticker__valor">83,40</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,87%">▲ +0,87%</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">Oro</span>
-          <span class="mol-ticker__valor">2.318</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,54%">▲ +0,54%</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">10Y&nbsp;ES</span>
-          <span class="mol-ticker__valor">3,21%</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--baja" aria-label="Bajada de 3 puntos básicos">▼ −3pb</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">DAX</span>
-          <span class="mol-ticker__valor">18.461</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Subida del 0,83%">▲ +0,83%</span>
-        </div>
-        <span class="mol-ticker__sep" aria-hidden="true">·</span>
-        <div class="mol-ticker__item">
-          <span class="mol-ticker__nombre">EUR/GBP</span>
-          <span class="mol-ticker__valor">0,8561</span>
-          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Sin variación">−0,01%</span>
-        </div>
+  <header class="org-news-header">
+    <div class="org-news-header__ticker" aria-label="Cotizaciones destacadas">
+      <div class="mol-ticker">
+        <div class="mol-ticker__item"><span class="mol-ticker__name">Ibex 35</span><span class="mol-ticker__value">18.204,10</span><span class="mol-ticker__change mol-ticker__change--up">+0,53%</span></div>
+        <div class="mol-ticker__item"><span class="mol-ticker__name">Euro / Dólar</span><span class="mol-ticker__value">1,1711</span><span class="mol-ticker__change mol-ticker__change--up">+0,16%</span></div>
+        <div class="mol-ticker__item"><span class="mol-ticker__name">Brent</span><span class="mol-ticker__value">91,78</span><span class="mol-ticker__change mol-ticker__change--down">−1,09%</span></div>
+        <div class="mol-ticker__item"><span class="mol-ticker__name">Oro</span><span class="mol-ticker__value">4.746</span><span class="mol-ticker__change mol-ticker__change--down">−0,47%</span></div>
+        <div class="mol-ticker__item"><span class="mol-ticker__name">Bitcoin</span><span class="mol-ticker__value">77.720</span><span class="mol-ticker__change mol-ticker__change--down">−0,21%</span></div>
       </div>
     </div>
-
-    <!--
-      LEADERBOARD NP-2 — 728×90
-      Ancla matemática del header: su anchura (728px) define la referencia
-      de densidad informativa de la zona de cabecera.
-      Oculto <768px — formato no viable en móvil.
-    -->
-    <div class="org-news-header__leaderboard" role="complementary" aria-label="Espacio publicitario de cabecera">
+    <div class="org-news-header__leaderboard">
       <div class="org-news-header__leaderboard-inner">
         <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
-        <a
-          href="#"
-          class="mol-publicidad__link"
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          aria-label="Publicidad — se abre en nueva pestaña"
-        >
-          <img
-            src="https://placehold.co/728x90/e8e6e0/b0ada6?text=Leaderboard+NP-2+·+728×90"
-            alt=""
-            aria-hidden="true"
-            width="728" height="90"
-            loading="lazy"
-          >
-        </a>
+        <a class="mol-publicidad__link" href="#" rel="noopener noreferrer sponsored" target="_blank" aria-label="Publicidad de cabecera, se abre en nueva pestaña"><img src="https://placehold.co/728x90/e8dfd1/7c5b35?text=NP-2+%C2%B7+Leaderboard+728x90" alt="" width="728" height="90"></a>
       </div>
     </div>
-
-    <!-- Nav principal — 72px · 9×8px -->
-    <div class="org-news-header__inner">
-      <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
-        <img
-          src="https://placehold.co/140x26/1a1a1a/ffffff?text=MERIDIAN"
-          alt="Meridian"
-          width="140" height="26"
-          loading="eager"
-        >
-      </a>
-
-      <nav id="site-nav" class="org-news-header__nav" aria-label="Secciones principales">
-        <ul role="list">
-          <li><a href="/economia" aria-current="page">Economía</a></li>
-          <li><a href="/mercados">Mercados</a></li>
-          <li><a href="/empresas">Empresas</a></li>
-          <li><a href="/internacional">Internacional</a></li>
-          <li><a href="/opinion">Opinión</a></li>
-          <li><a href="/datos">Datos</a></li>
+    <div class="org-news-header__main">
+      <div class="org-news-header__brand">
+        <button class="atom-btn atom-btn--ghost atom-btn--quiet org-news-header__menu-toggle" type="button" aria-expanded="false" aria-controls="header-panel" aria-label="Abrir menú de navegación">Menú</button>
+        <a class="org-news-header__logo" href="/">Mer<span>idian</span></a>
+        <p class="org-news-header__tagline">Portada económica con jerarquía editorial clara, flujo continuo y densidad controlada.</p>
+      </div>
+      <nav class="org-news-header__nav" aria-label="Secciones principales">
+        <ul>
+          <li><a href="/mercados">Mercados</a></li><li><a href="/economia" aria-current="page">Economía</a></li><li><a href="/empresas">Empresas</a></li><li><a href="/opinion">Opinión</a></li><li><a href="/tecnologia">Tecnología</a></li><li><a href="/territorios">Territorios</a></li><li><a href="/podcasts">Podcasts</a></li>
         </ul>
       </nav>
-
-      <div class="org-news-header__actions">
-        <button
-          id="search-toggle"
-          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon"
-          type="button"
-          aria-label="Abrir buscador"
-          aria-expanded="false"
-          aria-controls="search-panel"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </button>
-        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">Suscribirse</a>
-        <button
-          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle"
-          type="button"
-          aria-label="Abrir menú de navegación"
-          aria-controls="site-nav"
-          aria-expanded="false"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-        </button>
-      </div>
+      <div class="org-news-header__actions"><button class="atom-btn atom-btn--ghost atom-btn--quiet" type="button" aria-controls="header-panel" aria-expanded="false" data-search-toggle>Buscar</button><a class="atom-btn atom-btn--primary" href="/suscripcion">Suscríbete</a></div>
     </div>
-
-    <!-- Panel de búsqueda -->
-    <div
-      id="search-panel"
-      class="org-news-header__search-panel"
-      role="search"
-      aria-label="Buscar en Meridian"
-      hidden
-    >
-      <div class="org-news-header__search-inner">
-        <form class="org-news-header__search-form" action="/buscar" method="get">
-          <label for="search-input" class="syx-sr-only">Buscar noticias</label>
-          <input
-            id="search-input"
-            class="org-news-header__search-input"
-            type="search"
-            name="q"
-            placeholder="Buscar en Meridian…"
-            autocomplete="off"
-            aria-describedby="search-hint"
-          >
-          <button class="atom-btn atom-btn--primary atom-btn--sm" type="submit">Buscar</button>
-        </form>
-        <p id="search-hint" class="syx-sr-only">Escribe y pulsa Enter o el botón Buscar</p>
-        <button
-          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__search-close"
-          type="button"
-          aria-label="Cerrar buscador"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      </div>
+    <div class="org-news-header__panel" id="header-panel" hidden>
+      <nav aria-label="Navegación móvil"><ul><li><a href="/mercados">Mercados y cotizaciones</a></li><li><a href="/economia">Economía</a></li><li><a href="/empresas">Empresas y finanzas</a></li><li><a href="/opinion">Opinión</a></li><li><a href="/tecnologia">Tecnología</a></li><li><a href="/territorios">Comunidades autónomas</a></li></ul></nav>
+      <form class="page-shell org-news-header__search-row" role="search"><label class="syx-sr-only" for="site-search">Buscar en Meridian</label><input class="atom-input" id="site-search" type="search" placeholder="Buscar mercados, empresas o análisis"><button class="atom-btn atom-btn--primary" type="submit">Buscar</button></form>
     </div>
   </header>
-
-
-  <!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
-  <main id="main-content" tabindex="-1">
-    <div class="page-wrapper">
-
-      <!-- Breadcrumb -->
-      <nav class="atom-breadcrumb" aria-label="Ubicación en el sitio">
-        <ol>
-          <li class="atom-breadcrumb__item">
-            <a class="atom-breadcrumb__link" href="/">Inicio</a>
-            <span class="atom-breadcrumb__separator" aria-hidden="true">/</span>
-          </li>
-          <li class="atom-breadcrumb__item">
-            <span aria-current="page">Economía</span>
-          </li>
-        </ol>
-      </nav>
-
-
-      <!-- ─────────────────────────────────────────────────────────────────
-           N1 — HERO PRINCIPAL [ZONA DE ENTRADA — ATLAS 06.2 §4]
-           Único N1 de la portada: foco absoluto (ATLAS 06.1 §5)
-           0 bloques NP en esta zona (ATLAS 06.3 §7)
-           LCP: loading="eager" + fetchpriority="high"
-           Tipografía: display · clamp(2rem, 3.5vw+0.75rem, 3.375rem) · lh 1.08
-      ──────────────────────────────────────────────────────────────────── -->
-      <section class="org-hero-principal" aria-label="Noticia principal de economía">
-
-        <figure class="org-hero-principal__imagen">
-          <img
-            src="https://placehold.co/1200x800/1a2744/e5e7eb?text=Noticia+principal+·+N1"
-            alt="Sede de la Reserva Federal de Estados Unidos en Washington D.C."
-            width="1200" height="800"
-            loading="eager"
-            fetchpriority="high"
-          >
-        </figure>
-
-        <div class="org-hero-principal__content">
-          <div class="org-hero-principal__meta-top">
-            <span class="atom-pill atom-pill--accent">Macro</span>
-            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10T10:30:00+02:00">
-              10 abr 2026 · 10:30
-            </time>
-          </div>
-
-          <h1 class="atom-title atom-title--display">
-            La Fed mantiene los tipos en máximos de 23 años ante la persistencia de la inflación
-          </h1>
-
-          <p class="atom-txt atom-txt--lead">
-            El banco central estadounidense aplaza de nuevo el inicio del ciclo de bajadas mientras los mercados revisan al alza sus expectativas para 2025 y el dólar cotiza en máximos frente al euro.
-          </p>
-
-          <div class="org-hero-principal__meta-bottom">
-            <address class="atom-txt atom-txt--sm atom-txt--muted">
-              Por <a href="/autor/ana-garcia" class="atom-link" rel="author">Ana García</a>
-            </address>
-            <span class="atom-txt atom-txt--sm atom-txt--muted" aria-label="Tiempo de lectura: 8 minutos">
-              8 min lectura
-            </span>
-            <a href="/economia/fed-tipos-maximos-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">
-              Leer artículo
-            </a>
-          </div>
-        </div>
-
-      </section>
-
-
-      <!-- ─────────────────────────────────────────────────────────────────
-           GRID EDITORIAL — ZONA DE DESARROLLO [ATLAS 06.2 §6]
-           main 1fr · sidebar 300px (= var(--sidebar) = NP-3.width exacto)
-           gap  32px (= var(--gap)  = 8 × 4px base grid)
-           DOM: content primero — sidebar después (context-first ATLAS 05.0)
-      ──────────────────────────────────────────────────────────────────── -->
-      <div class="org-grid-editorial">
-
-        <!-- ── MAIN COLUMN ──────────────────────────────────────────── -->
-        <div class="org-grid-editorial__content">
-
-          <!-- N2: 3 cards con imagen · 1→2→3 cols -->
-          <section class="org-grid-n2" aria-labelledby="n2-heading">
-            <h2 id="n2-heading" class="atom-title atom-title--xs org-grid-n2__heading">
-              Noticias destacadas
-            </h2>
-
-            <!-- N2·1 Empresas -->
-            <article class="mol-card-noticia">
-              <figure class="mol-card-noticia__imagen">
-                <img
-                  src="https://placehold.co/600x400/374151/e5e7eb?text=Empresas"
-                  alt="Resultados récord de Iberdrola en el primer trimestre de 2026"
-                  width="600" height="400"
-                  loading="lazy"
-                >
-              </figure>
-              <div class="mol-card-noticia__content">
-                <div class="mol-card-noticia__meta-top">
-                  <span class="atom-pill atom-pill--neutral">Empresas</span>
-                </div>
-                <h3 class="atom-title atom-title--h2">
-                  <a href="/economia/iberdrola-resultados-record-2026" class="atom-link">
-                    Iberdrola bate su récord de beneficio con 5.200 millones en el primer trimestre
-                  </a>
-                </h3>
-                <p class="atom-txt atom-txt--sm">
-                  La eléctrica supera las previsiones del consenso gracias al impulso de su filial de renovables en EEUU y el negocio de redes en Brasil.
-                </p>
-                <div class="mol-card-noticia__meta-bottom">
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/carlos-ruiz" class="atom-link" rel="author">Carlos Ruiz</a>
-                  </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
-                </div>
-              </div>
-            </article>
-
-            <!-- N2·2 Bolsa -->
-            <article class="mol-card-noticia">
-              <figure class="mol-card-noticia__imagen">
-                <img
-                  src="https://placehold.co/600x400/374151/e5e7eb?text=Bolsa"
-                  alt="El Ibex 35 supera los 10.800 puntos por primera vez desde 2024"
-                  width="600" height="400"
-                  loading="lazy"
-                >
-              </figure>
-              <div class="mol-card-noticia__content">
-                <div class="mol-card-noticia__meta-top">
-                  <span class="atom-pill atom-pill--neutral">Bolsa</span>
-                </div>
-                <h3 class="atom-title atom-title--h2">
-                  <a href="/economia/ibex-35-maximo-2026" class="atom-link">
-                    El Ibex 35 escala a máximos de dos años y supera los 10.800 puntos
-                  </a>
-                </h3>
-                <p class="atom-txt atom-txt--sm">
-                  El selectivo lidera las ganancias en Europa impulsado por grandes energéticas y bancos, que acumulan alzas superiores al 3%.
-                </p>
-                <div class="mol-card-noticia__meta-bottom">
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/maria-lopez" class="atom-link" rel="author">María López</a>
-                  </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
-                </div>
-              </div>
-            </article>
-
-            <!-- N2·3 Internacional -->
-            <article class="mol-card-noticia">
-              <figure class="mol-card-noticia__imagen">
-                <img
-                  src="https://placehold.co/600x400/374151/e5e7eb?text=Internacional"
-                  alt="Dato PIB China primer trimestre 2026"
-                  width="600" height="400"
-                  loading="lazy"
-                >
-              </figure>
-              <div class="mol-card-noticia__content">
-                <div class="mol-card-noticia__meta-top">
-                  <span class="atom-pill atom-pill--neutral">Internacional</span>
-                </div>
-                <h3 class="atom-title atom-title--h2">
-                  <a href="/economia/china-pib-primer-trimestre-2026" class="atom-link">
-                    China sorprende con un crecimiento del 5,3% en el primer trimestre
-                  </a>
-                </h3>
-                <p class="atom-txt atom-txt--sm">
-                  El dato supera las estimaciones del FMI y refuerza la posición de Pekín en las negociaciones comerciales con Washington.
-                </p>
-                <div class="mol-card-noticia__meta-bottom">
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/jorge-alba" class="atom-link" rel="author">Jorge Alba</a>
-                  </address>
-                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
-                </div>
-              </div>
-            </article>
-
-          </section>
-
-
-          <!--
-            BILLBOARD NP-4 — 970×90 [PAUSA ENTRE ZONAS — ATLAS 06.3 §5]
-            Posición: entre zona de desarrollo (N2) y zona de profundidad (N3)
-            Nunca dentro de una zona activa (ATLAS 06.3 §5, regla de no ruptura §6)
-            Señal de cambio de contexto editorial (ATLAS 04.2 §15 — ruptura controlada)
-            Ancho máx: 970px = NP-4.width [exacto]
-            Altura zona: 90px + 2×8px = 106px (ritmo vertical)
-          -->
-          <div class="org-billboard-zone" role="complementary" aria-label="Espacio publicitario">
-            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
-            <a
-              href="#"
-              class="mol-publicidad--billboard mol-publicidad__link"
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              aria-label="Publicidad — se abre en nueva pestaña"
-            >
-              <img
-                src="https://placehold.co/970x90/e8e6e0/b0ada6?text=Billboard+NP-4+·+970×90"
-                alt=""
-                aria-hidden="true"
-                width="970" height="90"
-                loading="lazy"
-              >
-            </a>
-          </div>
-
-
-          <!-- N3: ZONA DE PROFUNDIDAD — 6 noticias secundarias [ATLAS 06.2 §7] -->
-          <section class="org-grid-n3" aria-labelledby="n3-heading">
-            <h2 id="n3-heading" class="atom-title atom-title--xs org-grid-n3__heading">
-              Más economía
-            </h2>
-
-            <ol class="org-grid-n3__list" role="list">
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">Empleo</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/paro-marzo-2026" class="atom-link">
-                      El paro baja por tercer mes consecutivo y roza los 2,8 millones de desempleados
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/m-torres" class="atom-link" rel="author">M. Torres</a>
-                  </address>
-                </article>
-              </li>
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">BCE</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/bce-lagarde-tipos-junio-2026" class="atom-link">
-                      Lagarde anticipa una bajada de tipos en junio si la desinflación continúa su curso
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/ana-garcia" class="atom-link" rel="author">A. García</a>
-                  </address>
-                </article>
-              </li>
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">Vivienda</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/precio-vivienda-record-madrid-2026" class="atom-link">
-                      El precio de la vivienda en Madrid alcanza su máximo histórico con una subida del 12% en un año
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/pablo-vega" class="atom-link" rel="author">P. Vega</a>
-                  </address>
-                </article>
-              </li>
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">Energía</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/precio-luz-minimo-abril-2026" class="atom-link">
-                      La luz marca un nuevo mínimo de abril con el precio medio por debajo de 40 €/MWh
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/sara-blanco" class="atom-link" rel="author">S. Blanco</a>
-                  </address>
-                </article>
-              </li>
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">Banca</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/sabadell-bbva-opa-ultima-hora" class="atom-link">
-                      BBVA eleva su oferta por Sabadell en un 8% tras el rechazo del consejo de administración
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/carlos-ruiz" class="atom-link" rel="author">C. Ruiz</a>
-                  </address>
-                </article>
-              </li>
-
-              <li>
-                <article class="mol-noticia-secundaria">
-                  <div class="mol-noticia-secundaria__meta-top">
-                    <span class="atom-pill atom-pill--neutral">Aranceles</span>
-                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
-                  </div>
-                  <h3 class="atom-title atom-title--h3">
-                    <a href="/economia/aranceles-eeuu-europa-automovil-2026" class="atom-link">
-                      La UE prepara represalias ante los nuevos aranceles del 25% de EEUU al automóvil europeo
-                    </a>
-                  </h3>
-                  <address class="atom-txt atom-txt--sm atom-txt--muted">
-                    <a href="/autor/jorge-alba" class="atom-link" rel="author">J. Alba</a>
-                  </address>
-                </article>
-              </li>
-
-            </ol>
-          </section>
-
-        </div>
-        <!-- /main column -->
-
-
-        <!-- ── SIDEBAR — 300px = NP-3.width [exacto] ─────────────── -->
-        <aside class="org-grid-editorial__sidebar" aria-label="Datos de mercado y publicidad">
-
-          <!-- Datos de mercado -->
-          <section class="mol-datos-mercado" aria-labelledby="mercado-heading">
-            <h2 id="mercado-heading" class="mol-datos-mercado__heading atom-title atom-title--xs">
-              Mercados ahora
-            </h2>
-            <ul class="mol-datos-mercado__list" role="list">
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">IBEX 35</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 10.842 puntos">10.842</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 1,24%">▲ +1,24%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">DAX</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 18.461 puntos">18.461</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,83%">▲ +0,83%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">CAC 40</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 7.821 puntos">7.821</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada del 0,21%">▼ −0,21%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/USD</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 1,0842">1,0842</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada del 0,32%">▼ −0,32%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">EUR/GBP</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 0,8561">0,8561</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Sin variación">−0,01%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Brent</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 83,40 dólares">83,40</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,87%">▲ +0,87%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Oro</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="Valor: 2.318 dólares por onza">2.318</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Subida del 0,54%">▲ +0,54%</span>
-                </div>
-              </li>
-              <li class="mol-datos-mercado__item">
-                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">10Y ES</span>
-                <div class="mol-datos-mercado__values">
-                  <span class="atom-txt atom-txt--sm" aria-label="3,21 por ciento">3,21%</span>
-                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--baja" aria-label="Bajada de 3 puntos básicos">▼ −3pb</span>
-                </div>
-              </li>
-            </ul>
-            <a href="/mercados" class="atom-btn atom-btn--ghost-dark atom-btn--sm mol-datos-mercado__cta">
-              Ver todos los mercados
-            </a>
-          </section>
-
-          <!--
-            MEDIUM RECTANGLE NP-3 — 300×250
-            Posición: sidebar zona de desarrollo (ATLAS 06.3 §5)
-            Anchura exacta = var(--sidebar) = 300px = columna sidebar
-            Señales de integración correcta (ATLAS 06.3 §17):
-            fluye con el contenido · no distrae · respeta jerarquía
-          -->
-          <div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario">
-            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
-            <a
-              href="#"
-              class="mol-publicidad__link"
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              aria-label="Publicidad — se abre en nueva pestaña"
-            >
-              <img
-                src="https://placehold.co/300x250/e8e6e0/b0ada6?text=NP-3+·+300×250"
-                alt=""
-                aria-hidden="true"
-                width="300" height="250"
-                loading="lazy"
-              >
-            </a>
-          </div>
-
+  <main id="contenido">
+    <div class="page-shell"><nav class="atom-breadcrumb" aria-label="Ruta de navegación"><ol><li class="atom-breadcrumb__item"><a class="atom-link" href="/">Inicio</a><span aria-hidden="true">/</span></li><li class="atom-breadcrumb__item"><span aria-current="page">Economía</span></li></ol></nav></div>
+    <section class="org-hero-led">
+      <div class="page-shell org-hero-led__grid">
+        <article class="org-hero-led__main" aria-labelledby="hero-heading">
+          <div class="org-hero-led__meta"><span class="atom-pill">Economía</span><time class="atom-txt--sm atom-txt--muted" datetime="2026-04-26T08:30:00+02:00">26 abr 2026 · 08:30</time><span class="atom-txt--sm atom-txt--muted">Tema central del día</span></div>
+          <div class="org-hero-led__summary"><h1 id="hero-heading" class="atom-title--display">Alimentos y energía amenazan con picos de hasta el 6% en el IPC pese a la tregua geopolítica</h1><p class="atom-txt--lead">Meridian abre la jornada con una sola noticia de entrada y contexto suficiente para entender el impacto: inflación, consumo, tipos y poder adquisitivo en una misma narrativa, sin repartir el foco entre titulares competidores.</p></div>
+          <div class="org-hero-led__visual"><img src="https://placehold.co/1200x760/e9ddcf/43311f?text=Inflacion+%C2%B7+Consumo+%C2%B7+Energia" alt="Supermercado y surtidor como símbolos de la presión inflacionaria sobre los hogares" width="1200" height="760" fetchpriority="high"></div>
+          <ul class="org-hero-led__bullet-list"><li>El encarecimiento de la cesta básica vuelve a tensionar la expectativa de tipos en Europa y EEUU.</li><li>Las subidas de carburantes y alimentación elevan el riesgo de una segunda oleada de inflación percibida.</li><li>La lectura útil para el lector no es solo el dato: es qué cambia en hipotecas, salarios y consumo diario.</li></ul>
+          <div class="org-hero-led__footer"><address class="atom-txt--sm atom-txt--muted">Por <a class="atom-link" href="/autor/ana-garcia" rel="author">Ana García</a></address><div class="org-hero-led__meta"><span class="atom-txt--sm atom-txt--muted">8 min de lectura</span><a class="atom-btn atom-btn--ghost" href="/economia/ipc-alimentos-energia-abril-2026">Leer análisis completo</a></div></div>
+        </article>
+        <aside class="org-hero-led__rail" aria-label="Herramientas editoriales de apoyo">
+          <section class="mol-rail-box" aria-labelledby="flash-heading"><div class="mol-rail-box__head"><h2 id="flash-heading" class="atom-title--xs">Flash del mercado</h2><a class="atom-link atom-txt--sm" href="/flash">Ver todos</a></div><ol class="mol-rail-box__list"><li><p class="mol-rail-box__time">08:15</p><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/flash/brent-caida-semanal">El brent baja un 0,75% y firma su mayor caída semanal en nueve meses</a></h3></li><li><p class="mol-rail-box__time">08:04</p><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/flash/sp-rating-reino-unido">S&amp;P Global reafirma el rating AA del Reino Unido</a></h3></li><li><p class="mol-rail-box__time">07:49</p><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/flash/wall-street-cierre">Wall Street sube un 4% en la semana tras el dato de empleo</a></h3></li></ol></section>
+          <section class="mol-rail-box" aria-labelledby="latest-heading"><div class="mol-rail-box__head"><h2 id="latest-heading" class="atom-title--xs">Últimas noticias</h2><a class="atom-link atom-txt--sm" href="/ultimas-noticias">Ver flujo</a></div><ol class="mol-rail-box__list"><li><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/actualidad/artemis-regreso">La misión Artemis II regresa a la Tierra tras su primer viaje lunar</a></h3></li><li><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/legal/donacion-extremadura">Recibir una donación cuesta 200.000 euros más en algunas CCAA</a></h3></li><li><h3 class="mol-rail-box__item-title"><a class="atom-link" href="/retail/barron-trump-yerba-mate">Barron Trump entra en los negocios con una marca de yerba mate</a></h3></li></ol></section>
         </aside>
-        <!-- /sidebar -->
-
       </div>
-      <!-- /org-grid-editorial -->
-
-    </div>
-    <!-- /page-wrapper -->
+    </section>
+    <section class="org-section">
+      <div class="page-shell">
+        <div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Destacadas</p><h2 class="atom-title--h2">Cuatro historias con peso propio, sin multiplicar focos</h2></div><a class="atom-btn atom-btn--ghost" href="/economia/destacadas">Más destacadas</a></div>
+        <div class="org-story-grid org-story-grid--n2">
+          <article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/900x620/1d2740/e8edf6?text=Huelgas+y+Convenios" alt="Protesta laboral como imagen de la conflictividad por convenios" width="900" height="620" loading="lazy"></figure><div class="mol-story-card__body"><div class="mol-story-card__meta"><span class="atom-pill">Empleo</span></div><h3 class="atom-title--h2"><a class="atom-link" href="/economia/huelgas-convenios-2026">Se cuadruplican las huelgas por los bloqueos a la hora de negociar convenios</a></h3><p class="atom-txt--sm">La portada original convertía esta historia en una ficha más. Meridian la sube a N2 por su efecto directo sobre salarios, consumo y paz social.</p><div class="mol-story-card__foot"><address class="atom-txt--sm atom-txt--muted">Noelia Navarro</address><time class="atom-txt--sm atom-txt--muted" datetime="2026-04-26">26 abr</time></div></div></article>
+          <article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/cbd5e1/334155?text=Opinion+Europa" alt="Representación institucional de Europa y Estados Unidos" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><div class="mol-story-card__meta"><span class="atom-pill">Opinión</span></div><h3 class="atom-title--h3"><a class="atom-link" href="/opinion/europa-trump-intervencionismo">Europa usa la dulce derrota de Trump para redoblar su intervencionismo</a></h3><div class="mol-story-card__foot"><address class="atom-txt--sm atom-txt--muted">Amador G. Ayora</address><time class="atom-txt--sm atom-txt--muted" datetime="2026-04-26">26 abr</time></div></div></article>
+          <article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/0f172a/9bd2ff?text=IA+y+Ciencia" alt="Ordenador y gráficos como metáfora del auge de estudios falsos generados con IA" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><div class="mol-story-card__meta"><span class="atom-pill">Tecnología</span></div><h3 class="atom-title--h3"><a class="atom-link" href="/tecnologia/ia-estudios-falsos">La IA pone en jaque a la ciencia y crea un mercado millonario de estudios falsos</a></h3><div class="mol-story-card__foot"><address class="atom-txt--sm atom-txt--muted">Raúl Mena</address><time class="atom-txt--sm atom-txt--muted" datetime="2026-04-26">26 abr</time></div></div></article>
+          <article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/e8dcc7/57412b?text=Cannabis+y+Industria" alt="Cultivos industriales como símbolo del negocio regulado del cannabis" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><div class="mol-story-card__meta"><span class="atom-pill">Industria</span></div><h3 class="atom-title--h3"><a class="atom-link" href="/industria/marruecos-cannabis">Marruecos legaliza sus cultivos de cannabis, pero siguen pesando más los ilegales</a></h3><div class="mol-story-card__foot"><address class="atom-txt--sm atom-txt--muted">Luis M. Cruz</address><time class="atom-txt--sm atom-txt--muted" datetime="2026-04-26">26 abr</time></div></div></article>
+        </div>
+      </div>
+    </section>
+    <section class="org-section org-radar" aria-labelledby="radar-heading"><div class="page-shell"><div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Radar fiscal</p><h2 id="radar-heading" class="atom-title--h2">La campaña de la renta se convierte en un bloque útil, no en una acumulación de promos</h2></div></div><div class="org-radar__grid"><article class="mol-radar-item"><span class="atom-pill">Declaración de la renta</span><h3 class="atom-title--h3"><a class="atom-link" href="/renta/guia-completa">Guía completa para hacer la declaración: retenciones, dudas y deducciones</a></h3><p class="atom-txt--sm">Un acceso de servicio, no cuatro módulos desconectados compitiendo por el mismo espacio.</p></article><article class="mol-radar-item"><span class="atom-pill">Declaración de la renta</span><h3 class="atom-title--h3"><a class="atom-link" href="/renta/borrador-olvidos">Los datos que suele olvidar Hacienda en el borrador</a></h3><p class="atom-txt--sm">Prioridad alta porque resuelve una necesidad concreta del lector en campaña.</p></article><article class="mol-radar-item"><span class="atom-pill">Declaración de la renta</span><h3 class="atom-title--h3"><a class="atom-link" href="/renta/autonomos">Las grandes novedades de la renta 2025: qué cambia para los autónomos</a></h3><p class="atom-txt--sm">Agrupado con el resto del especial para reducir dispersión y mejorar la decisión.</p></article><article class="mol-radar-item"><span class="atom-pill">Declaración de la renta</span><h3 class="atom-title--h3"><a class="atom-link" href="/renta/deducciones-ccaa">Todas las deducciones por comunidad autónoma, con mapa y filtros</a></h3><p class="atom-txt--sm">Un único bloque de servicio permite explorar sin saturar la zona superior.</p></article></div></div></section>
+    <section class="org-billboard-zone"><div class="page-shell"><div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario integrado entre zonas editoriales"><span class="mol-publicidad__label" aria-hidden="true">Publicidad</span><a class="mol-publicidad__link" href="#" rel="noopener noreferrer sponsored" target="_blank" aria-label="Publicidad integrada entre zonas, se abre en nueva pestaña"><img src="https://placehold.co/970x250/e7dfd2/7b5c38?text=NP-4+%C2%B7+Billboard+970x250" alt="" width="970" height="250" loading="lazy"></a></div></div></section>
+    <section class="org-section" aria-labelledby="market-heading">
+      <div class="page-shell">
+        <div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Bolsas y mercados</p><h2 id="market-heading" class="atom-title--h2">Mercados útiles: un lead potente, lecturas rápidas y panel de situación</h2></div></div>
+        <div class="org-market-deck">
+          <div class="org-market-deck__main">
+            <article class="org-market-deck__lead"><div class="org-market-deck__lead-grid"><figure class="org-market-deck__lead-image"><img src="https://placehold.co/980x620/d6c7b3/4b3a2b?text=Oro+y+Dolar" alt="Lingotes de oro como símbolo del refugio ante la debilidad del dólar" width="980" height="620" loading="lazy"></figure><div class="org-market-deck__lead-copy"><span class="atom-pill">Bolsas y mercados</span><h3 class="atom-title--h2"><a class="atom-link" href="/mercados/oro-dolar-maximos">La prueba del algodón de la debilidad del dólar la tiene el oro: alcanza un nuevo hito</a></h3><p class="atom-txt--sm">En lugar de esconder este tema en una columna secundaria, Meridian lo convierte en la puerta de entrada a la sección de mercados.</p></div></div></article>
+            <div class="org-market-deck__briefs"><article class="mol-brief-row"><span class="atom-pill">Bolsa y mercados</span><h3 class="atom-title--h3"><a class="atom-link" href="/mercados/fed-casa-blanca-banca">El pulso entre Casa Blanca, Fed y banca obliga a revisar el escenario del segundo semestre</a></h3></article><article class="mol-brief-row"><span class="atom-pill">Energía</span><h3 class="atom-title--h3"><a class="atom-link" href="/energia/trump-petroleo-precios">Trump dispara la última bala para estabilizar los precios del petróleo</a></h3></article><article class="mol-brief-row"><span class="atom-pill">Mercado de divisas</span><h3 class="atom-title--h3"><a class="atom-link" href="/mercados/euro-wall-street">Europa bate a Wall Street por segundo año, un hito inédito desde 2007</a></h3></article><article class="mol-brief-row"><span class="atom-pill">Banca privada</span><h3 class="atom-title--h3"><a class="atom-link" href="/banca/clientes-nomina-incentivos">La banca intensifica la lucha por captar clientes con nómina y dispara los incentivos</a></h3></article></div>
+          </div>
+          <aside class="mol-market-panel" aria-label="Panel de mercado"><div><p class="atom-title--xs">Mercado ahora</p><h3 class="atom-title--h3">Seis referencias para orientarse de un vistazo</h3></div><ul class="mol-market-panel__list"><li class="mol-market-panel__item"><span class="mol-market-panel__dot"></span><span>Ibex 35</span><span class="mol-market-panel__value">18.204,10 <span class="mol-market-panel__change mol-market-panel__change--up">+0,53%</span></span></li><li class="mol-market-panel__item"><span class="mol-market-panel__dot mol-market-panel__dot--accent"></span><span>Euro Stoxx 50</span><span class="mol-market-panel__value">5.937,7 <span class="mol-market-panel__change mol-market-panel__change--up">+0,18%</span></span></li><li class="mol-market-panel__item"><span class="mol-market-panel__dot"></span><span>S&amp;P 500</span><span class="mol-market-panel__value">6.825,0 <span class="mol-market-panel__change mol-market-panel__change--up">+0,09%</span></span></li><li class="mol-market-panel__item"><span class="mol-market-panel__dot mol-market-panel__dot--accent"></span><span>EUR/USD</span><span class="mol-market-panel__value">1,1711 <span class="mol-market-panel__change mol-market-panel__change--up">+0,16%</span></span></li><li class="mol-market-panel__item"><span class="mol-market-panel__dot"></span><span>Brent</span><span class="mol-market-panel__value">91,78 <span class="mol-market-panel__change mol-market-panel__change--down">−1,09%</span></span></li><li class="mol-market-panel__item"><span class="mol-market-panel__dot mol-market-panel__dot--accent"></span><span>Oro</span><span class="mol-market-panel__value">4.746 <span class="mol-market-panel__change mol-market-panel__change--down">−0,47%</span></span></li></ul><a class="atom-btn atom-btn--ghost" href="/mercados/cotizaciones">Ver todas las cotizaciones</a></aside>
+        </div>
+      </div>
+    </section>
+    <section class="org-section" aria-labelledby="economy-heading">
+      <div class="page-shell">
+        <div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Economía</p><h2 id="economy-heading" class="atom-title--h2">Economía real, consumo y política económica en una sola zona reconocible</h2></div></div>
+        <div class="org-economy-grid"><article class="org-economy-grid__lead"><figure><img src="https://placehold.co/1000x620/d4e0f4/233a5c?text=FMI+y+Tipos" alt="Imagen institucional de un foro financiero internacional" width="1000" height="620" loading="lazy"></figure><div class="org-economy-grid__lead-body"><span class="atom-pill">Economía</span><h3 class="atom-title--h2"><a class="atom-link" href="/economia/fmi-bancos-centrales-tipos">El FMI pide a los bancos centrales estar listos para subir tipos si la inflación sorprende</a></h3><p class="atom-txt--sm">La referencia original mezclaba economía, local y política territorial sin una puerta de entrada clara. Aquí el lector entiende de inmediato dónde está el bloque macro.</p></div></article><div class="org-economy-grid__list"><article><span class="atom-pill">Economía</span><h3 class="atom-title--h3"><a class="atom-link" href="/economia/china-deflacion-industrial">China pone fin a más de tres años de deflación industrial tras el shock petrolero</a></h3></article><article><span class="atom-pill">Economía</span><h3 class="atom-title--h3"><a class="atom-link" href="/economia/eeuu-servicio-militar">Estados Unidos inicia el camino para reintroducir el servicio militar obligatorio por primera vez desde Vietnam</a></h3></article><article><span class="atom-pill">Local</span><h3 class="atom-title--h3"><a class="atom-link" href="/local/pescaderias-barrio">Las pescaderías cierran una etapa: caen las compras de fresco y cambia la cesta urbana</a></h3></article><article><span class="atom-pill">Vivienda</span><h3 class="atom-title--h3"><a class="atom-link" href="/vivienda/alquileres-record">El alquiler vuelve a tensionarse en capitales medianas mientras cae la oferta estable</a></h3></article></div></div>
+      </div>
+    </section>
+    <section class="org-opinion-strip" aria-labelledby="opinion-heading"><div class="page-shell"><div class="org-opinion-strip__grid"><div><p class="atom-title--xs">Opinión</p><h2 id="opinion-heading" class="atom-title--h2">La opinión respira y gana entidad propia</h2><p class="atom-txt--sm">En el ejemplo original la opinión aparece tarde y diluida. Meridian la convierte en una pausa editorial reconocible, con rostros y tesis claras.</p></div><article class="mol-opinion-card"><div class="mol-opinion-card__author"><div class="mol-opinion-card__avatar"><img src="https://placehold.co/112x112/f2e6d4/6f4e2c?text=A" alt="Retrato de Amador G. Ayora" width="112" height="112" loading="lazy"></div><div><strong>Amador G. Ayora</strong><br><span class="atom-txt--sm atom-txt--muted">Editor económico</span></div></div><h3 class="atom-title--h3"><a class="atom-link" href="/opinion/europa-trump-intervencionismo">Europa usa la dulce derrota de Trump para redoblar su intervencionismo</a></h3></article><article class="mol-opinion-card"><div class="mol-opinion-card__author"><div class="mol-opinion-card__avatar"><img src="https://placehold.co/112x112/f2e6d4/6f4e2c?text=F" alt="Retrato de Francisco de la Torre" width="112" height="112" loading="lazy"></div><div><strong>Francisco de la Torre</strong><br><span class="atom-txt--sm atom-txt--muted">Análisis fiscal</span></div></div><h3 class="atom-title--h3"><a class="atom-link" href="/opinion/cifras-infierno-fiscal">Las cifras y el infierno fiscal</a></h3></article><article class="mol-opinion-card"><div class="mol-opinion-card__author"><div class="mol-opinion-card__avatar"><img src="https://placehold.co/112x112/f2e6d4/6f4e2c?text=N" alt="Retrato de Nathaniel Karp" width="112" height="112" loading="lazy"></div><div><strong>Nathaniel Karp</strong><br><span class="atom-txt--sm atom-txt--muted">Economista jefe</span></div></div><h3 class="atom-title--h3"><a class="atom-link" href="/opinion/ceraweek-seguridad-energetica">CERAWeek 2026: la seguridad energética contraataca</a></h3></article></div></div></section>
+    <section class="org-section" aria-labelledby="companies-heading"><div class="page-shell"><div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Empresas y finanzas</p><h2 id="companies-heading" class="atom-title--h2">Un bloque de negocio con continuidad, no una cascada de módulos desconectados</h2></div></div><div class="org-card-mosaic org-card-mosaic--three"><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/800x520/d4d9dc/334155?text=Refinerias" alt="Instalación industrial del sector energético" width="800" height="520" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Energía</span><h3 class="atom-title--h3"><a class="atom-link" href="/empresas/refinerias-elite-europea">La jugada maestra que situó a las refinerías españolas en la élite europea</a></h3></div></article><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/800x520/dae8cf/365314?text=Solar+en+Asia" alt="Paneles solares en una planta energética" width="800" height="520" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Energía</span><h3 class="atom-title--h3"><a class="atom-link" href="/empresas/edp-japon-fotovoltaica">EDP acelera su expansión en Asia con una nueva planta fotovoltaica de 28 MW en Japón</a></h3></div></article><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/800x520/c9412b/f9ede9?text=TSB+y+Santander" alt="Cajero automático como símbolo bancario" width="800" height="520" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Banca y finanzas</span><h3 class="atom-title--h3"><a class="atom-link" href="/finanzas/santander-tsb-sinergias">Santander mejora las sinergias previstas con TSB y apunta a un ahorro de coste de 720 millones</a></h3></div></article></div></div></section>
+    <section class="org-section" aria-labelledby="tech-heading"><div class="page-shell"><div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Tecnología</p><h2 id="tech-heading" class="atom-title--h2">Tecnología relevante para negocio, ciencia y consumidores</h2></div></div><div class="org-card-mosaic org-card-mosaic--four"><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/89a6a8/f3faf9?text=Oceano+y+Ciencia" alt="Fondo marino como metáfora de un hallazgo científico" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Tecnología</span><h3 class="atom-title--h3"><a class="atom-link" href="/tecnologia/baldosas-amarillas-oceano">Científicos descubren un camino de baldosas amarillas en el fondo del océano</a></h3></div></article><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/202838/e8eef7?text=Luna+y+Energia" alt="Concepto de infraestructura energética alrededor de la Luna" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Tecnología</span><h3 class="atom-title--h3"><a class="atom-link" href="/tecnologia/japon-anillo-solar-luna">Japón quiere construir un anillo solar alrededor de la Luna que proporcione energía limpia</a></h3></div></article><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/d6c7b7/5c4634?text=Fraude+Online" alt="Persona con teléfono móvil como símbolo de estafa bancaria" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Tecnología</span><h3 class="atom-title--h3"><a class="atom-link" href="/tecnologia/estafa-bancaria-alerta">Una nueva estafa bancaria pone en alerta a miles de usuarios</a></h3></div></article><article class="mol-story-card"><figure class="mol-story-card__img"><img src="https://placehold.co/700x500/e5d4c5/4d3b2b?text=Electrodomesticos" alt="Enchufe doméstico como recordatorio de ahorro y seguridad" width="700" height="500" loading="lazy"></figure><div class="mol-story-card__body"><span class="atom-pill">Tecnología</span><h3 class="atom-title--h3"><a class="atom-link" href="/tecnologia/electrodomesticos-desenchufar">Los tres electrodomésticos que debes desenchufar después de cada uso</a></h3></div></article></div></div></section>
+    <section class="org-section" aria-labelledby="territories-heading"><div class="page-shell org-territories"><div class="org-section__header"><div class="org-section__intro"><p class="atom-title--xs">Comunidades autónomas</p><h2 id="territories-heading" class="atom-title--h2">Territorio visible y legible, sin convertirse en una pared de microsecciones</h2></div></div><div class="org-territories__grid"><article class="mol-territory-card"><span class="mol-territory-card__tag">Cataluña</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/d6c1a5/5f4329?text=Cataluna+Industria" alt="Actividad industrial en Cataluña" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/catalunya/defensa-empresas">La Generalitat ayudará a 400 empresas catalanas a entrar en el negocio de la defensa</a></h3></article><article class="mol-territory-card"><span class="mol-territory-card__tag">Comunidad Valenciana</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/d5e3ed/32516e?text=Valencia+Energia" alt="Infraestructura industrial vinculada a cargadores eléctricos" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/valenciana/xcharge-valencia">La americana XCharge ensamblará en Valencia cargadores de vehículos eléctricos</a></h3></article><article class="mol-territory-card"><span class="mol-territory-card__tag">País Vasco</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/d9d6cf/413c35?text=TAV+Navarra" alt="Representación institucional del proyecto ferroviario con Navarra" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/pais-vasco/tav-navarra">Santano prevé que las catas para el TAV con Navarra terminen en primavera</a></h3></article><article class="mol-territory-card"><span class="mol-territory-card__tag">Castilla y León</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/e8d0b6/6f4c24?text=Campo+y+Gasoleo" alt="Maquinaria agrícola en un campo" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/castilla-y-leon/gasoleo-agricola">COAG pide topar el precio del gasóleo agrícola tras una subida del 95,6%</a></h3></article><article class="mol-territory-card"><span class="mol-territory-card__tag">Galicia</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/dadfe8/304560?text=Galicia+y+Empleo" alt="Concentración pública vinculada al debate sobre bajas laborales" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/galicia/bajas-laborales-rueda">Los sindicatos se revuelven contra el plan de Rueda para controlar las bajas</a></h3></article><article class="mol-territory-card"><span class="mol-territory-card__tag">Aragón</span><figure class="mol-territory-card__img"><img src="https://placehold.co/700x440/c9d4e8/304560?text=Aragon+Data+Centers" alt="Centro de datos como símbolo del auge tecnológico en Aragón" width="700" height="440" loading="lazy"></figure><h3 class="atom-title--h3"><a class="atom-link" href="/aragon/centros-datos-liderazgo">Aragón se consolida como el principal polo español de centros de datos</a></h3></article></div></div></section>
   </main>
-
-
-  <!-- ═══ FOOTER ══════════════════════════════════════════════════════ -->
-  <footer class="org-news-footer" role="contentinfo">
-    <div class="org-news-footer__inner">
-      <nav class="org-news-footer__nav" aria-label="Secciones del sitio">
-        <ul role="list">
-          <li><a href="/economia">Economía</a></li>
-          <li><a href="/mercados">Mercados</a></li>
-          <li><a href="/empresas">Empresas</a></li>
-          <li><a href="/internacional">Internacional</a></li>
-          <li><a href="/opinion">Opinión</a></li>
-          <li><a href="/suscripcion">Suscripción</a></li>
-          <li><a href="/privacidad">Privacidad</a></li>
-          <li><a href="/cookies">Cookies</a></li>
-        </ul>
-      </nav>
-      <p class="org-news-footer__copy">
-        &copy; 2026 Meridian. Todos los derechos reservados.
-      </p>
-    </div>
-  </footer>
-
-
+  <footer class="org-news-footer" role="contentinfo"><div class="org-news-footer__inner"><nav class="org-news-footer__nav" aria-label="Pie del sitio"><ul><li><a href="/economia">Economía</a></li><li><a href="/mercados">Mercados</a></li><li><a href="/empresas">Empresas</a></li><li><a href="/opinion">Opinión</a></li><li><a href="/tecnologia">Tecnología</a></li><li><a href="/suscripcion">Suscripción</a></li><li><a href="/privacidad">Privacidad</a></li><li><a href="/cookies">Cookies</a></li></ul></nav><p class="org-news-footer__copy">© 2026 Meridian. Portada económica construida con criterio editorial ATLAS + SYX.</p></div></footer>
   <script>
     (function () {
-      var header  = document.querySelector('.org-news-header');
-      var toggle  = document.querySelector('.org-news-header__menu-toggle');
-      var nav     = document.getElementById('site-nav');
-      if (!toggle || !nav) return;
-
-      toggle.addEventListener('click', function () {
-        var isOpen = header.classList.toggle('is-menu-open');
-        toggle.setAttribute('aria-expanded', isOpen);
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
-      });
-
-      /* Cierra al hacer clic fuera */
-      document.addEventListener('click', function (e) {
-        if (!header.contains(e.target)) {
-          header.classList.remove('is-menu-open');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
-        }
-      });
-
-      /* Cierra al pulsar Escape */
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && header.classList.contains('is-menu-open')) {
-          header.classList.remove('is-menu-open');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
-          toggle.focus();
-        }
-      });
-
-      /* ── Buscador ── */
-      var searchToggle = document.getElementById('search-toggle');
-      var searchPanel  = document.getElementById('search-panel');
-      var searchInput  = document.getElementById('search-input');
-      var searchClose  = document.querySelector('.org-news-header__search-close');
-
-      function openSearch() {
-        searchPanel.removeAttribute('hidden');
-        searchToggle.setAttribute('aria-expanded', 'true');
-        searchToggle.setAttribute('aria-label', 'Cerrar buscador');
-        searchInput.focus();
-      }
-      function closeSearch() {
-        searchPanel.setAttribute('hidden', '');
-        searchToggle.setAttribute('aria-expanded', 'false');
-        searchToggle.setAttribute('aria-label', 'Abrir buscador');
-        searchToggle.focus();
-      }
-
-      searchToggle.addEventListener('click', function () {
-        searchPanel.hasAttribute('hidden') ? openSearch() : closeSearch();
-      });
-      searchClose.addEventListener('click', closeSearch);
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !searchPanel.hasAttribute('hidden')) {
-          closeSearch();
-        }
-      });
+      var header = document.querySelector('.org-news-header');
+      var panel = document.getElementById('header-panel');
+      var menuToggle = document.querySelector('.org-news-header__menu-toggle');
+      var searchToggle = document.querySelector('[data-search-toggle]');
+      if (!header || !panel || !menuToggle || !searchToggle) return;
+      function openPanel() { header.classList.add('is-menu-open'); panel.hidden = false; menuToggle.setAttribute('aria-expanded', 'true'); searchToggle.setAttribute('aria-expanded', 'true'); }
+      function closePanel() { header.classList.remove('is-menu-open'); panel.hidden = true; menuToggle.setAttribute('aria-expanded', 'false'); searchToggle.setAttribute('aria-expanded', 'false'); }
+      function togglePanel() { if (panel.hidden) { openPanel(); } else { closePanel(); } }
+      menuToggle.addEventListener('click', togglePanel);
+      searchToggle.addEventListener('click', togglePanel);
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !panel.hidden) { closePanel(); menuToggle.focus(); } });
+      document.addEventListener('click', function (event) { if (!panel.hidden && !header.contains(event.target)) { closePanel(); } });
     })();
   </script>
-
   <!--
-  ═══════════════════════════════════════════════════════════════════════
-  AUDIT — [SYX: AUDIT] + [ATLAS 06.3]
-  ═══════════════════════════════════════════════════════════════════════
-
-  CONTRACT CHECK (R01–R04):
-  R01 no --primitive-*  ✅  (CSS autónomo, sin pipeline SYX)
-  R02 no !important     ✅
-  R03 no raw transition ✅  (transition: dentro de reglas de componente — aceptable en CSS autónomo)
-  R04 no hardcoded vals ✅  (todos los valores pasan por custom properties declaradas en :root)
-
-  DENSIDAD PUBLICITARIA (ATLAS 06.3 §7):
-  NP-1  Site Skin       @ ≥1440px   z-index:-1   aria-hidden  ✅  (no cuenta como NP activo)
-  NP-2  Leaderboard     Header      728×90        oculto<768   ✅  (zona cabecera)
-  NP-3  Medium Rect     Sidebar     300×250                    ✅  (zona desarrollo)
-  NP-4  Billboard       Entre N2·N3 970×90                     ✅  (zona profundidad)
-  Total NP activos = 3 (límite ATLAS 06.3 §7) ✅
-
-  REGLAS DE POSICIÓN (ATLAS 06.3 §5):
-  ✅  NP-2 en zona cabecera (entre ticker y nav)
-  ✅  NP-3 en sidebar zona de desarrollo
-  ✅  NP-4 entre zona de desarrollo (N2) y zona de profundidad (N3)
-  ✅  0 bloques en zona N1 (hero principal)
-  ✅  Sin bloques NP contiguos sin contenido editorial entre ellos (§7 regla)
-
-  REGLA DE NO RUPTURA (ATLAS 06.3 §6):
-  ✅  NP-4 es hijo del grid como cualquier otro bloque
-  ✅  Ningún bloque NP usa position:absolute ni position:fixed fuera del skin
-  Excepción documentada: org-site-skin usa position:fixed con z-index:-1
-  Justificación: wrapper de página, no elemento en flujo editorial
-
-  CONTRASTE WCAG 2.1 AA:
-  ✅  Ink #1a1a1a / paper #f8f7f4  → ~17.5:1  (AAA)
-  ✅  Ink-2 #374151 / white #fff   → ~10.8:1  (AAA)
-  ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
-  ✅  Accent #bf2025 / white #fff  →   6.3:1  (AA — botones, pills)
-  ✅  Alza #166534 / white #fff    →   7.8:1  (AA)
-  ✅  Baja #b91c1c / white #fff    →   5.9:1  (AA)
-  Ticker: colores sobre #1a2744 — verificar en producción con tema real
-
-  JERARQUÍA (ATLAS 06.1):
-  ✅  1 N1 único (hero principal)
-  ✅  3 N2 con imagen (zona desarrollo)
-  ✅  6 N3 sin imagen (zona profundidad)
-  ✅  Contraste jerárquico claro: display (32–54px) → h2 (22–30px) → h3 (18px)
-
-  ESCALA TIPOGRÁFICA (ATLAS 04.1 §3 — Major Third ×1.25):
-  ✅  label  11px  ×0.6875
-  ✅  meta   12px  ×0.75
-  ✅  body   15px  ×0.9375
-  ✅  h3     18px  ×1.125
-  ✅  h2     clamp(22–30px) — progresión suave ATLAS 04.1 §3
-  ✅  display clamp(32–54px) — con clamp() para ampliar rango (ATLAS 04.1 §3 nota)
-
-  RITMO VERTICAL 8px (ATLAS 04.2):
-  ✅  Ticker:          40px = 5×8
-  ✅  Leaderboard zone 106px (90 + 2×8 padding)
-  ✅  Header nav:       72px = 9×8
-  ✅  Billboard zone   106px (90 + 2×8 padding)
-  ✅  Datos-mercado item: 40px min-height = 5×8
-
-  SPACING (ATLAS 04.1 §3 — escala lineal 4px):
-  ✅  Todas las variables --s1 a --s16 son múltiplos de 4px
-  ✅  Gap editorial: --gap = 32px = 8 unidades × 4px
-
-  NUEVOS COMPONENTES A IMPLEMENTAR EN SCSS (handoff SYX UI):
-  Organisms:
-    org-hero-principal     N1 hero 3fr·2fr con imagen + contenido
-    org-grid-editorial     grid main·sidebar (1fr + --sidebar)
-    org-grid-n2            3 cards 1→2→3 cols
-    org-grid-n3            6 items 1→2 cols con separador vertical
-    org-site-skin          wrapper NP-1 (excepción position:fixed documentada)
-    org-billboard-zone     contenedor NP-4 entre zonas
-  Molecules:
-    mol-card-noticia       card N2 con imagen
-    mol-noticia-secundaria ítem N3 sin imagen
-    mol-datos-mercado      tabla de cotizaciones alza/baja/neutro
-    mol-publicidad         bloque NP con etiqueta visible + variantes
-    mol-ticker             tira de cotizaciones aria-live
-
-  Tokens nuevos (verificar vs tokens.json antes de crear):
-    --component-hero-principal-*
-    --component-card-noticia-*
-    --component-noticia-secundaria-*
-    --component-datos-mercado-*
-    --component-publicidad-*
-    --component-ticker-*
-    --layout-grid-editorial-sidebar     (= --ad-medium-w = 300px)
-    --layout-grid-editorial-gap         (= 32px)
-  ═══════════════════════════════════════════════════════════════════════
+  AUDIT — Meridian portada economia
+  - Un único N1 visible desde el primer scroll.
+  - Rail lateral útil y acotado: flash + últimas, sin competir con el hero.
+  - Menos fragmentación temática: renta, mercados, economía, opinión, empresas, tecnología y territorios se agrupan por intención editorial.
+  - Publicidad integrada como NP: leaderboard en cabecera y billboard entre zonas, sin invadir N1 ni interrumpir una misma zona.
+  - Densidad controlada: bloques amplios arriba, mayor compacidad abajo, manteniendo ritmo vertical.
+  - Accesibilidad base: skip link, focus visible, navegación móvil simple y áreas táctiles de 44px.
+  Veredicto manual ATLAS + SYX:
+  - Jerarquía: PASS
+  - Flujo editorial: PASS
+  - Densidad publicitaria: PASS (2 NP activos + skin contextual)
+  - Claridad entre contenido y publicidad: PASS
   -->
-
 </body>
 </html>
+

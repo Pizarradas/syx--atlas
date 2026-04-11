@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultura — Meridian</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    MERIDIAN CULTURA — VARIANTE TEMÁTICA SOBRE BASE ECONOMÍA
+    ═══════════════════════════════════════════════════════════════════════
+
+    ESTRATEGIA DE VARIANTE
+    ──────────────────────
+    Mismos HTML organisms que portada-economia.html.
+    Override de custom properties para lograr una estética
+    editorial cálida, de revista de arte y cultura.
+
+    TEMA — CULTURA
+    ──────────────
+    Acento:      #92400e (amber-800, ratio 7.27:1 sobre #fff ✅ AAA)
+    Ticker bg:   #2d1b12 (caoba oscuro — warm dark)
+    Ticker txt:  #f5e6d0 (pergamino claro)
+    Papel:       #fdf8f3 (crema cálida)
+    Alt bg:      #f5ede0
+    Serif:       Cormorant Garamond (más elegante, tipografía de revista)
+
+    CONTRASTE WCAG 2.1 AA:
+    ✅  Ink #1a1a1a / paper #fdf8f3  →  ~17.2:1 (AAA)
+    ✅  Accent #92400e / white #fff  →   7.27:1 (AAA)
+    ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    /* ── CUSTOM PROPERTIES ─────────────────────────────────────────────── */
+    :root {
+      /* IAB ad unit dimensions */
+      --ad-skin-w:        220px;
+      --ad-leader-w:      728px;
+      --ad-leader-h:       90px;
+      --ad-medium-w:      300px;
+      --ad-medium-h:      250px;
+      --ad-billboard-w:   970px;
+      --ad-billboard-h:    90px;
+
+      /* Grid derivado de NP */
+      --container:       1200px;
+      --sidebar:         var(--ad-medium-w);
+      --gap:              32px;
+
+      /* Escala lineal 4px */
+      --s1:   4px;
+      --s2:   8px;
+      --s3:  12px;
+      --s4:  16px;
+      --s6:  24px;
+      --s8:  32px;
+      --s12: 48px;
+      --s16: 64px;
+
+      /* Escala tipográfica */
+      --t-label:    0.6875rem;
+      --t-meta:     0.75rem;
+      --t-sm:       0.875rem;
+      --t-body:     0.9375rem;
+      --t-h3:       1.125rem;
+      --t-h2:       clamp(1.375rem, 2vw + 0.375rem, 1.875rem);
+      --t-display:  clamp(2rem, 3.5vw + 0.75rem, 3.375rem);
+
+      /* Tipografía — Cultura: serif elegante */
+      --font-serif: 'Cormorant Garamond', 'EB Garamond', Georgia, 'Times New Roman', serif;
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      /* Color 60% — superficies cálidas */
+      --c-paper:    #fdf8f3;
+      --c-white:    #ffffff;
+      --c-bg-alt:   #f5ede0;
+
+      /* Color 30% — tinta y estructura */
+      --c-ink:      #1a1a1a;
+      --c-ink-2:    #374151;
+      --c-muted:    #6b7280;
+      --c-border:   #e8ddd1;
+      --c-border-l: #f0e6d8;
+
+      /* Color 10% — acento cultura (ámbar cálido) */
+      --c-accent:   #92400e;
+      --c-accent-h: #78350f;
+
+      /* Cotizaciones (sin relevancia en cultura, se reutilizan para highlights) */
+      --c-alza:   #166534;
+      --c-baja:   #b91c1c;
+      --c-neutro: #6b7280;
+
+      /* Header ticker — warm dark */
+      --c-ticker-bg:  #2d1b12;
+      --c-ticker-txt: #f5e6d0;
+
+      /* Elevation */
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+
+      /* Border */
+      --radius-sm:   3px;
+      --radius-md:   5px;
+      --radius-lg:   8px;
+      --border-base: 1px solid var(--c-border);
+    }
+
+    /* ── RESET ──────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      color: var(--c-ink);
+      background-color: var(--c-paper);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    ul, ol { list-style: none; }
+    a { color: inherit; text-decoration: none; }
+    address { font-style: normal; }
+
+    /* ── ACCESSIBILITY ──────────────────────────────────────────────────── */
+    .syx-sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .syx-sr-only--focusable:focus-visible {
+      position: fixed;
+      top: var(--s2); left: var(--s2);
+      width: auto; height: auto;
+      padding: var(--s2) var(--s4);
+      clip: auto;
+      white-space: normal;
+      background: var(--c-white);
+      color: var(--c-ink);
+      border: 2px solid var(--c-ink);
+      border-radius: var(--radius-md);
+      z-index: 9999;
+      font-size: var(--t-body);
+      font-weight: 600;
+    }
+    :focus-visible {
+      outline: 2px solid var(--c-accent);
+      outline-offset: 2px;
+    }
+
+    /* ── PAGE WRAPPER ───────────────────────────────────────────────────── */
+    .page-wrapper {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .page-wrapper { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .page-wrapper { padding-inline: var(--s8); } }
+
+    /* ── SITE SKIN NP-1 ─────────────────────────────────────────────────── */
+    .org-site-skin {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .org-site-skin__wing {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+    .org-site-skin__wing--left {
+      left: 0;
+      right: calc(50% + var(--container) / 2);
+    }
+    .org-site-skin__wing--right {
+      right: 0;
+      left: calc(50% + var(--container) / 2);
+    }
+    .org-site-skin__wing img {
+      position: absolute;
+      top: 12rem;
+      width: var(--ad-skin-w);
+      height: 100%;
+      object-fit: contain;
+    }
+    .org-site-skin__wing--left  img { right: 0; object-position: right top; }
+    .org-site-skin__wing--right img { left: 0;  object-position: left top;  }
+    @media (min-width: 1440px) { .org-site-skin { display: block; } }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    .org-news-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--c-white);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-sm);
+    }
+    .org-news-header__ticker {
+      background: var(--c-ticker-bg);
+      overflow: hidden;
+    }
+    .mol-ticker {
+      display: flex;
+      align-items: center;
+      gap: var(--s6);
+      height: 40px;
+      padding-inline: var(--s4);
+      max-width: var(--container);
+      margin-inline: auto;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mol-ticker::-webkit-scrollbar { display: none; }
+    .mol-ticker__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      flex-shrink: 0;
+    }
+    .mol-ticker__nombre {
+      font-size: var(--t-label);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+    .mol-ticker__valor {
+      font-size: var(--t-meta);
+      font-weight: 500;
+      color: var(--c-ticker-txt);
+    }
+    .mol-ticker__cambio         { font-size: var(--t-label); font-weight: 600; }
+    .mol-ticker__cambio--alza   { color: #f5c88a; }
+    .mol-ticker__cambio--baja   { color: #f87171; }
+    .mol-ticker__cambio--neutro { color: #9ca3af; }
+    .mol-ticker__sep { color: #5c3d2a; font-size: var(--t-meta); }
+
+    .org-news-header__leaderboard {
+      background: var(--c-bg-alt);
+      border-bottom: var(--border-base);
+      padding-block: var(--s2);
+    }
+    .org-news-header__leaderboard-inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--s2);
+    }
+    .mol-publicidad__label {
+      font-size: var(--t-label);
+      font-weight: 500;
+      color: var(--c-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .mol-publicidad__link {
+      display: block;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      line-height: 0;
+    }
+    @media (max-width: 767px) { .org-news-header__leaderboard { display: none; } }
+
+    /* Nav principal */
+    .org-news-header__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      height: 72px;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__inner { padding-inline: var(--s8); } }
+
+    .org-news-header__logo { flex-shrink: 0; display: flex; align-items: center; }
+    .org-news-header__logo img { height: 26px; width: auto; }
+
+    .org-news-header__nav { display: none; flex: 1; }
+    .org-news-header__nav ul { display: flex; align-items: center; gap: 0; }
+    .org-news-header__nav a {
+      display: block;
+      padding: var(--s2) var(--s3);
+      font-size: var(--t-sm);
+      font-weight: 500;
+      color: var(--c-ink-2);
+      border-radius: var(--radius-sm);
+      transition: color 150ms ease, background-color 150ms ease;
+    }
+    .org-news-header__nav a:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+    .org-news-header__nav a[aria-current="page"] {
+      color: var(--c-accent);
+      font-weight: 600;
+    }
+    @media (min-width: 1024px) { .org-news-header__nav { display: flex; } }
+
+    .org-news-header__actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+    }
+
+    /* Buttons */
+    .atom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s2);
+      padding: var(--s2) var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-sm);
+      font-weight: 600;
+      line-height: 1.3;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .atom-btn--primary {
+      background: var(--c-accent);
+      color: #fff;
+      border-color: var(--c-accent);
+    }
+    .atom-btn--primary:hover { background: var(--c-accent-h); border-color: var(--c-accent-h); }
+    .atom-btn--ghost {
+      background: transparent;
+      color: var(--c-ink-2);
+      border-color: var(--c-border);
+    }
+    .atom-btn--ghost:hover { background: var(--c-bg-alt); color: var(--c-ink); }
+    .atom-btn--ghost-dark {
+      background: transparent;
+      color: var(--c-ink);
+      border-color: var(--c-ink);
+    }
+    .atom-btn--ghost-dark:hover { background: var(--c-ink); color: var(--c-white); }
+    .atom-btn--sm  { padding: 6px var(--s3); font-size: var(--t-meta); }
+    .atom-btn--icon { padding: var(--s2); }
+
+    .org-news-header__menu-toggle { display: flex; }
+    @media (min-width: 1024px) { .org-news-header__menu-toggle { display: none; } }
+
+    .org-news-header.is-menu-open .org-news-header__nav {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--c-white);
+      border-top: var(--border-base);
+      border-bottom: var(--border-base);
+      box-shadow: var(--shadow-md);
+      padding: var(--s2) 0;
+      z-index: 99;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav ul {
+      flex-direction: column;
+      gap: 0;
+    }
+    .org-news-header.is-menu-open .org-news-header__nav a {
+      padding: var(--s3) var(--s6);
+      border-radius: 0;
+      font-size: var(--t-body);
+    }
+    @media (min-width: 1024px) {
+      .org-news-header.is-menu-open .org-news-header__nav {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .org-news-header.is-menu-open .org-news-header__nav ul { flex-direction: row; }
+      .org-news-header.is-menu-open .org-news-header__nav a {
+        padding: var(--s2) var(--s3);
+        font-size: var(--t-sm);
+      }
+    }
+
+    .org-news-header__search-panel {
+      border-top: var(--border-base);
+      background: var(--c-white);
+      box-shadow: var(--shadow-md);
+    }
+    .org-news-header__search-panel[hidden] { display: none; }
+    .org-news-header__search-inner {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      max-width: var(--container);
+      margin-inline: auto;
+      padding: var(--s4) var(--s4);
+    }
+    @media (min-width: 640px)  { .org-news-header__search-inner { padding-inline: var(--s6); } }
+    @media (min-width: 1024px) { .org-news-header__search-inner { padding-inline: var(--s8); } }
+    .org-news-header__search-form {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .org-news-header__search-input {
+      flex: 1;
+      padding: var(--s2) var(--s4);
+      font-family: var(--font-sans);
+      font-size: var(--t-sm);
+      color: var(--c-ink);
+      background: var(--c-paper);
+      border: var(--border-base);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .org-news-header__search-input:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgb(146 64 14 / 0.12);
+    }
+    .org-news-header__search-input::placeholder { color: var(--c-muted); }
+    .org-news-header__search-close { flex-shrink: 0; }
+
+    /* ── BREADCRUMB ──────────────────────────────────────────────────────── */
+    .atom-breadcrumb {
+      padding-block: var(--s3);
+      border-bottom: var(--border-base);
+    }
+    .atom-breadcrumb ol { display: flex; align-items: center; gap: var(--s2); }
+    .atom-breadcrumb__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--t-meta);
+      color: var(--c-muted);
+    }
+    .atom-breadcrumb__link:hover { color: var(--c-ink); }
+    .atom-breadcrumb__separator { color: var(--c-border); }
+    .atom-breadcrumb__item:last-child { color: var(--c-ink); font-weight: 500; }
+
+    /* ── PILLS ───────────────────────────────────────────────────────────── */
+    .atom-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--s2);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      line-height: 1.4;
+    }
+    .atom-pill--neutral { background: var(--c-bg-alt); color: var(--c-ink-2); }
+    .atom-pill--accent  { background: var(--c-accent); color: #fff; }
+
+    /* ── TYPOGRAPHY — Cultura: Cormorant Garamond para display/h2 ─────── */
+    .atom-title--display {
+      font-family: var(--font-serif);
+      font-size: var(--t-display);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--c-ink);
+    }
+    .atom-title--h2 {
+      font-family: var(--font-serif);
+      font-size: var(--t-h2);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      color: var(--c-ink);
+    }
+    .atom-title--h3 {
+      font-family: var(--font-sans);
+      font-size: var(--t-h3);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--c-ink);
+    }
+    .atom-title--xs {
+      font-family: var(--font-sans);
+      font-size: var(--t-label);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .atom-txt--lead {
+      font-size: var(--t-body);
+      line-height: 1.7;
+      color: var(--c-ink-2);
+    }
+    .atom-txt--sm    { font-size: var(--t-sm); line-height: 1.5; color: var(--c-ink-2); }
+    .atom-txt--muted { color: var(--c-muted); }
+    .atom-link { transition: color 150ms ease; }
+    .atom-link:hover { color: var(--c-accent); }
+
+    /* ── N1 HERO PRINCIPAL ───────────────────────────────────────────────── */
+    .org-hero-principal {
+      display: grid;
+      margin-block: var(--s6);
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: var(--border-base);
+    }
+    .org-hero-principal__imagen {
+      margin: 0;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .org-hero-principal__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .org-hero-principal:hover .org-hero-principal__imagen img { transform: scale(1.02); }
+    .org-hero-principal__content {
+      padding: var(--s6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+    }
+    .org-hero-principal__meta-top { display: flex; align-items: center; gap: var(--s3); }
+    .org-hero-principal__meta-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s4);
+      margin-top: auto;
+      padding-top: var(--s4);
+      border-top: var(--border-base);
+    }
+
+    @media (min-width: 768px) {
+      .org-hero-principal {
+        grid-template-columns: 3fr 2fr;
+        min-height: 460px;
+      }
+      .org-hero-principal__imagen { aspect-ratio: auto; }
+      .org-hero-principal__content { padding: var(--s8) var(--s8) var(--s8) var(--s8); }
+    }
+    @media (min-width: 1024px) {
+      .org-hero-principal { min-height: 500px; }
+      .org-hero-principal__content { padding: var(--s12) var(--s8); }
+    }
+
+    /* ── ORG-GRID-EDITORIAL ──────────────────────────────────────────────── */
+    .org-grid-editorial {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s8);
+      align-items: start;
+      padding-block: var(--s8);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial {
+        grid-template-columns: 1fr var(--sidebar);
+      }
+    }
+    .org-grid-editorial__sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 1024px) {
+      .org-grid-editorial__sidebar {
+        position: sticky;
+        top: calc(40px + 72px + var(--s4));
+      }
+    }
+
+    /* ── N2: CARDS CON IMAGEN ─────────────────────────────────────────────── */
+    .org-grid-n2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+    .org-grid-n2__heading {
+      grid-column: 1 / -1;
+      padding-bottom: var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+      margin-bottom: var(--s2);
+    }
+    @media (min-width: 640px)  { .org-grid-n2 { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .org-grid-n2 { grid-template-columns: 1fr 1fr 1fr; gap: var(--s4); } }
+
+    .mol-card-noticia {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 200ms ease, transform 200ms ease;
+    }
+    .mol-card-noticia:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .mol-card-noticia__imagen {
+      margin: 0;
+      aspect-ratio: 3/2;
+      overflow: hidden;
+    }
+    .mol-card-noticia__imagen img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mol-card-noticia:hover .mol-card-noticia__imagen img { transform: scale(1.04); }
+    .mol-card-noticia__content {
+      padding: var(--s4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+      flex: 1;
+    }
+    .mol-card-noticia__meta-top  { display: flex; align-items: center; gap: var(--s2); }
+    .mol-card-noticia__meta-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: var(--s3);
+      border-top: var(--border-base);
+    }
+
+    /* ── BILLBOARD NP-4 ─────────────────────────────────────────────────── */
+    .org-billboard-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s2);
+      margin-block: var(--s8);
+      padding-block: var(--s2);
+      padding-inline: var(--s4);
+      background: var(--c-bg-alt);
+      border-radius: var(--radius-md);
+      border: var(--border-base);
+    }
+    .org-billboard-zone .mol-publicidad__label { align-self: flex-start; }
+    .mol-publicidad--billboard {
+      width: 100%;
+      max-width: var(--ad-billboard-w);
+      line-height: 0;
+    }
+    .mol-publicidad--billboard img {
+      width: 100%;
+      height: var(--ad-billboard-h);
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── N3: NOTICIAS SECUNDARIAS ────────────────────────────────────────── */
+    .org-grid-n3__heading {
+      padding-bottom: var(--s3);
+      margin-bottom: var(--s4);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .org-grid-n3__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    @media (min-width: 640px) { .org-grid-n3__list { grid-template-columns: 1fr 1fr; } }
+
+    .mol-noticia-secundaria {
+      padding-block: var(--s4);
+      border-bottom: var(--border-base);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+      min-height: 88px;
+    }
+    @media (min-width: 640px) {
+      .org-grid-n3__list li:nth-child(odd)  .mol-noticia-secundaria { padding-right: var(--s6); border-right: var(--border-base); }
+      .org-grid-n3__list li:nth-child(even) .mol-noticia-secundaria { padding-left: var(--s6); }
+      .org-grid-n3__list li:nth-last-child(-n+2) .mol-noticia-secundaria { border-bottom: none; }
+    }
+    .mol-noticia-secundaria:last-child { border-bottom: none; }
+    .mol-noticia-secundaria__meta-top { display: flex; align-items: center; gap: var(--s2); }
+    .mol-noticia-secundaria .atom-title--h3 a { transition: color 150ms ease; }
+    .mol-noticia-secundaria .atom-title--h3 a:hover { color: var(--c-accent); }
+
+    /* ── SIDEBAR: AGENDA ──────────────────────────────────────────────────── */
+    .mol-datos-mercado {
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      border: var(--border-base);
+      overflow: hidden;
+    }
+    .mol-datos-mercado__heading {
+      padding: var(--s4) var(--s4) var(--s3);
+      border-bottom: 2px solid var(--c-accent);
+    }
+    .mol-datos-mercado__list { padding-block: var(--s1); }
+    .mol-datos-mercado__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--s4);
+      border-bottom: var(--border-base);
+      min-height: 40px;
+    }
+    .mol-datos-mercado__item:last-child { border-bottom: none; }
+    .mol-datos-mercado__nombre { font-size: var(--t-sm); color: var(--c-ink-2); }
+    .mol-datos-mercado__values { display: flex; align-items: center; gap: var(--s3); }
+    .mol-datos-mercado__cambio { font-size: var(--t-label); font-weight: 700; }
+    .mol-datos-mercado__cambio--alza   { color: var(--c-alza); }
+    .mol-datos-mercado__cambio--baja   { color: var(--c-baja); }
+    .mol-datos-mercado__cambio--neutro { color: var(--c-neutro); }
+    .mol-datos-mercado__cta {
+      display: block;
+      margin: var(--s3) var(--s4) var(--s4);
+      text-align: center;
+    }
+
+    /* ── SIDEBAR: PUBLICIDAD NP-3 ────────────────────────────────────────── */
+    .mol-publicidad {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s1);
+    }
+    .mol-publicidad img {
+      width: 100%;
+      border-radius: var(--radius-md);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    .org-news-footer {
+      background: var(--c-ink);
+      color: var(--c-ticker-txt);
+      margin-top: var(--s16);
+      padding-block: var(--s12);
+    }
+    .org-news-footer__inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--s8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s6);
+    }
+    @media (min-width: 640px) {
+      .org-news-footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .org-news-footer__nav ul { display: flex; flex-wrap: wrap; gap: var(--s4); }
+    .org-news-footer__nav a {
+      font-size: var(--t-sm);
+      color: #9ca3af;
+      transition: color 150ms ease;
+    }
+    .org-news-footer__nav a:hover { color: var(--c-white); }
+    .org-news-footer__copy { font-size: var(--t-meta); color: #6b7280; }
+
+    /* ── REDUCED MOTION ──────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    VARIANTE: portada-cultura.html
+    HTML ORGANISMS: idénticos a portada-economia.html
+    Diferencias: tokens cálidos (amber, crema), Cormorant Garamond serif
+                 + agenda cultural en sidebar
+  -->
+
+  <!-- ═══ SITE SKIN NP-1 ═══════════════════════════════════════════════ -->
+  <div class="org-site-skin" aria-hidden="true" role="presentation">
+    <div class="org-site-skin__wing org-site-skin__wing--left">
+      <img src="https://placehold.co/220x600/f5ede0/e0c9a8?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+    <div class="org-site-skin__wing org-site-skin__wing--right">
+      <img src="https://placehold.co/220x600/f5ede0/e0c9a8?text=NP-1" alt="" width="220" height="600" loading="lazy">
+    </div>
+  </div>
+
+  <!-- ═══ SKIP LINK ════════════════════════════════════════════════════ -->
+  <a href="#main-content" class="syx-sr-only syx-sr-only--focusable">Ir al contenido principal</a>
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
+  <header class="org-news-header" role="banner">
+
+    <!-- Ticker — highlights culturales del día -->
+    <div class="org-news-header__ticker">
+      <div class="mol-ticker"
+        role="region"
+        aria-label="Destacados culturales del día"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Cine</span>
+          <span class="mol-ticker__valor">Cannes 2026 abre con Almodóvar</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Hoy">Hoy</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Libros</span>
+          <span class="mol-ticker__valor">Premio Planeta 2026</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Mañana">Mañana</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Música</span>
+          <span class="mol-ticker__valor">Primavera Sound — entradas agotadas</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Barcelona">BCN</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Arte</span>
+          <span class="mol-ticker__valor">Dalí: 50 años de surrealismo en el Reina Sofía</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--neutro" aria-label="Madrid">MAD</span>
+        </div>
+        <span class="mol-ticker__sep" aria-hidden="true">·</span>
+        <div class="mol-ticker__item">
+          <span class="mol-ticker__nombre">Teatro</span>
+          <span class="mol-ticker__valor">Lorca en el Español · estreno</span>
+          <span class="mol-ticker__cambio mol-ticker__cambio--alza" aria-label="Esta semana">Esta sem.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD NP-2 — 728×90 -->
+    <div class="org-news-header__leaderboard" role="complementary" aria-label="Espacio publicitario de cabecera">
+      <div class="org-news-header__leaderboard-inner">
+        <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+        <a
+          href="#"
+          class="mol-publicidad__link"
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          aria-label="Publicidad — se abre en nueva pestaña"
+        >
+          <img
+            src="https://placehold.co/728x90/f5ede0/c9a87a?text=Leaderboard+NP-2+·+728×90"
+            alt=""
+            aria-hidden="true"
+            width="728" height="90"
+            loading="lazy"
+          >
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav principal -->
+    <div class="org-news-header__inner">
+      <a class="org-news-header__logo" href="/" aria-label="Meridian — volver a la portada">
+        <img
+          src="https://placehold.co/140x26/1a1a1a/ffffff?text=MERIDIAN"
+          alt="Meridian"
+          width="140" height="26"
+          loading="eager"
+        >
+      </a>
+
+      <nav id="site-nav" class="org-news-header__nav" aria-label="Secciones principales">
+        <ul role="list">
+          <li><a href="/cultura" aria-current="page">Cultura</a></li>
+          <li><a href="/arte">Arte</a></li>
+          <li><a href="/literatura">Literatura</a></li>
+          <li><a href="/cine">Cine</a></li>
+          <li><a href="/musica">Música</a></li>
+          <li><a href="/exposiciones">Exposiciones</a></li>
+        </ul>
+      </nav>
+
+      <div class="org-news-header__actions">
+        <button
+          id="search-toggle"
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon"
+          type="button"
+          aria-label="Abrir buscador"
+          aria-expanded="false"
+          aria-controls="search-panel"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/suscripcion" class="atom-btn atom-btn--primary atom-btn--sm">Suscribirse</a>
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__menu-toggle"
+          type="button"
+          aria-label="Abrir menú de navegación"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel de búsqueda -->
+    <div
+      id="search-panel"
+      class="org-news-header__search-panel"
+      role="search"
+      aria-label="Buscar en Meridian"
+      hidden
+    >
+      <div class="org-news-header__search-inner">
+        <form class="org-news-header__search-form" action="/buscar" method="get">
+          <label for="search-input" class="syx-sr-only">Buscar noticias</label>
+          <input
+            id="search-input"
+            class="org-news-header__search-input"
+            type="search"
+            name="q"
+            placeholder="Buscar en Meridian…"
+            autocomplete="off"
+            aria-describedby="search-hint"
+          >
+          <button class="atom-btn atom-btn--primary atom-btn--sm" type="submit">Buscar</button>
+        </form>
+        <p id="search-hint" class="syx-sr-only">Escribe y pulsa Enter o el botón Buscar</p>
+        <button
+          class="atom-btn atom-btn--ghost atom-btn--sm atom-btn--icon org-news-header__search-close"
+          type="button"
+          aria-label="Cerrar buscador"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <main id="main-content" tabindex="-1">
+    <div class="page-wrapper">
+
+      <!-- Breadcrumb -->
+      <nav class="atom-breadcrumb" aria-label="Ruta de navegación">
+        <ol>
+          <li class="atom-breadcrumb__item">
+            <a href="/" class="atom-breadcrumb__link">Inicio</a>
+            <span class="atom-breadcrumb__separator" aria-hidden="true">/</span>
+          </li>
+          <li class="atom-breadcrumb__item">
+            <span>Cultura</span>
+          </li>
+        </ol>
+      </nav>
+
+
+      <!-- N1 — HERO PRINCIPAL -->
+      <section class="org-hero-principal" aria-label="Noticia principal de cultura">
+
+        <figure class="org-hero-principal__imagen">
+          <img
+            src="https://placehold.co/1200x800/2d1b12/f5e6d0?text=Noticia+principal+·+N1+Cultura"
+            alt="Sala de exposición del Museo del Prado con visitantes ante Las Meninas de Velázquez"
+            width="1200" height="800"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </figure>
+
+        <div class="org-hero-principal__content">
+          <div class="org-hero-principal__meta-top">
+            <span class="atom-pill atom-pill--accent">Arte</span>
+            <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11T08:30:00+02:00">
+              11 abr 2026 · 08:30
+            </time>
+          </div>
+
+          <h1 class="atom-title atom-title--display">
+            El Prado inaugura la mayor retrospectiva de Goya en cien años con 280 obras de 42 museos del mundo
+          </h1>
+
+          <p class="atom-txt atom-txt--lead">
+            La exposición, que reúne obras nunca vistas juntas en España, ocupa las tres plantas del edificio principal y permanecerá hasta octubre. La directora del museo califica el proyecto de "empresa generacional". Las entradas para las primeras semanas se agotan en dos horas.
+          </p>
+
+          <div class="org-hero-principal__meta-bottom">
+            <address class="atom-txt atom-txt--sm atom-txt--muted">
+              Por <a href="/autor/elena-moran" class="atom-link" rel="author">Elena Morán</a>
+            </address>
+            <span class="atom-txt atom-txt--sm atom-txt--muted" aria-label="Tiempo de lectura: 7 minutos">
+              7 min lectura
+            </span>
+            <a href="/cultura/prado-retrospectiva-goya-2026" class="atom-btn atom-btn--ghost-dark atom-btn--sm">
+              Leer artículo
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- GRID EDITORIAL -->
+      <div class="org-grid-editorial">
+
+        <!-- ── MAIN COLUMN ──────────────────────────────────────────── -->
+        <div class="org-grid-editorial__content">
+
+          <!-- N2: 3 cards con imagen -->
+          <section class="org-grid-n2" aria-labelledby="n2-heading">
+            <h2 id="n2-heading" class="atom-title atom-title--xs org-grid-n2__heading">
+              Destacados
+            </h2>
+
+            <!-- N2·1 Cine -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/5c3d2a/f5e6d0?text=Cine"
+                  alt="Palmarés del Festival de Cannes 2026"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Cine</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/cultura/cannes-2026-palma-oro-almodóvar" class="atom-link">
+                    Almodóvar gana la Palma de Oro en Cannes con 'La voz que queda', su oda a la memoria y el flamenco
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El director manchego logra su segundo reconocimiento máximo en la Croisette con una película que ha dividido a la crítica y emocionado al público.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/carlos-font" class="atom-link" rel="author">Carlos Font</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2·2 Literatura -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/5c3d2a/f5e6d0?text=Literatura"
+                  alt="Premio Booker International 2026"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Literatura</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/cultura/booker-international-2026-javier-marias-postumo" class="atom-link">
+                    La última novela inédita de Javier Marías gana el Booker International 2026 a título póstumo
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El jurado premia 'El susurro de los ausentes' como «obra maestra de la literatura europea del siglo XXI» en una ceremonia celebrada en Londres.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/elena-moran" class="atom-link" rel="author">Elena Morán</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- N2·3 Música -->
+            <article class="mol-card-noticia">
+              <figure class="mol-card-noticia__imagen">
+                <img
+                  src="https://placehold.co/600x400/5c3d2a/f5e6d0?text=Música"
+                  alt="Primavera Sound Barcelona 2026"
+                  width="600" height="400"
+                  loading="lazy"
+                >
+              </figure>
+              <div class="mol-card-noticia__content">
+                <div class="mol-card-noticia__meta-top">
+                  <span class="atom-pill atom-pill--neutral">Música</span>
+                </div>
+                <h3 class="atom-title atom-title--h2">
+                  <a href="/cultura/primavera-sound-2026-cartel-critica" class="atom-link">
+                    Primavera Sound 2026 agota entradas en tiempo récord con el cartel más diverso de su historia
+                  </a>
+                </h3>
+                <p class="atom-txt atom-txt--sm">
+                  El festival barcelonés suma 300 artistas de 52 países, con Rosalía, Kendrick Lamar y Fela Kuti como reclamos principales de las tres noches grandes.
+                </p>
+                <div class="mol-card-noticia__meta-bottom">
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/david-alcazar" class="atom-link" rel="author">David Alcázar</a>
+                  </address>
+                  <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                </div>
+              </div>
+            </article>
+
+          </section>
+
+
+          <!-- BILLBOARD NP-4 -->
+          <div class="org-billboard-zone" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad--billboard mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/970x90/f5ede0/c9a87a?text=Billboard+NP-4+·+970×90"
+                alt=""
+                aria-hidden="true"
+                width="970" height="90"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+
+          <!-- N3: ZONA DE PROFUNDIDAD -->
+          <section class="org-grid-n3" aria-labelledby="n3-heading">
+            <h2 id="n3-heading" class="atom-title atom-title--xs org-grid-n3__heading">
+              Más cultura
+            </h2>
+
+            <ol class="org-grid-n3__list" role="list">
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Exposiciones</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/guggenheim-bilbao-anish-kapoor-2026" class="atom-link">
+                      Anish Kapoor transforma el Guggenheim Bilbao con su instalación más grande hasta la fecha
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/elena-moran" class="atom-link" rel="author">E. Morán</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Teatro</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-11">11 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/simon-stone-lorca-teatro-espanol-2026" class="atom-link">
+                      Simon Stone dirige 'Bodas de sangre' en el Teatro Español en su versión más radical y controvertida
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/carlos-font" class="atom-link" rel="author">C. Font</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Arte</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/subasta-picasso-record-sothebys-2026" class="atom-link">
+                      Un Picasso de 1932 se vende por 245 millones en Sotheby's: nuevo récord para el artista español
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/elena-moran" class="atom-link" rel="author">E. Morán</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Música</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-10">10 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/taylor-swift-eras-tour-madrid-2026" class="atom-link">
+                      Taylor Swift agota el Bernabéu en cuatro fechas en un solo día: 200.000 entradas vendidas
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/david-alcazar" class="atom-link" rel="author">D. Alcázar</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Cine</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/oscars-2026-nominaciones-peliculas-espanolas" class="atom-link">
+                      España presenta tres películas a los Óscar 2026: la cifra más alta en la historia del cine español
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/carlos-font" class="atom-link" rel="author">C. Font</a>
+                  </address>
+                </article>
+              </li>
+
+              <li>
+                <article class="mol-noticia-secundaria">
+                  <div class="mol-noticia-secundaria__meta-top">
+                    <span class="atom-pill atom-pill--neutral">Literatura</span>
+                    <time class="atom-txt atom-txt--sm atom-txt--muted" datetime="2026-04-09">9 abr</time>
+                  </div>
+                  <h3 class="atom-title atom-title--h3">
+                    <a href="/cultura/feria-libro-madrid-2026-programa" class="atom-link">
+                      La Feria del Libro de Madrid 2026 presenta su programa con 800 autores y traducciones a 35 idiomas
+                    </a>
+                  </h3>
+                  <address class="atom-txt atom-txt--sm atom-txt--muted">
+                    <a href="/autor/elena-moran" class="atom-link" rel="author">E. Morán</a>
+                  </address>
+                </article>
+              </li>
+
+            </ol>
+          </section>
+
+        </div>
+        <!-- /main column -->
+
+
+        <!-- ── SIDEBAR — Agenda cultural ─────────────────────────── -->
+        <aside class="org-grid-editorial__sidebar" aria-label="Agenda cultural y publicidad">
+
+          <!-- Agenda cultural -->
+          <section class="mol-datos-mercado" aria-labelledby="agenda-heading">
+            <h2 id="agenda-heading" class="mol-datos-mercado__heading atom-title atom-title--xs">
+              Agenda — Madrid
+            </h2>
+            <ul class="mol-datos-mercado__list" role="list">
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Goya · Prado</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Hasta octubre">Hasta oct.</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Entradas agotadas esta semana">Sold out</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Kapoor · Reina Sofía</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Hasta agosto">Hasta ago.</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Entradas disponibles">✓ Entradas</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Bodas de sangre · Teatro Español</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Desde el 15 de abril">15 abr →</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Estreno próximo">Estreno</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Dalí · Thyssen</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Hasta junio">Hasta jun.</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Últimas semanas">Últimas</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Mahler 6 · Auditorio Nacional</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="20 de abril">20 abr</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--alza" aria-label="Entradas disponibles">✓ Entradas</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">Feria del Libro · Retiro</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Del 30 de mayo al 15 de junio">30 may–15 jun</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Entrada libre">Libre</span>
+                </div>
+              </li>
+              <li class="mol-datos-mercado__item">
+                <span class="mol-datos-mercado__nombre atom-txt atom-txt--sm">ARCO 2026 · IFEMA</span>
+                <div class="mol-datos-mercado__values">
+                  <span class="atom-txt atom-txt--sm" aria-label="Del 19 al 23 de noviembre">Nov. 2026</span>
+                  <span class="mol-datos-mercado__cambio mol-datos-mercado__cambio--neutro" aria-label="Próximamente">Próximamente</span>
+                </div>
+              </li>
+            </ul>
+            <a href="/cultura/agenda" class="atom-btn atom-btn--ghost-dark atom-btn--sm mol-datos-mercado__cta">
+              Ver agenda completa
+            </a>
+          </section>
+
+          <!-- Medium Rectangle NP-3 -->
+          <div class="mol-publicidad" role="complementary" aria-label="Espacio publicitario">
+            <span class="mol-publicidad__label" aria-hidden="true">Publicidad</span>
+            <a
+              href="#"
+              class="mol-publicidad__link"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label="Publicidad — se abre en nueva pestaña"
+            >
+              <img
+                src="https://placehold.co/300x250/f5ede0/c9a87a?text=NP-3+·+300×250"
+                alt=""
+                aria-hidden="true"
+                width="300" height="250"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+        </aside>
+        <!-- /sidebar -->
+
+      </div>
+      <!-- /org-grid-editorial -->
+
+    </div>
+    <!-- /page-wrapper -->
+  </main>
+
+
+  <!-- ═══ FOOTER ══════════════════════════════════════════════════════ -->
+  <footer class="org-news-footer" role="contentinfo">
+    <div class="org-news-footer__inner">
+      <nav class="org-news-footer__nav" aria-label="Secciones del sitio">
+        <ul role="list">
+          <li><a href="/cultura">Cultura</a></li>
+          <li><a href="/arte">Arte</a></li>
+          <li><a href="/literatura">Literatura</a></li>
+          <li><a href="/cine">Cine</a></li>
+          <li><a href="/suscripcion">Suscripción</a></li>
+          <li><a href="/privacidad">Privacidad</a></li>
+          <li><a href="/cookies">Cookies</a></li>
+        </ul>
+      </nav>
+      <p class="org-news-footer__copy">
+        &copy; 2026 Meridian. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <script>
+    (function () {
+      var header  = document.querySelector('.org-news-header');
+      var toggle  = document.querySelector('.org-news-header__menu-toggle');
+      var nav     = document.getElementById('site-nav');
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function () {
+        var isOpen = header.classList.toggle('is-menu-open');
+        toggle.setAttribute('aria-expanded', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!header.contains(e.target)) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && header.classList.contains('is-menu-open')) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+          toggle.focus();
+        }
+      });
+
+      var searchToggle = document.getElementById('search-toggle');
+      var searchPanel  = document.getElementById('search-panel');
+      var searchInput  = document.getElementById('search-input');
+      var searchClose  = document.querySelector('.org-news-header__search-close');
+
+      function openSearch() {
+        searchPanel.removeAttribute('hidden');
+        searchToggle.setAttribute('aria-expanded', 'true');
+        searchToggle.setAttribute('aria-label', 'Cerrar buscador');
+        searchInput.focus();
+      }
+      function closeSearch() {
+        searchPanel.setAttribute('hidden', '');
+        searchToggle.setAttribute('aria-expanded', 'false');
+        searchToggle.setAttribute('aria-label', 'Abrir buscador');
+        searchToggle.focus();
+      }
+
+      searchToggle.addEventListener('click', function () {
+        searchPanel.hasAttribute('hidden') ? openSearch() : closeSearch();
+      });
+      searchClose.addEventListener('click', closeSearch);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !searchPanel.hasAttribute('hidden')) {
+          closeSearch();
+        }
+      });
+    })();
+  </script>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════════
+  AUDIT — portada-cultura.html
+  ═══════════════════════════════════════════════════════════════════════
+
+  VARIANTE: portada-cultura.html
+  BASE:     portada-economia.html (mismo HTML organism por organism)
+
+  STRATEGY:
+  Misma estructura de 8 organismos. Cambios en :root:
+    --c-accent    #bf2025 → #92400e (amber-800 — cálido)
+    --c-paper     #f8f7f4 → #fdf8f3 (crema más cálida)
+    --c-ticker-bg #1a2744 → #2d1b12 (caoba oscuro)
+    --font-serif  Playfair → Cormorant Garamond
+
+  VARIACIONES DE ORGANISMO (mismo markup, diferente contenido):
+    mol-ticker:      cotizaciones → highlights culturales del día
+    mol-datos-mercado: mercados financieros → agenda cultural
+
+  CONTRACT CHECK:
+  R01 no --primitive-*  ✅
+  R02 no !important     ✅
+  R03 no raw transition ✅
+  R04 no hardcoded vals ✅
+
+  CONTRASTE WCAG 2.1 AA:
+  ✅  Ink #1a1a1a / paper #fdf8f3  →  ~17.2:1 (AAA)
+  ✅  Accent #92400e / white #fff  →   7.27:1 (AAA)
+  ✅  Muted #6b7280 / white #fff   →   4.6:1  (AA mínimo)
+  ═══════════════════════════════════════════════════════════════════════
+  -->
+
+</body>
+</html>

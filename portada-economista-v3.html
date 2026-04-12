@@ -6,6 +6,16 @@
   <title>El Economista — 11 de abril de 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Preconnect al CDN de imágenes → reduce el tiempo de conexión -->
+  <link rel="preconnect" href="https://placehold.co">
+  <!-- Preload del LCP (hero) en WebP — alinear srcset + sizes con el <picture> -->
+  <link rel="preload" as="image" type="image/webp"
+        href="https://placehold.co/820x461/1a1a1a/a3a3a3.webp"
+        imagesrcset="https://placehold.co/400x225/1a1a1a/a3a3a3.webp 400w,
+                     https://placehold.co/820x461/1a1a1a/a3a3a3.webp 820w,
+                     https://placehold.co/1200x675/1a1a1a/a3a3a3.webp 1200w"
+        imagesizes="(max-width: 1059px) 100vw, 820px"
+        fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
 
@@ -597,26 +607,34 @@
     .sec__more:hover { color: var(--sem-brand-default); }
 
     /* ═══════════════════════════════════════════════════════════════════════════
-       IMAGE PLACEHOLDERS — per section tone
+       IMAGE SYSTEM — <picture> · responsive · lazy/eager · CLS-safe
+       ─────────────────────────────────────────────────────────────────────────
+       Técnicas aplicadas:
+         · <picture> + <source type="image/webp"> → formato moderno con fallback JPEG
+         · srcset con descriptores de ancho (w) para slots fluidos (hero, cards)
+         · srcset con descriptores de densidad (x) para slots fijos (thumbs, avatares)
+         · sizes calibrado por breakpoint → browser elige la resolución correcta
+         · loading="eager" + fetchpriority="high" → imagen LCP (hero) priorizada
+         · loading="lazy" + decoding="async" → todo lo demás: carga diferida
+         · width + height en cada <img> → reserva de espacio CLS-safe (sin layout shift)
+         · display:contents en <picture> → wrapper invisible, <img> hereda el contenedor
        ═══════════════════════════════════════════════════════════════════════════ */
-    .ph {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+    /* <picture> no participa en el layout — <img> ocupa directamente el contenedor */
+    picture { display: contents; }
+
+    /* Todos los slots editoriales: relleno total del contenedor, recorte centrado */
+    .hero-lead__img img,
+    .story-row__thumb img,
+    .story-card__img img,
+    .lifestyle-item__img img,
+    .info-card__img img,
+    .opinion-card__avatar img {
       width: 100%;
       height: 100%;
-      font-size: var(--t-meta);
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      object-fit: cover;
+      display: block;
     }
-    .ph--navy    { background: var(--sem-brand-default); color: var(--sem-brand-subtle); }
-    .ph--market  { background: var(--sem-brand-deep); color: #4ade80; font-family: var(--font-mono); font-size: var(--t-micro); }
-    .ph--economy { background: #1a2e1e; color: #86efac; }
-    .ph--tech    { background: #0d1f2e; color: #7dd3fc; }
-    .ph--motor   { background: #1c1a14; color: #fbbf24; }
-    .ph--gastro  { background: #2a1810; color: #fdba74; }
-    .ph--soft    { background: var(--sem-surface-tertiary); color: var(--sem-text-muted); }
 
     /* ═══════════════════════════════════════════════════════════════════════════
        HERO ZONE
@@ -967,7 +985,7 @@
       aspect-ratio: 16 / 10;
       overflow: hidden;
     }
-    .story-card__img img { width: 100%; height: 100%; object-fit: cover; }
+
     .story-card__body {
       display: grid;
       gap: var(--sp-2);
@@ -1739,7 +1757,20 @@
             </p>
 
             <figure class="hero-lead__img" aria-label="Imagen principal">
-              <div class="ph ph--navy" style="aspect-ratio: 16/9; min-height: 220px;">Imagen editorial</div>
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x225/1a1a1a/a3a3a3.webp 400w,
+                          https://placehold.co/820x461/1a1a1a/a3a3a3.webp 820w,
+                          https://placehold.co/1200x675/1a1a1a/a3a3a3.webp 1200w"
+                  sizes="(max-width: 1059px) 100vw, 820px">
+                <img
+                  src="https://placehold.co/820x461/1a1a1a/a3a3a3.jpg"
+                  alt="El conflicto en Oriente Próximo presiona el IPC y agita los mercados globales"
+                  width="820" height="461"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="sync">
+              </picture>
             </figure>
 
             <footer class="hero-lead__byline">
@@ -1885,7 +1916,12 @@
                   <h3 class="story-row__title story-row__title--sm">El FMI advierte de que los tipos altos prolongados aumentan el riesgo de recesión global en 2027</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--economy">FMI</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/1a2e1e/86efac.webp 1x, https://placehold.co/184x136/1a2e1e/86efac.webp 2x">
+                    <img src="https://placehold.co/92x68/1a2e1e/86efac.jpg" alt="Sede del FMI — advertencia sobre tipos altos y riesgo de recesión" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -1893,7 +1929,12 @@
                   <h3 class="story-row__title story-row__title--sm">China acelera la deflación: precios industriales caen al ritmo más rápido en cuatro años</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--economy">CHN</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/1a2e1e/86efac.webp 1x, https://placehold.co/184x136/1a2e1e/86efac.webp 2x">
+                    <img src="https://placehold.co/92x68/1a2e1e/86efac.jpg" alt="China — deflación: precios industriales caen al ritmo más rápido en cuatro años" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -1901,7 +1942,12 @@
                   <h3 class="story-row__title story-row__title--sm">El gasto en servicio militar voluntario en EEUU se dispara mientras debate la obligatoriedad</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--economy">USA</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/1a2e1e/86efac.webp 1x, https://placehold.co/184x136/1a2e1e/86efac.webp 2x">
+                    <img src="https://placehold.co/92x68/1a2e1e/86efac.jpg" alt="EEUU — gasto en servicio militar voluntario se dispara" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -1909,7 +1955,12 @@
                   <h3 class="story-row__title story-row__title--sm">Hacienda consolida el descuento sobre el gasóleo agrícola ante la presión del sector primario</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--economy">ESP</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/1a2e1e/86efac.webp 1x, https://placehold.co/184x136/1a2e1e/86efac.webp 2x">
+                    <img src="https://placehold.co/92x68/1a2e1e/86efac.jpg" alt="España — Hacienda consolida descuento sobre el gasóleo agrícola" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -1917,7 +1968,12 @@
                   <h3 class="story-row__title story-row__title--sm">España bate su récord de visitantes internacionales con 15,4 millones en el primer trimestre</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--economy">TUR</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/1a2e1e/86efac.webp 1x, https://placehold.co/184x136/1a2e1e/86efac.webp 2x">
+                    <img src="https://placehold.co/92x68/1a2e1e/86efac.jpg" alt="España bate récord con 15,4 millones de visitantes internacionales en el primer trimestre" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row story-row--no-thumb">
                 <div class="story-row__body">
@@ -1937,7 +1993,15 @@
             </div>
             <div class="card-grid card-grid--3">
               <article class="story-card">
-                <div class="story-card__img"><div class="ph ph--economy">Refinerías</div></div>
+                <div class="story-card__img">
+                  <picture>
+                    <source type="image/webp"
+                      srcset="https://placehold.co/400x250/1a2e1e/86efac.webp 400w,
+                              https://placehold.co/800x500/1a2e1e/86efac.webp 800w"
+                      sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                    <img src="https://placehold.co/800x500/1a2e1e/86efac.jpg" alt="Refinerías españolas aceleran su conversión a biocombustibles para 2030" width="800" height="500" loading="lazy" decoding="async">
+                  </picture>
+                </div>
                 <div class="story-card__body">
                   <span class="story-card__kicker">Energía</span>
                   <h3 class="story-card__title">Las refinerías españolas aceleran la conversión a biocombustibles para 2030</h3>
@@ -1949,7 +2013,15 @@
                 </div>
               </article>
               <article class="story-card">
-                <div class="story-card__img"><div class="ph ph--economy">EDP Japón</div></div>
+                <div class="story-card__img">
+                  <picture>
+                    <source type="image/webp"
+                      srcset="https://placehold.co/400x250/1a2e1e/86efac.webp 400w,
+                              https://placehold.co/800x500/1a2e1e/86efac.webp 800w"
+                      sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                    <img src="https://placehold.co/800x500/1a2e1e/86efac.jpg" alt="EDP da el salto a Japón con un parque eólico marino valorado en 800 millones" width="800" height="500" loading="lazy" decoding="async">
+                  </picture>
+                </div>
                 <div class="story-card__body">
                   <span class="story-card__kicker">Utilities</span>
                   <h3 class="story-card__title">EDP da el salto a Japón con un parque eólico marino valorado en 800 millones</h3>
@@ -1961,7 +2033,15 @@
                 </div>
               </article>
               <article class="story-card">
-                <div class="story-card__img"><div class="ph ph--economy">Santander TSB</div></div>
+                <div class="story-card__img">
+                  <picture>
+                    <source type="image/webp"
+                      srcset="https://placehold.co/400x250/1a2e1e/86efac.webp 400w,
+                              https://placehold.co/800x500/1a2e1e/86efac.webp 800w"
+                      sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                    <img src="https://placehold.co/800x500/1a2e1e/86efac.jpg" alt="Santander eleva las sinergias por TSB hasta 600M€ y adelanta la integración" width="800" height="500" loading="lazy" decoding="async">
+                  </picture>
+                </div>
                 <div class="story-card__body">
                   <span class="story-card__kicker">Banca</span>
                   <h3 class="story-card__title">Santander eleva las sinergias por TSB hasta 600M€ y adelanta la integración</h3>
@@ -1988,7 +2068,12 @@
                   <h3 class="story-row__title story-row__title--sm">El océano, pavimentado con baldosas amarillas: el proyecto que convierte el fondo marino en red energética</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--tech">OCN</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/0d1f2e/7dd3fc.webp 1x, https://placehold.co/184x136/0d1f2e/7dd3fc.webp 2x">
+                    <img src="https://placehold.co/92x68/0d1f2e/7dd3fc.jpg" alt="El océano como red energética — proyecto de baldosas en el fondo marino" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -1996,7 +2081,12 @@
                   <h3 class="story-row__title story-row__title--sm">Alerta: nueva estafa bancaria con IA que suplanta la voz del director de la sucursal</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--tech">SEC</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/0d1f2e/7dd3fc.webp 1x, https://placehold.co/184x136/0d1f2e/7dd3fc.webp 2x">
+                    <img src="https://placehold.co/92x68/0d1f2e/7dd3fc.jpg" alt="Alerta de ciberseguridad — estafa bancaria con IA que suplanta voces" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row">
                 <div class="story-row__body">
@@ -2004,7 +2094,12 @@
                   <h3 class="story-row__title story-row__title--sm">Japón lanza el primer anillo solar lunar, hito en la carrera por la energía espacial</h3>
                   <div class="story-row__meta"><time datetime="2026-04-11">11 abr</time></div>
                 </div>
-                <div class="story-row__thumb hide-mobile"><div class="ph ph--tech">JPN</div></div>
+                <div class="story-row__thumb hide-mobile">
+                  <picture>
+                    <source type="image/webp" srcset="https://placehold.co/92x68/0d1f2e/7dd3fc.webp 1x, https://placehold.co/184x136/0d1f2e/7dd3fc.webp 2x">
+                    <img src="https://placehold.co/92x68/0d1f2e/7dd3fc.jpg" alt="Japón lanza el primer anillo solar lunar — hito en energía espacial" width="92" height="68" loading="lazy" decoding="async">
+                  </picture>
+                </div>
               </a>
               <a href="#" class="story-row story-row--no-thumb">
                 <div class="story-row__body">
@@ -2237,7 +2332,12 @@
               La economía de guerra no es una metáfora. Es la nueva normalidad fiscal que los gobiernos europeos deben asumir ya.
             </blockquote>
             <div class="opinion-card__author">
-              <div class="opinion-card__avatar"><div class="ph ph--navy">AA</div></div>
+              <div class="opinion-card__avatar">
+                <picture>
+                  <source type="image/webp" srcset="https://placehold.co/52x52/1a1a1a/a3a3a3.webp 1x, https://placehold.co/104x104/1a1a1a/a3a3a3.webp 2x">
+                  <img src="https://placehold.co/52x52/1a1a1a/a3a3a3.jpg" alt="Antonio Ayora, director de El Economista" width="52" height="52" loading="lazy" decoding="async">
+                </picture>
+              </div>
               <div>
                 <p class="opinion-card__name">Antonio Ayora</p>
                 <p class="opinion-card__role">Director de El Economista</p>
@@ -2251,7 +2351,12 @@
               El modelo fiscal español necesita una cirugía mayor, no más parches. Y el momento es ahora, con los PGE sobre la mesa.
             </blockquote>
             <div class="opinion-card__author">
-              <div class="opinion-card__avatar"><div class="ph ph--navy">FT</div></div>
+              <div class="opinion-card__avatar">
+                <picture>
+                  <source type="image/webp" srcset="https://placehold.co/52x52/1a1a1a/a3a3a3.webp 1x, https://placehold.co/104x104/1a1a1a/a3a3a3.webp 2x">
+                  <img src="https://placehold.co/52x52/1a1a1a/a3a3a3.jpg" alt="Francisco de la Torre, inspector de Hacienda" width="52" height="52" loading="lazy" decoding="async">
+                </picture>
+              </div>
               <div>
                 <p class="opinion-card__name">Francisco de la Torre</p>
                 <p class="opinion-card__role">Inspector de Hacienda</p>
@@ -2265,7 +2370,12 @@
               Los aranceles de Trump son una apuesta de alto riesgo: pueden funcionar a corto plazo, pero el coste estructural será enorme.
             </blockquote>
             <div class="opinion-card__author">
-              <div class="opinion-card__avatar"><div class="ph ph--navy">NK</div></div>
+              <div class="opinion-card__avatar">
+                <picture>
+                  <source type="image/webp" srcset="https://placehold.co/52x52/1a1a1a/a3a3a3.webp 1x, https://placehold.co/104x104/1a1a1a/a3a3a3.webp 2x">
+                  <img src="https://placehold.co/52x52/1a1a1a/a3a3a3.jpg" alt="Nathaniel Karp, economista jefe de BBVA Research" width="52" height="52" loading="lazy" decoding="async">
+                </picture>
+              </div>
               <div>
                 <p class="opinion-card__name">Nathaniel Karp</p>
                 <p class="opinion-card__role">Economista jefe, BBVA Research</p>
@@ -2290,19 +2400,43 @@
         </div>
         <div class="lifestyle-grid">
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--motor">VW</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/1c1a14/fbbf24.webp 400w,
+                          https://placehold.co/800x533/1c1a14/fbbf24.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/1c1a14/fbbf24.jpg" alt="Volkswagen True — la apuesta eléctrica inspirada en el Escarabajo" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">Volkswagen</span>
             <h3 class="lifestyle-item__title">True Volkswagen: la apuesta para recuperar la esencia del Escarabajo en eléctrico</h3>
             <span class="lifestyle-item__meta">Prueba · Eléctrico</span>
           </a>
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--motor">BMW</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/1c1a14/fbbf24.webp 400w,
+                          https://placehold.co/800x533/1c1a14/fbbf24.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/1c1a14/fbbf24.jpg" alt="BMW X5 de hidrógeno — el SUV que podría cambiar el lujo sostenible" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">BMW</span>
             <h3 class="lifestyle-item__title">El BMW X5 de hidrógeno: conducimos el SUV que podría cambiar el lujo sostenible</h3>
             <span class="lifestyle-item__meta">Prueba · Hidrógeno</span>
           </a>
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--motor">BUS</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/1c1a14/fbbf24.webp 400w,
+                          https://placehold.co/800x533/1c1a14/fbbf24.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/1c1a14/fbbf24.jpg" alt="Autobuses de hidrógeno en Madrid y Barcelona — movilidad urbana sostenible" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">Transporte público</span>
             <h3 class="lifestyle-item__title">Los autobuses de hidrógeno conquistan Europa: Madrid y Barcelona, entre las primeras ciudades</h3>
             <span class="lifestyle-item__meta">Movilidad urbana</span>
@@ -2319,19 +2453,43 @@
         </div>
         <div class="lifestyle-grid">
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--gastro">Filete</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/2a1810/fdba74.webp 400w,
+                          https://placehold.co/800x533/2a1810/fdba74.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/2a1810/fdba74.jpg" alt="Técnica de cocina: por qué debes voltear el filete solo una vez" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">Cocina</span>
             <h3 class="lifestyle-item__title">El secreto que nadie te cuenta: por qué debes voltear el filete solo una vez</h3>
             <span class="lifestyle-item__meta">Técnica · Recetas</span>
           </a>
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--gastro">Gabrieles</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/2a1810/fdba74.webp 400w,
+                          https://placehold.co/800x533/2a1810/fdba74.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/2a1810/fdba74.jpg" alt="Taberna Los Gabrieles — historia, solera y cocina madrileña de origen" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">Restaurantes</span>
             <h3 class="lifestyle-item__title">Taberna Los Gabrieles: historia, solera y una cocina fiel a sus orígenes madrileños</h3>
             <span class="lifestyle-item__meta">Madrid · Reseña</span>
           </a>
           <a href="#" class="lifestyle-item">
-            <div class="lifestyle-item__img"><div class="ph ph--gastro">Viajes</div></div>
+            <div class="lifestyle-item__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x267/2a1810/fdba74.webp 400w,
+                          https://placehold.co/800x533/2a1810/fdba74.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 380px">
+                <img src="https://placehold.co/800x533/2a1810/fdba74.jpg" alt="España como la nueva Grecia — destinos del litoral que arrasan entre viajeros europeos" width="800" height="533" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <span class="lifestyle-item__kicker">Viajes</span>
             <h3 class="lifestyle-item__title">España como la nueva Grecia: los destinos del litoral que arrasan entre viajeros europeos</h3>
             <span class="lifestyle-item__meta">Turismo · Tendencias</span>
@@ -2398,7 +2556,15 @@
         </div>
         <div class="informalia-grid">
           <a href="#" class="info-card">
-            <div class="info-card__img"><div class="ph ph--soft">Sanxenxo</div></div>
+            <div class="info-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x300/f3eadb/4a5568.webp 400w,
+                          https://placehold.co/800x600/f3eadb/4a5568.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 280px">
+                <img src="https://placehold.co/800x600/f3eadb/4a5568.jpg" alt="Juan Carlos I vuelve a Sanxenxo — el rey emérito prepara su verano en Galicia" width="800" height="600" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="info-card__body">
               <span class="info-card__kicker">Realeza</span>
               <h3 class="info-card__title">Juan Carlos I vuelve a Sanxenxo: el rey emérito prepara su verano en Galicia</h3>
@@ -2406,7 +2572,15 @@
             </div>
           </a>
           <a href="#" class="info-card">
-            <div class="info-card__img"><div class="ph ph--soft">D&amp;G</div></div>
+            <div class="info-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x300/f3eadb/4a5568.webp 400w,
+                          https://placehold.co/800x600/f3eadb/4a5568.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 280px">
+                <img src="https://placehold.co/800x600/f3eadb/4a5568.jpg" alt="Dolce &amp; Gabbana en crisis — los fundadores anuncian su separación empresarial" width="800" height="600" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="info-card__body">
               <span class="info-card__kicker">Moda</span>
               <h3 class="info-card__title">Dolce &amp; Gabbana en crisis: los fundadores anuncian su separación empresarial tras 40 años</h3>
@@ -2414,7 +2588,15 @@
             </div>
           </a>
           <a href="#" class="info-card">
-            <div class="info-card__img"><div class="ph ph--soft">Belleza</div></div>
+            <div class="info-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x300/f3eadb/4a5568.webp 400w,
+                          https://placehold.co/800x600/f3eadb/4a5568.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 280px">
+                <img src="https://placehold.co/800x600/f3eadb/4a5568.jpg" alt="La crema lunar de Jessica Alba — cosmético que promete revolucionar el antienvejecimiento" width="800" height="600" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="info-card__body">
               <span class="info-card__kicker">Belleza</span>
               <h3 class="info-card__title">La crema lunar de Jessica Alba: el cosmético que promete revolucionar el antienvejecimiento</h3>
@@ -2422,7 +2604,15 @@
             </div>
           </a>
           <a href="#" class="info-card">
-            <div class="info-card__img"><div class="ph ph--soft">Televisión</div></div>
+            <div class="info-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x300/f3eadb/4a5568.webp 400w,
+                          https://placehold.co/800x600/f3eadb/4a5568.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 40px), 280px">
+                <img src="https://placehold.co/800x600/f3eadb/4a5568.jpg" alt="Kiko Rivera frente a Rossi — el pulso televisivo del fin de semana" width="800" height="600" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="info-card__body">
               <span class="info-card__kicker">Corazón</span>
               <h3 class="info-card__title">Kiko Rivera frente a Rossi: el pulso televisivo que mantendrá en vilo a la audiencia este fin de semana</h3>
@@ -2444,7 +2634,15 @@
         </div>
         <div class="card-grid card-grid--3">
           <article class="story-card">
-            <div class="story-card__img"><div class="ph ph--tech">The Boys</div></div>
+            <div class="story-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x250/0d1f2e/7dd3fc.webp 400w,
+                          https://placehold.co/800x500/0d1f2e/7dd3fc.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                <img src="https://placehold.co/800x500/0d1f2e/7dd3fc.jpg" alt="The Boys Temporada 5 — el final definitivo de la serie de Prime Video" width="800" height="500" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="story-card__body">
               <span class="story-card__kicker">Series</span>
               <h3 class="story-card__title">The Boys T5: dónde ver el final y qué esperar del desenlace definitivo</h3>
@@ -2456,7 +2654,15 @@
             </div>
           </article>
           <article class="story-card">
-            <div class="story-card__img"><div class="ph ph--tech">Xiaomi</div></div>
+            <div class="story-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x250/0d1f2e/7dd3fc.webp 400w,
+                          https://placehold.co/800x500/0d1f2e/7dd3fc.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                <img src="https://placehold.co/800x500/0d1f2e/7dd3fc.jpg" alt="Xiaomi 15 Ultra — la bestia fotográfica con cámara Leica que amenaza al iPhone" width="800" height="500" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="story-card__body">
               <span class="story-card__kicker">Tecnología</span>
               <h3 class="story-card__title">Xiaomi 15 Ultra: la bestia fotográfica que amenaza al iPhone con precio imbatible</h3>
@@ -2468,7 +2674,15 @@
             </div>
           </article>
           <article class="story-card">
-            <div class="story-card__img"><div class="ph ph--soft">IKEA</div></div>
+            <div class="story-card__img">
+              <picture>
+                <source type="image/webp"
+                  srcset="https://placehold.co/400x250/f3eadb/4a5568.webp 400w,
+                          https://placehold.co/800x500/f3eadb/4a5568.webp 800w"
+                  sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1059px) calc(50vw - 48px), 380px">
+                <img src="https://placehold.co/800x500/f3eadb/4a5568.jpg" alt="IKEA — nuevo cambiador modular que agotó existencias en 48 horas" width="800" height="500" loading="lazy" decoding="async">
+              </picture>
+            </div>
             <div class="story-card__body">
               <span class="story-card__kicker">Hogar</span>
               <h3 class="story-card__title">El nuevo cambiador de IKEA agota existencias en 48 horas: esto es lo que lo hace diferente</h3>

@@ -233,24 +233,46 @@
     .ticker {
       background: var(--sem-brand-deep);
       border-bottom: 1px solid var(--sem-brand-mid);
-    }
-    .ticker__inner {
       display: flex;
       align-items: stretch;
-      max-width: var(--layout-container);
-      margin-inline: auto;
-      padding-inline: var(--sp-4);
+    }
+    .ticker__inner {
+      flex: 1;
+      min-width: 0;          /* permite que el flex child se encoja y recorte */
+      display: flex;
+      align-items: stretch;
       overflow-x: auto;
       scrollbar-width: none;
     }
-    @media (min-width: 640px) { .ticker__inner { padding-inline: var(--sp-6); } }
-    @media (min-width: 1024px) { .ticker__inner { padding-inline: var(--sp-8); } }
     .ticker__inner::-webkit-scrollbar { display: none; }
+
+    /* ── Ticker track: contenedor animado de items ── */
+    .ticker__track {
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* Cuando JS activa la animación (clase .ticker--animated en .ticker) */
+    .ticker--animated .ticker__inner {
+      overflow: hidden;
+    }
+    .ticker--animated .ticker__track {
+      will-change: transform;
+      animation: ticker-scroll var(--ticker-duration, 28s) linear infinite;
+    }
+    .ticker--animated .ticker__track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
     .ticker__flag {
       display: flex;
       align-items: center;
-      padding-inline: 0 var(--sp-5);
+      padding-inline: var(--sp-4) var(--sp-5);
       border-right: 1px solid var(--sem-brand-mid);
       font-size: var(--t-micro);
       font-weight: 700;
@@ -260,7 +282,10 @@
       white-space: nowrap;
       flex-shrink: 0;
       gap: var(--sp-2);
+      background: var(--sem-brand-deep);
     }
+    @media (min-width: 640px)  { .ticker__flag { padding-left: var(--sp-6); } }
+    @media (min-width: 1024px) { .ticker__flag { padding-left: var(--sp-8); } }
     .ticker__flag svg { opacity: 0.7; }
 
     .ticker__item {
@@ -1628,41 +1653,43 @@
        TICKER DE MERCADO
   ════════════════════════════════════════════════ -->
   <div class="ticker" role="region" aria-label="Cotizaciones en tiempo real">
+    <span class="ticker__flag" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Mercados
+    </span>
     <div class="ticker__inner">
-      <span class="ticker__flag" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        Mercados
-      </span>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">IBEX 35</span>
-        <span class="ticker__val">11.743,20</span>
-        <span class="ticker__chg is-down">▼ −2,41%</span>
-      </a>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">EUR/USD</span>
-        <span class="ticker__val">1,1355</span>
-        <span class="ticker__chg is-up">▲ +0,88%</span>
-      </a>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">Brent</span>
-        <span class="ticker__val">64,82 $</span>
-        <span class="ticker__chg is-down">▼ −3,14%</span>
-      </a>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">Oro</span>
-        <span class="ticker__val">3.244,70</span>
-        <span class="ticker__chg is-up">▲ +2,07%</span>
-      </a>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">Bitcoin</span>
-        <span class="ticker__val">82.361 $</span>
-        <span class="ticker__chg is-down">▼ −1,98%</span>
-      </a>
-      <a href="#mercados" class="ticker__item">
-        <span class="ticker__name">S&amp;P 500</span>
-        <span class="ticker__val">5.268,40</span>
-        <span class="ticker__chg is-down">▼ −3,46%</span>
-      </a>
+      <div class="ticker__track" role="marquee" aria-label="Cotizaciones en tiempo real">
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">IBEX 35</span>
+          <span class="ticker__val">11.743,20</span>
+          <span class="ticker__chg is-down">▼ −2,41%</span>
+        </a>
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">EUR/USD</span>
+          <span class="ticker__val">1,1355</span>
+          <span class="ticker__chg is-up">▲ +0,88%</span>
+        </a>
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">Brent</span>
+          <span class="ticker__val">64,82 $</span>
+          <span class="ticker__chg is-down">▼ −3,14%</span>
+        </a>
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">Oro</span>
+          <span class="ticker__val">3.244,70</span>
+          <span class="ticker__chg is-up">▲ +2,07%</span>
+        </a>
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">Bitcoin</span>
+          <span class="ticker__val">82.361 $</span>
+          <span class="ticker__chg is-down">▼ −1,98%</span>
+        </a>
+        <a href="#mercados" class="ticker__item">
+          <span class="ticker__name">S&amp;P 500</span>
+          <span class="ticker__val">5.268,40</span>
+          <span class="ticker__chg is-down">▼ −3,46%</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -2825,6 +2852,34 @@
         link.addEventListener('click', function () {
           if (window.innerWidth < 1060) closeNav();
         });
+      });
+    }());
+
+    /* ── Ticker automático con pausa en hover ─────────────────────────────── */
+    (function () {
+      /* Respeta prefers-reduced-motion: sin animación, scroll manual */
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var ticker = document.querySelector('.ticker');
+      var track  = document.querySelector('.ticker__track');
+      if (!ticker || !track) return;
+
+      /* Duplica los items para el bucle sin corte visual */
+      var origItems = Array.from(track.children);
+      origItems.forEach(function (item) {
+        var clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');  /* screen readers ignoran duplicados */
+        track.appendChild(clone);
+      });
+
+      /* Activa la clase CSS que aplica la animación y oculta el overflow */
+      ticker.classList.add('ticker--animated');
+
+      /* Calibra la duración según el ancho real del contenido (80 px/s = ritmo editorial) */
+      requestAnimationFrame(function () {
+        var naturalWidth = track.scrollWidth / 2;
+        var speed = 80;
+        track.style.setProperty('--ticker-duration', (naturalWidth / speed).toFixed(1) + 's');
       });
     }());
   </script>

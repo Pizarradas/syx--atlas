@@ -145,11 +145,13 @@
       /* Overlay — scrim oscuro para drawers y modales */
       --sem-overlay-scrim: oklch(0 0 0 / 0.55);
 
-      /* Radius */
+      /* Radius — escala editorial para prensa económica (máx. 6px)
+         xs → foco y microdetalle UI · sm → botones, tags, inputs, items
+         md → cards de contenido · lg → imágenes y elementos de campaña */
       --sem-radius-xs: 2px;
-      --sem-radius-sm: 4px;
-      --sem-radius-md: 8px;
-      --sem-radius-lg: 12px;
+      --sem-radius-sm: 3px;
+      --sem-radius-md: 4px;
+      --sem-radius-lg: 6px;
 
       /* Space: 4px grid */
       --sp-1:  4px;  --sp-2:  8px;  --sp-3: 12px;  --sp-4: 16px;
@@ -768,7 +770,7 @@
       padding-block: var(--sp-4);
       border-bottom: 1px solid var(--sem-border-subtle);
       transition: background-color 150ms ease, transform 150ms ease;
-      border-radius: var(--sem-radius-sm);
+      border-radius: var(--sem-radius-xs);
       padding-inline: var(--sp-2);
       margin-inline: calc(var(--sp-2) * -1);
     }
@@ -862,7 +864,7 @@
       padding: var(--sp-4);
       background: var(--sem-surface-tertiary);
       border: 1px dashed var(--sem-border-default);
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-sm);
     }
     .ad-zone__label {
       font-size: var(--t-micro);
@@ -876,7 +878,7 @@
       max-width: 970px;
       height: 88px;
       background: var(--sem-surface-primary);
-      border-radius: var(--sem-radius-sm);
+      border-radius: var(--sem-radius-xs);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -908,7 +910,7 @@
       padding-block: var(--sp-4);
       border-bottom: 1px solid var(--sem-border-subtle);
       transition: background-color 150ms ease, transform 150ms ease;
-      border-radius: var(--sem-radius-sm);
+      border-radius: var(--sem-radius-xs);
       padding-inline: var(--sp-2);
       margin-inline: calc(var(--sp-2) * -1);
     }
@@ -972,7 +974,7 @@
       gap: var(--sp-3);
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-default);
-      border-radius: var(--sem-radius-lg);
+      border-radius: var(--sem-radius-md);
       overflow: hidden;
       box-shadow: var(--sem-shadow-sm);
       transition: box-shadow 200ms ease, transform 200ms ease;
@@ -1033,7 +1035,7 @@
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-default);
       border-left: 4px solid var(--sem-accent-default);
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-sm);
       box-shadow: var(--sem-shadow-sm);
       transition: box-shadow 200ms ease, transform 200ms ease;
     }
@@ -1071,7 +1073,7 @@
     .rail-box {
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-default);
-      border-radius: var(--sem-radius-lg);
+      border-radius: var(--sem-radius-md);
       overflow: hidden;
       box-shadow: var(--sem-shadow-sm);
     }
@@ -1138,7 +1140,7 @@
       padding-block: var(--sp-3);
       border-bottom: 1px solid var(--sem-border-subtle);
       transition: background-color 150ms ease, transform 150ms ease;
-      border-radius: var(--sem-radius-sm);
+      border-radius: var(--sem-radius-xs);
       padding-inline: var(--sp-2);
       margin-inline: calc(var(--sp-2) * -1);
     }
@@ -1316,7 +1318,7 @@
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-default);
       border-left: 4px solid var(--sem-accent-default);
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-sm);
       box-shadow: var(--sem-shadow-sm);
       transition: box-shadow 200ms ease, transform 200ms ease;
     }
@@ -1379,7 +1381,7 @@
       padding: var(--sp-4);
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-default);
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-sm);
       box-shadow: var(--sem-shadow-sm);
       transition: box-shadow 200ms ease, transform 200ms ease;
     }
@@ -1477,7 +1479,7 @@
     .lifestyle-item:hover { transform: translateY(-2px); }
     .lifestyle-item__img {
       aspect-ratio: 3 / 2;
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-lg);
       overflow: hidden;
     }
     .lifestyle-item__kicker {
@@ -1511,7 +1513,7 @@
       gap: var(--sp-3);
       background: var(--sem-surface-primary);
       border: 1px solid var(--sem-border-subtle);
-      border-radius: var(--sem-radius-md);
+      border-radius: var(--sem-radius-sm);
       overflow: hidden;
       transition: box-shadow 200ms ease, transform 200ms ease;
     }

@@ -10,56 +10,59 @@
   <style>
 
     /* ═══════════════════════════════════════════════════════════════════════════
-       TIER 1 — Primitives (sólo para el fichero demo; en SYX irían en
-       scss/abstracts/tokens/primitives/_color.scss, nunca en componentes)
+       TIER 1 — Primitives · OKLCH color system
+       (En SYX: scss/abstracts/tokens/primitives/_color.scss — nunca en componentes)
+       Formato: oklch(L C H)  L 0–1 · C absoluta · H grados
        ═══════════════════════════════════════════════════════════════════════════ */
     :root {
-      /* Orange — color principal #ff6600 */
-      --prim-orange-700: #993d00;
-      --prim-orange-600: #cc5200;
-      --prim-orange-500: #e55c00;
-      --prim-orange-400: #ff6600;
-      --prim-orange-300: #ff8533;
-      --prim-orange-200: #ffaa7a;
-      --prim-orange-100: #ffe8d6;
-      --prim-orange-50:  #fff4ee;
+      /* Orange — color principal (hue ≈ 33°, warm-orange gamut) */
+      --prim-orange-700: oklch(0.44 0.150 34);  /* ≈ #993d00 */
+      --prim-orange-600: oklch(0.55 0.182 35);  /* ≈ #cc5200 */
+      --prim-orange-500: oklch(0.61 0.196 34);  /* ≈ #e55c00 */
+      --prim-orange-400: oklch(0.67 0.211 33);  /* ≈ #ff6600 */
+      --prim-orange-300: oklch(0.73 0.170 37);  /* ≈ #ff8533 */
+      --prim-orange-200: oklch(0.80 0.110 42);  /* ≈ #ffaa7a */
+      --prim-orange-100: oklch(0.93 0.040 48);  /* ≈ #ffe8d6 */
+      --prim-orange-50:  oklch(0.97 0.018 52);  /* ≈ #fff4ee */
 
-      /* Dark — superficies inversas (header, footer, rail, ticker) */
-      --prim-dark-900: #0f0f0f;
-      --prim-dark-800: #1a1a1a;
-      --prim-dark-700: #262626;
-      --prim-dark-600: #333333;
-      --prim-dark-500: #4d4d4d;
-      --prim-dark-200: #a3a3a3;
-      --prim-dark-100: #d4d4d4;
-      --prim-dark-50:  #f0f0f0;
+      /* Dark — superficies inversas · escala acromática */
+      --prim-dark-900: oklch(0.07 0 0);  /* ≈ #0f0f0f */
+      --prim-dark-800: oklch(0.12 0 0);  /* ≈ #1a1a1a */
+      --prim-dark-700: oklch(0.18 0 0);  /* ≈ #262626 */
+      --prim-dark-600: oklch(0.27 0 0);  /* ≈ #333333 */
+      --prim-dark-500: oklch(0.37 0 0);  /* ≈ #4d4d4d */
+      --prim-dark-200: oklch(0.67 0 0);  /* ≈ #a3a3a3 */
+      --prim-dark-100: oklch(0.85 0 0);  /* ≈ #d4d4d4 */
+      --prim-dark-50:  oklch(0.95 0 0);  /* ≈ #f0f0f0 */
 
-      --prim-neutral-950: #0a0a0a;
-      --prim-neutral-900: #141414;
-      --prim-neutral-700: #2d3748;
-      --prim-neutral-600: #4a5568;
-      --prim-neutral-500: #718096;
-      --prim-neutral-300: #a0aec0;
-      --prim-neutral-200: #dbd0bc;
-      --prim-neutral-100: #e8e0d2;
-      --prim-neutral-50:  #f3eadb;
-      --prim-neutral-25:  #faf6ef;
-      --prim-white:       #ffffff;
+      /* Neutral — 950–700 slate-blue · 200–25 warm cream */
+      --prim-neutral-950: oklch(0.05 0     0);    /* ≈ #0a0a0a */
+      --prim-neutral-900: oklch(0.09 0     0);    /* ≈ #141414 */
+      --prim-neutral-700: oklch(0.27 0.034 258);  /* ≈ #2d3748 slate */
+      --prim-neutral-600: oklch(0.39 0.030 255);  /* ≈ #4a5568 */
+      --prim-neutral-500: oklch(0.55 0.027 253);  /* ≈ #718096 */
+      --prim-neutral-300: oklch(0.71 0.025 250);  /* ≈ #a0aec0 */
+      --prim-neutral-200: oklch(0.84 0.025 79);   /* ≈ #dbd0bc warm beige */
+      --prim-neutral-100: oklch(0.89 0.018 80);   /* ≈ #e8e0d2 */
+      --prim-neutral-50:  oklch(0.94 0.016 82);   /* ≈ #f3eadb */
+      --prim-neutral-25:  oklch(0.97 0.010 84);   /* ≈ #faf6ef */
+      --prim-white:       oklch(1    0     0);     /* #ffffff  */
 
-      --prim-positive:  #166534;
-      --prim-negative:  #b42318;
-      --prim-market-up: #16a34a;
-      --prim-market-dn: #dc2626;
+      /* Status / mercados */
+      --prim-positive:  oklch(0.38 0.092 158);  /* ≈ #166534 */
+      --prim-negative:  oklch(0.47 0.157  25);  /* ≈ #b42318 */
+      --prim-market-up: oklch(0.58 0.157 152);  /* ≈ #16a34a */
+      --prim-market-dn: oklch(0.57 0.206  24);  /* ≈ #dc2626 */
 
-      /* Market — variantes para superficie oscura */
-      --prim-market-up-light: #4ade80;
-      --prim-market-dn-light: #f87171;
+      /* Market — variantes para superficie oscura (más luminosas) */
+      --prim-market-up-light: oklch(0.80 0.173 152);  /* ≈ #4ade80 */
+      --prim-market-dn-light: oklch(0.72 0.151  25);  /* ≈ #f87171 */
 
-      /* Gold — tono dorado para podcasts y acentos editoriales */
-      --prim-gold-500: #c9a227;
+      /* Gold — acentos editoriales y podcasts (hue ≈ 79°) */
+      --prim-gold-500:    oklch(0.71 0.122 79);  /* ≈ #c9a227 */
 
-      /* Neutral intermedio para border-strong */
-      --prim-neutral-250: #c5b89a;
+      /* Neutral-250 — border-strong cálido */
+      --prim-neutral-250: oklch(0.76 0.040 83);  /* ≈ #c5b89a */
     }
 
     /* ═══════════════════════════════════════════════════════════════════════════
@@ -105,7 +108,7 @@
       --sem-border-strong:   var(--prim-neutral-250);
       --sem-border-inverse:  var(--prim-dark-600);
       --sem-border-accent:   var(--prim-orange-400);
-      --sem-border-gold-subtle: color-mix(in srgb, var(--prim-gold-500) 20%, transparent);
+      --sem-border-gold-subtle: color-mix(in oklch, var(--prim-gold-500) 20%, transparent);
 
       /* Market status */
       --sem-market-up:        var(--prim-market-up);
@@ -116,14 +119,21 @@
       --sem-market-down-on-dark: var(--prim-market-dn-light);
 
       /* Elevation — sombras neutras (sin tinte navy) */
-      --sem-shadow-sm:     0 1px 3px rgb(0 0 0 / 0.07), 0 1px 2px rgb(0 0 0 / 0.04);
-      --sem-shadow-md:     0 4px 16px rgb(0 0 0 / 0.09);
-      --sem-shadow-lg:     0 12px 40px rgb(0 0 0 / 0.14);
-      --sem-shadow-header: 0 2px 20px rgb(0 0 0 / 0.4);
+      --sem-shadow-sm:     0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+      --sem-shadow-md:     0 4px 16px oklch(0 0 0 / 0.09);
+      --sem-shadow-lg:     0 12px 40px oklch(0 0 0 / 0.14);
+      --sem-shadow-header: 0 2px 20px oklch(0 0 0 / 0.40);
 
       /* Superficies translúcidas para contextos de banda oscura */
-      --sem-surface-glass:       rgb(255 255 255 / 0.07);
-      --sem-surface-glass-hover: rgb(255 255 255 / 0.12);
+      --sem-surface-glass:       oklch(1 0 0 / 0.07);
+      --sem-surface-glass-hover: oklch(1 0 0 / 0.12);
+
+      /* Accent alpha — hover/active states (interpolación oklch, hue preservada) */
+      --sem-accent-tint-10: color-mix(in oklch, var(--prim-orange-400) 10%, transparent);
+      --sem-accent-tint-08: color-mix(in oklch, var(--prim-orange-400)  8%, transparent);
+
+      /* Overlay — scrim oscuro para drawers y modales */
+      --sem-overlay-scrim: oklch(0 0 0 / 0.55);
 
       /* Radius */
       --sem-radius-xs: 2px;
@@ -329,7 +339,7 @@
       flex-shrink: 0;
       transition: color 150ms ease, background-color 150ms ease;
     }
-    .btn--menu:hover { color: var(--sem-text-inverse); background-color: rgb(255 102 0 / 0.1); }
+    .btn--menu:hover { color: var(--sem-text-inverse); background-color: var(--sem-accent-tint-10); }
     @media (min-width: 1060px) { .btn--menu { display: none; } }
 
     /* ── Nav — off-canvas drawer (mobile) → inline row (desktop) ── */
@@ -396,10 +406,10 @@
       border-radius: var(--sem-radius-sm);
       transition: color 150ms ease, background-color 150ms ease;
     }
-    .site-nav__link:hover { color: var(--sem-accent-light); background-color: rgb(255 102 0 / 0.1); }
+    .site-nav__link:hover { color: var(--sem-accent-light); background-color: var(--sem-accent-tint-10); }
     .site-nav__link[aria-current="page"] {
       color: var(--sem-accent-default);
-      background-color: rgb(255 102 0 / 0.08);
+      background-color: var(--sem-accent-tint-08);
     }
 
     /* Desktop: nav becomes inline row */
@@ -471,7 +481,7 @@
     .nav-backdrop {
       position: fixed;
       inset: 0;
-      background: rgb(0 0 0 / 0.55);
+      background: var(--sem-overlay-scrim);
       z-index: 190;
       opacity: 0;
       pointer-events: none;
@@ -522,7 +532,7 @@
       border-radius: var(--sem-radius-sm);
       transition: color 150ms ease, background-color 150ms ease;
     }
-    .btn--icon:hover { color: var(--sem-accent-light); background-color: rgb(255 102 0 / 0.1); }
+    .btn--icon:hover { color: var(--sem-accent-light); background-color: var(--sem-accent-tint-10); }
 
     /* Visibility utilities */
     .hide-below-md { display: none; }
@@ -1201,8 +1211,16 @@
     }
     @media (min-width: 640px)  { .renta-band__inner { padding-inline: var(--sp-6); } }
     @media (min-width: 1024px) { .renta-band__inner { padding-inline: var(--sp-8); } }
-    @media (min-width: 768px) { .renta-band__inner { grid-template-columns: 1fr 1fr; } }
-    @media (min-width: 1060px) { .renta-band__inner { grid-template-columns: 1fr 1fr 1fr; } }
+    @media (min-width: 768px) {
+      .renta-band__inner { grid-template-columns: 1fr 1fr; }
+      /* Intro spans both columns at tablet so the 2 cards sit symmetrically below */
+      .renta-intro { grid-column: 1 / -1; }
+    }
+    @media (min-width: 1060px) {
+      .renta-band__inner { grid-template-columns: 1fr 1fr 1fr; }
+      /* Reset: 3-column layout restores side-by-side intro + cards */
+      .renta-intro { grid-column: auto; }
+    }
 
     .renta-intro__eyebrow {
       font-size: var(--t-label);
@@ -1420,7 +1438,7 @@
     }
     .ccaa-item__title {
       font-family: var(--font-serif);
-      font-size: 0.9rem;
+      font-size: var(--t-sm);
       font-weight: 600;
       line-height: 1.35;
       color: var(--sem-text-primary);

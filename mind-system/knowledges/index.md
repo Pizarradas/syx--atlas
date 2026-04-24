@@ -12,6 +12,7 @@ knowledges/
   ui/        → Diseño visual: color, tipografía, movimiento, composición
   front/     → Implementación front: semántica HTML, CSS architecture, a11y, mobile-first
   syx/       → Sistema SYX específico: tokens, SCSS pipeline, componentes, temas, color
+  branding/  → Percepción de marca: prestigio, credibilidad, semiótica visual, autoridad
 ```
 
 ---
@@ -62,6 +63,14 @@ knowledges/
 | `component-patterns.md` | BEM, prefijos atom/mol/org, estructura de componente | UI, AUDIT, SKETCH, MIGRATE |
 | `theme-system.md` | Estructura de `_theme.scss`, secciones obligatorias | THEME, AUDIT |
 | `color-oklch.md` | Por qué OKLCH, construcción de escalas, dark mode | TOKEN, THEME |
+
+### `branding/` — Percepción de marca
+
+| Módulo | Contenido | Cargado por |
+|--------|-----------|-------------|
+| `index.md` | Mapa del dominio branding | — |
+| `perception-of-prestige-foundations.md` | Psicología cognitiva del prestigio: modelo PRI, processing fluency, heurísticos de Cialdini, semiótica del lujo | CREATIVE, UX (on-demand) |
+| `perception-of-prestige.rules.md` | 17 reglas operativas con checks y output template para auditoría de percepción | CREATIVE (on-demand), AUDIT (on-demand) |
 
 ### `vendors/` — Bibliotecas de referencia externas
 

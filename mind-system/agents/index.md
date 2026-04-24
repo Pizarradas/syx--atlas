@@ -21,16 +21,16 @@ Referencia rápida de los 8 modos del sistema. Para la constitución completa ve
 
 ## Knowledge cargado por modo
 
-| Modo | syx/ | ux/ | ui/ | front/ | vendors/ |
-|------|------|-----|-----|--------|---------|
-| SKETCH | nomenclatura BEM | — | — | mobile-first | awesome-design (on-demand: estética en brief) |
-| UX | component-patterns | laws-of-ux, nielsen-heuristics, dont-make-me-think | — | mobile-first, accessibility-wcag, progressive-enhancement, javascript-patterns (si JS) | — |
-| CREATIVE | scss-pipeline (ref) | — | color-theory, motion-principles, typography-systems, practical-ui | — | awesome-design (on-demand: referente en brief) |
-| TOKEN | token-system, color-oklch | — | color-theory | **size-models** (escala), **size-models-checklist** (self-check) | — |
-| THEME | token-system, theme-system, color-oklch | — | color-theory | **size-models** (primitivos de escala) | awesome-design (on-demand: referente de paleta) |
-| UI | scss-pipeline, component-patterns, token-system | — | refactoring-ui, typography-systems, motion-principles | mobile-first, css-architecture, **size-models** (tipografía/espaciado) | — |
-| AUDIT | scss-pipeline, component-patterns, token-system | — | — | accessibility-wcag, mobile-first, **size-models-checklist** (coherencia de escala) | — |
-| MIGRATE | token-system, component-patterns | — | — | — | — |
+| Modo | syx/ | ux/ | ui/ | front/ | branding/ | vendors/ |
+|------|------|-----|-----|--------|-----------|---------|
+| SKETCH | nomenclatura BEM | — | — | mobile-first | — | awesome-design (on-demand: estética en brief) |
+| UX | component-patterns | laws-of-ux, nielsen-heuristics, dont-make-me-think | — | mobile-first, accessibility-wcag, progressive-enhancement, javascript-patterns (si JS) | perception-of-prestige-foundations (on-demand: contexto de confianza/autoridad) | — |
+| CREATIVE | scss-pipeline (ref) | — | color-theory, motion-principles, typography-systems, practical-ui | — | perception-of-prestige-foundations (siempre), perception-of-prestige.rules (on-demand: brief premium/credibilidad) | awesome-design (on-demand: referente en brief) |
+| TOKEN | token-system, color-oklch | — | color-theory | **size-models** (escala), **size-models-checklist** (self-check) | — | — |
+| THEME | token-system, theme-system, color-oklch | — | color-theory | **size-models** (primitivos de escala) | — | awesome-design (on-demand: referente de paleta) |
+| UI | scss-pipeline, component-patterns, token-system | — | refactoring-ui, typography-systems, motion-principles | mobile-first, css-architecture, **size-models** (tipografía/espaciado) | — | — |
+| AUDIT | scss-pipeline, component-patterns, token-system | — | — | accessibility-wcag, mobile-first, **size-models-checklist** (coherencia de escala) | perception-of-prestige.rules (on-demand: auditoría de percepción de marca) | — |
+| MIGRATE | token-system, component-patterns | — | — | — | — | — |
 
 ---
 

@@ -25,6 +25,8 @@
 | `knowledges/ui/motion-principles.md` | `#motion` | Siempre — easing, duración, propiedades GPU-composited |
 | `knowledges/ui/typography-systems.md` | `#typography` | Para tipografía experimental y variable fonts |
 | `knowledges/ui/practical-ui.md` | `#visual-craft` | Para decisiones de composición y detalle visual |
+| `knowledges/branding/perception-of-prestige-foundations.md` | `#prestige` `#branding` | Siempre — fundamento para decisiones de registro premium y credibilidad |
+| `knowledges/branding/perception-of-prestige.rules.md` | `#prestige-audit` | On-demand — cuando el brief exige premium, lujo, autoridad o credibilidad explícita |
 | `knowledges/vendors/awesome-design/index.md` | `#reference` | On-demand — cuando el brief cita un referente o estética concreta |
 
 ---

@@ -549,7 +549,6 @@
     /* Scrub chart */
     .org-scrub-chart { position: relative; }
     .org-scrub-chart__pin {
-      height: 100vh; height: 100svh;
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: var(--sem-sp-xl);
@@ -560,6 +559,7 @@
       position: relative;
     }
     @media (min-width: 768px) { .org-scrub-chart__pin { padding-inline: var(--sem-sp-2xl); } }
+    @media (min-width: 1024px) { .org-scrub-chart__pin { height: 100vh; height: 100svh; } }
     .org-scrub-chart__head { max-width: 56ch; }
     .org-scrub-chart__eyebrow {
       font-family: var(--sem-font-mono);
@@ -631,26 +631,34 @@
       max-width: 720px;
     }
     .org-scrub-chart__years span.is-active { color: var(--sem-text-accent); font-weight: 700; }
-    @media (max-width: 1023px) { .org-scrub-chart__pin { height: auto; } }
 
     /* ────────────────────────────────────────────────────────────────────────
        v4 NEW · annotation cards over the scrub chart
        ──────────────────────────────────────────────────────────────────────── */
+    /* Mobile-first: stacked relative & visible. Desktop ≥768: floating overlay con animación scrub. */
     .mol-annotation {
-      position: absolute;
-      top: var(--sem-sp-xl);
-      right: var(--sem-sp-md);
-      max-width: 320px;
+      position: relative;
+      width: 100%;
       padding: var(--sem-sp-md) var(--sem-sp-lg);
+      margin-top: var(--sem-sp-md);
       background: rgba(5,5,5,0.92);
       border-left: 2px solid var(--sem-rule-accent);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 5;
-      pointer-events: none;
-      will-change: transform, opacity;
-      opacity: 0;
-      transform: translateX(40px);
+    }
+    @media (min-width: 768px) {
+      .mol-annotation {
+        position: absolute;
+        top: var(--sem-sp-xl);
+        right: var(--sem-sp-md);
+        max-width: 320px;
+        margin-top: 0;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 5;
+        pointer-events: none;
+        will-change: transform, opacity;
+        opacity: 0;
+        transform: translateX(40px);
+      }
     }
     @media (min-width: 1024px) {
       .mol-annotation { right: var(--sem-sp-2xl); max-width: 360px; }
@@ -1044,6 +1052,61 @@
     .reduced-motion .mol-evidence__mask { transform: scaleX(0); }
     .reduced-motion .org-bibliography__item::after { transform: scaleX(1); }
     .reduced-motion .mol-annotation { opacity: 1; transform: none; }
+
+    /* ─────────────────────────────────────────────────────────────────────
+       v4 mobile (<768px) — fixes O1, O2, O3, O4, O6, O7, O8, O9
+       ───────────────────────────────────────────────────────────────────── */
+    @media (max-width: 767px) {
+      /* O1 — Cinema bar compacta: oculta REC text + caso + cap counter + progress.
+         Doble componente: la versión desktop usa 3 columnas con dossier completo;
+         mobile usa 2 columnas (brand + botón). REC pulse se reserva para >=768. */
+      .org-cinema-bar__inner { grid-template-columns: 1fr auto; gap: var(--sem-sp-sm); }
+      .org-cinema-bar__left { display: none; }
+      .org-cinema-bar__brand { grid-column: 1; font-size: 0.875rem; justify-self: start; }
+      .org-cinema-bar__brand strong { font-size: 0.625rem; letter-spacing: 0.24em; margin-right: 6px; }
+      .org-cinema-bar__right { grid-column: 2; gap: var(--sem-sp-sm); }
+      .org-cinema-bar__right > span { display: none; }
+      .atom-btn-magnetic { padding: 4px 10px; font-size: 0.625rem; letter-spacing: 0.16em; }
+
+      /* O2 — Overture inner: padding compacto + gap reducido */
+      .org-overture__inner {
+        padding-top: calc(48px + var(--sem-sp-xl));
+        padding-bottom: var(--sem-sp-xl);
+        gap: var(--sem-sp-xl);
+      }
+
+      /* O3 — Overture title: floor más bajo, max-width libre. Evita overflow de "BlackRock". */
+      .org-overture__title { font-size: clamp(2.75rem, 12vw, 11rem); max-width: 100%; }
+
+      /* O4 — Chapter-clip number proporcionado al viewport */
+      .org-chapter-clip__num { font-size: clamp(5rem, 22vw, 22rem); }
+
+      /* O6 — Network SVG con scroll horizontal (12 nodos + labels son ilegibles a 328px) */
+      .org-network__svg-wrap {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        aspect-ratio: auto;
+        height: 360px;
+      }
+      .org-network__svg-wrap svg {
+        width: 576px;
+        height: 360px;
+        min-width: 576px;
+      }
+
+      /* O7 — Drop cap reducido */
+      .org-chapter-body__column p:first-of-type::first-letter {
+        font-size: 3.25rem;
+        margin: 0.3rem 0.4rem 0 0;
+      }
+
+      /* O8 — Pull quote padding-left compacto */
+      .mol-pull-quote { padding-left: var(--sem-sp-md); padding-block: var(--sem-sp-2xl); }
+
+      /* O9 — Chapter-clip source: stack para evitar solapamiento de captions largos */
+      .org-chapter-clip__source { flex-direction: column; align-items: flex-start; gap: var(--sem-sp-xs); }
+    }
   </style>
 </head>
 <body>
@@ -2193,19 +2256,21 @@
           y.classList.toggle("is-active", yr <= year);
         });
 
-        // Annotations: aparecen cuando el progress entra en el rango, salen al salir
-        annotationRanges.forEach((range, idx) => {
-          const card = annotations[range.idx];
-          if (!card) return;
-          const inRange = p >= range.enter && p <= range.leave;
-          if (inRange && !annotationStates[idx]) {
-            annotationStates[idx] = true;
-            gsap.to(card, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" });
-          } else if (!inRange && annotationStates[idx]) {
-            annotationStates[idx] = false;
-            gsap.to(card, { opacity: 0, x: 40, duration: 0.5, ease: "expo.in" });
-          }
-        });
+        // Annotations: solo en desktop (mobile las muestra apiladas via CSS).
+        if (window.matchMedia("(min-width: 768px)").matches) {
+          annotationRanges.forEach((range, idx) => {
+            const card = annotations[range.idx];
+            if (!card) return;
+            const inRange = p >= range.enter && p <= range.leave;
+            if (inRange && !annotationStates[idx]) {
+              annotationStates[idx] = true;
+              gsap.to(card, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" });
+            } else if (!inRange && annotationStates[idx]) {
+              annotationStates[idx] = false;
+              gsap.to(card, { opacity: 0, x: 40, duration: 0.5, ease: "expo.in" });
+            }
+          });
+        }
       }
       if (pin && curvePath && window.matchMedia("(min-width: 768px)").matches && !reduced) {
         ScrollTrigger.create({

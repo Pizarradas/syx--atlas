@@ -25,7 +25,9 @@
 | `knowledges/syx/token-system.md` | `#tokens` | Siempre — jerarquía de tiers, naming convention |
 | `knowledges/ui/refactoring-ui.md` | `#visual-design` | Cuando hay decisiones de espaciado, color o composición |
 | `knowledges/ui/typography-systems.md` | `#typography` | Cuando el componente contiene texto |
-| `knowledges/ui/motion-principles.md` | `#motion` | Cuando el componente tiene transiciones o animaciones |
+| `knowledges/ui/motion-principles.md` | `#motion` | Cuando el componente tiene transiciones o animaciones — principios físicos (prevalecen) |
+| `knowledges/motion/03-patrones/` | `#gsap` `#patterns` | On-demand — cuando el componente requiere un efecto GSAP concreto del catálogo (consultar el patrón nombrado en el brief o por el modo CREATIVE previo) |
+| `knowledges/motion/01-fundamentos/vocabulario-base.md` | `#gsap` `#vocabulary` | On-demand — cuando es necesario formalizar un efecto sin nombre claro: usar las cuatro capas (qué/cuándo/qué activa/función) |
 | `knowledges/front/mobile-first.md` | `#mobile-first` | Siempre — breakpoints min-width, layout progresivo |
 | `knowledges/front/css-architecture.md` | `#css-arch` | Cuando hay decisiones de cascada o especificidad |
 

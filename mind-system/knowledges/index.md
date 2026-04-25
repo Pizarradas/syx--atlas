@@ -13,6 +13,7 @@ knowledges/
   front/     → Implementación front: semántica HTML, CSS architecture, a11y, mobile-first
   syx/       → Sistema SYX específico: tokens, SCSS pipeline, componentes, temas, color
   branding/  → Percepción de marca: prestigio, credibilidad, semiótica visual, autoridad
+  motion/    → Lenguaje de animación con GSAP: capacidades, patrones, glosario para prompts
 ```
 
 ---
@@ -71,6 +72,31 @@ knowledges/
 | `index.md` | Mapa del dominio branding | — |
 | `perception-of-prestige-foundations.md` | Psicología cognitiva del prestigio: modelo PRI, processing fluency, heurísticos de Cialdini, semiótica del lujo | CREATIVE, UX (on-demand) |
 | `perception-of-prestige.rules.md` | 17 reglas operativas con checks y output template para auditoría de percepción | CREATIVE (on-demand), AUDIT (on-demand) |
+
+### `motion/` — Lenguaje de animación con GSAP
+
+Sistema documental que entiende GSAP como vocabulario narrativo y de prompting. Complementa `ui/motion-principles.md` (principios físicos del movimiento — easing, GPU, reduced-motion, que prevalecen siempre) con la capa específica de la librería.
+
+| Módulo | Contenido | Cargado por |
+|--------|-----------|-------------|
+| `index.md` | Mapa del dominio motion + relación con otros knowledges | — |
+| `00-indice/mapa-del-sistema.md` | Flujo de consulta del sistema | — |
+| `01-fundamentos/modelo-mental.md` | Las cuatro capas: qué cambia, cuándo, qué activa, función narrativa | CREATIVE (siempre cuando hay GSAP), UI (on-demand) |
+| `01-fundamentos/vocabulario-base.md` | Tween, timeline, stagger, easing, ScrollTrigger — términos atómicos | CREATIVE, UI (on-demand) |
+| `02-capacidades/index.md` | Catálogo: tween, timeline, stagger, easing, ScrollTrigger, Lenis, plugins | CREATIVE, UI (on-demand) |
+| `03-patrones/index.md` | Catálogo de patrones reusables con cuándo usar cada uno | CREATIVE, UI (on-demand) |
+| `03-patrones/character-cascade.md` | Reveal letra por letra | CREATIVE, UI |
+| `03-patrones/parallax.md` | Capas con velocidades distintas + Ken Burns | CREATIVE, UI |
+| `03-patrones/pinned-scrub.md` | Sección fijada con animación atada al scroll | CREATIVE |
+| `03-patrones/horizontal-scroll.md` | Recorrido lateral en sección pinneada | CREATIVE |
+| `03-patrones/mask-reveal.md` | Descubrir contenido tras una máscara | CREATIVE, UI |
+| `03-patrones/magnetic-button.md` | Botón que se atrae al cursor | CREATIVE, UI |
+| `03-patrones/cursor-follower.md` | Cursor personalizado | CREATIVE |
+| `03-patrones/scramble-text.md` | Texto con cifrado/decifrado | CREATIVE |
+| `03-patrones/typewriter.md` | Texto que se tipea con caret | CREATIVE, UI |
+| `03-patrones/draw-svg-path.md` | Trazado animado de paths SVG | CREATIVE |
+| `04-glosario/index.md` | Vocabulario corto para briefing y prompts IA | CREATIVE, SKETCH (on-demand: si el brief usa términos de motion) |
+| `05-plantillas/plantilla-patron.md` | Schema para nuevos patrones | — (referencia para autores) |
 
 ### `vendors/` — Bibliotecas de referencia externas
 

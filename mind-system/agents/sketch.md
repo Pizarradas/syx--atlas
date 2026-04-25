@@ -22,6 +22,7 @@
 |--------|-----|-----------------|
 | `knowledges/syx/component-patterns.md` | `#bem` | Siempre — nomenclatura BEM y prefijos atom/mol/org |
 | `knowledges/front/mobile-first.md` | `#mobile-first` | Siempre — base 320px, solo min-width |
+| `knowledges/motion/04-glosario/index.md` | `#gsap-vocabulary` | On-demand — cuando el brief usa términos de motion (parallax, character cascade, scrub, magnetic…) y conviene anotar el patrón en el handoff a UI/CREATIVE sin construir la animación todavía |
 | `knowledges/vendors/awesome-design/index.md` | `#reference` | On-demand — cuando el brief especifica una estética conocida (ej: "boceto estilo Notion", "layout como Stripe") |
 
 ---

@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El bolso que venció al S&P 500 — VITRINA, Moda y Capital</title>
+  <meta name="description" content="40 años del Birkin como activo refugio: cómo Hermès convirtió un bolso en un instrumento financiero que rinde más que el oro y el índice S&P 500.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://placehold.co">
+  <link rel="preload" as="image" type="image/webp"
+        href="https://placehold.co/1280x720/1a1410/f4ede4.webp"
+        imagesrcset="https://placehold.co/640x360/1a1410/f4ede4.webp 640w,
+                     https://placehold.co/1280x720/1a1410/f4ede4.webp 1280w,
+                     https://placehold.co/1920x1080/1a1410/f4ede4.webp 1920w"
+        imagesizes="(max-width: 1059px) 100vw, 1080px"
+        fetchpriority="high">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════════
+       VITRINA — Moda y Capital · ATLAS x SYX
+       Article template — self-contained editorial
+       Generated 2026-04-25 by SYX [SKETCH → UX → TOKEN → UI + AUDIT]
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    /* ────────────────────────────────────────────────────────────────────────
+       TIER 1 — Primitives · OKLCH color system
+       (En SYX: scss/abstracts/tokens/primitives/_color.scss)
+       ──────────────────────────────────────────────────────────────────────── */
+    :root {
+      /* Ivory — paper / page surfaces (warm cream gamut, hue ≈ 80°) */
+      --prim-ivory-50:  oklch(0.98 0.010 84);   /* ≈ #fbf6ee paper */
+      --prim-ivory-100: oklch(0.95 0.018 82);   /* ≈ #f4ede4 page */
+      --prim-ivory-200: oklch(0.91 0.024 81);   /* ≈ #ebe1d2 surface alt */
+      --prim-ivory-300: oklch(0.85 0.028 80);   /* ≈ #d9cdb9 border subtle */
+      --prim-ivory-400: oklch(0.78 0.034 79);   /* ≈ #c2b29a border default */
+
+      /* Ink — text and inverse surfaces (warm near-black) */
+      --prim-ink-900: oklch(0.13 0.008 50);  /* ≈ #1a1410 text primary */
+      --prim-ink-800: oklch(0.20 0.010 50);  /* ≈ #2c241d */
+      --prim-ink-700: oklch(0.30 0.014 55);  /* ≈ #443730 */
+      --prim-ink-600: oklch(0.39 0.018 60);  /* ≈ #574639 text secondary */
+      --prim-ink-500: oklch(0.50 0.020 65);  /* ≈ #6f5b4a text muted */
+      --prim-ink-400: oklch(0.62 0.022 70);  /* ≈ #8a7560 */
+      --prim-ink-300: oklch(0.74 0.018 72);  /* ≈ #a8957f */
+
+      /* Oxblood — primary editorial accent (deep burgundy, hue ≈ 18°) */
+      --prim-oxblood-700: oklch(0.27 0.108 20);  /* ≈ #531823 */
+      --prim-oxblood-600: oklch(0.34 0.124 18);  /* ≈ #6e1f2a primary */
+      --prim-oxblood-500: oklch(0.42 0.138 19);  /* ≈ #8a2934 */
+      --prim-oxblood-400: oklch(0.55 0.142 21);  /* ≈ #b03d4c */
+      --prim-oxblood-100: oklch(0.92 0.030 18);  /* ≈ #f0d8db */
+      --prim-oxblood-50:  oklch(0.96 0.014 19);  /* ≈ #f8e9eb */
+
+      /* Champagne — secondary accent (muted gold, hue ≈ 80°) */
+      --prim-champagne-600: oklch(0.62 0.080 80);  /* ≈ #957a45 */
+      --prim-champagne-500: oklch(0.71 0.075 80);  /* ≈ #b89a5c */
+      --prim-champagne-300: oklch(0.84 0.058 82);  /* ≈ #d9c590 */
+      --prim-champagne-100: oklch(0.94 0.022 84);  /* ≈ #ede2c4 */
+
+      /* Status — markets */
+      --prim-positive: oklch(0.42 0.108 145);  /* ≈ #2e6b3b */
+      --prim-negative: oklch(0.46 0.165  25);  /* ≈ #b3211a */
+
+      --prim-pure-white: oklch(1 0 0);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       TIER 2 — Semantic tokens (atlas-vitrina theme)
+       (En SYX: scss/themes/atlas-vitrina/_theme.scss)
+       ──────────────────────────────────────────────────────────────────────── */
+    :root {
+      /* Surface */
+      --sem-surface-page:      var(--prim-ivory-100);
+      --sem-surface-paper:     var(--prim-ivory-50);
+      --sem-surface-alt:       var(--prim-ivory-200);
+      --sem-surface-inverse:   var(--prim-ink-900);
+      --sem-surface-deep:      var(--prim-ink-800);
+
+      /* Brand — oxblood primary */
+      --sem-brand-default: var(--prim-oxblood-600);
+      --sem-brand-deep:    var(--prim-oxblood-700);
+      --sem-brand-soft:    var(--prim-oxblood-500);
+      --sem-brand-faint:   var(--prim-oxblood-50);
+      --sem-brand-tint:    var(--prim-oxblood-100);
+
+      /* Accent — champagne (used sparsely, decorative-only) */
+      --sem-accent-gold:   var(--prim-champagne-500);
+      --sem-accent-gold-soft: var(--prim-champagne-300);
+      --sem-accent-gold-faint: var(--prim-champagne-100);
+
+      /* Text — verified contrast ratios on ivory-100 (#f4ede4) */
+      --sem-text-primary:   var(--prim-ink-900); /* 14.6:1 ✅ AAA */
+      --sem-text-secondary: var(--prim-ink-700); /* 8.3:1  ✅ AAA */
+      --sem-text-tertiary:  var(--prim-ink-600); /* 6.1:1  ✅ AAA */
+      --sem-text-muted:     var(--prim-ink-500); /* 4.6:1  ✅ AA  */
+      --sem-text-inverse:   var(--prim-ivory-50);
+      --sem-text-inverse-muted: var(--prim-ivory-300);
+      --sem-text-accent:    var(--prim-oxblood-700); /* 9.2:1 on ivory ✅ AAA */
+
+      /* Border */
+      --sem-border-subtle:  var(--prim-ivory-300);
+      --sem-border-default: var(--prim-ivory-400);
+      --sem-border-strong:  var(--prim-ink-700);
+      --sem-border-rule:    var(--prim-ink-900);
+      --sem-border-accent:  var(--prim-oxblood-600);
+
+      /* Status */
+      --sem-state-positive: var(--prim-positive);
+      --sem-state-negative: var(--prim-negative);
+
+      /* Type — couture editorial pairing */
+      --sem-font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+      --sem-font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --sem-font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+      /* Space (4px grid) */
+      --sem-space-2xs: 0.25rem;  /* 4px  */
+      --sem-space-xs:  0.5rem;   /* 8px  */
+      --sem-space-sm:  0.75rem;  /* 12px */
+      --sem-space-md:  1rem;     /* 16px */
+      --sem-space-lg:  1.5rem;   /* 24px */
+      --sem-space-xl:  2rem;     /* 32px */
+      --sem-space-2xl: 3rem;     /* 48px */
+      --sem-space-3xl: 4rem;     /* 64px */
+      --sem-space-4xl: 6rem;     /* 96px */
+
+      /* Radius — couture is sharp; minimal rounding */
+      --sem-radius-none: 0;
+      --sem-radius-sm:   2px;
+      --sem-radius-md:   4px;
+      --sem-radius-pill: 999px;
+
+      /* Motion */
+      --sem-motion-fast: 150ms;
+      --sem-motion-base: 220ms;
+      --sem-motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       TIER 3 — Component tokens (per-component contracts)
+       (En SYX: scss/abstracts/tokens/components/_*.scss)
+       ──────────────────────────────────────────────────────────────────────── */
+    :root {
+      /* org-ticker */
+      --component-ticker-bg:        var(--sem-surface-deep);
+      --component-ticker-color:     var(--sem-text-inverse);
+      --component-ticker-height:    36px;
+      --component-ticker-font-size: 0.75rem;
+
+      /* org-masthead */
+      --component-masthead-bg:        var(--sem-surface-paper);
+      --component-masthead-border:    var(--sem-border-rule);
+      --component-masthead-color:     var(--sem-text-primary);
+      --component-masthead-padding-y: var(--sem-space-md);
+
+      /* mol-edition-bar */
+      --component-edition-bar-bg:     transparent;
+      --component-edition-bar-color:  var(--sem-text-tertiary);
+      --component-edition-bar-border: var(--sem-border-subtle);
+
+      /* org-article-hero */
+      --component-article-hero-bg:           var(--sem-surface-page);
+      --component-article-hero-color-kicker: var(--sem-text-accent);
+      --component-article-hero-color-title:  var(--sem-text-primary);
+      --component-article-hero-color-deck:   var(--sem-text-secondary);
+
+      /* mol-byline */
+      --component-byline-color:        var(--sem-text-tertiary);
+      --component-byline-rule:         var(--sem-border-subtle);
+
+      /* org-article-body */
+      --component-article-body-color:        var(--sem-text-secondary);
+      --component-article-body-color-strong: var(--sem-text-primary);
+      --component-article-body-link:         var(--sem-text-accent);
+
+      /* mol-pull-quote */
+      --component-pull-quote-rule:    var(--sem-border-accent);
+      --component-pull-quote-color:   var(--sem-text-primary);
+      --component-pull-quote-attrib:  var(--sem-text-tertiary);
+
+      /* mol-data-card (sidebar with chart/figures) */
+      --component-data-card-bg:      var(--sem-surface-paper);
+      --component-data-card-border:  var(--sem-border-subtle);
+      --component-data-card-rule:    var(--sem-border-accent);
+      --component-data-card-padding: var(--sem-space-lg);
+
+      /* mol-takeaway */
+      --component-takeaway-bg:     var(--sem-surface-inverse);
+      --component-takeaway-color:  var(--sem-text-inverse);
+      --component-takeaway-rule:   var(--sem-accent-gold);
+
+      /* mol-related-card */
+      --component-related-card-bg:     var(--sem-surface-paper);
+      --component-related-card-border: var(--sem-border-subtle);
+      --component-related-card-color:  var(--sem-text-primary);
+
+      /* atom-pill (luxury / quiet / etc) */
+      --component-pill-bg:        var(--sem-brand-faint);
+      --component-pill-color:     var(--sem-text-accent);
+      --component-pill-border:    var(--sem-brand-tint);
+      --component-pill-radius:    var(--sem-radius-pill);
+      --component-pill-padding-y: var(--sem-space-2xs);
+      --component-pill-padding-x: var(--sem-space-sm);
+
+      /* org-article-footer */
+      --component-article-footer-bg:     var(--sem-surface-deep);
+      --component-article-footer-color:  var(--sem-text-inverse);
+      --component-article-footer-muted:  var(--sem-text-inverse-muted);
+      --component-article-footer-rule:   var(--sem-accent-gold);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       Reset (mínimo, sólo lo necesario)
+       ──────────────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--sem-surface-page);
+      color: var(--sem-text-primary);
+      font-family: var(--sem-font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    img, picture, svg { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; background: none; border: 0; cursor: pointer; color: inherit; }
+
+    /* Layout container — replicates .layout-grid container behavior */
+    .layout-grid {
+      width: 100%;
+      max-width: 1240px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--sem-space-md);
+      padding-right: var(--sem-space-md);
+    }
+    @media (min-width: 768px) {
+      .layout-grid { padding-left: var(--sem-space-xl); padding-right: var(--sem-space-xl); }
+    }
+
+    /* A11y — visible focus ring */
+    :focus-visible {
+      outline: 2px solid var(--sem-brand-default);
+      outline-offset: 3px;
+    }
+
+    .syx-sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-ticker — luxury index ticker (top bar)
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-ticker {
+      background: var(--component-ticker-bg);
+      color: var(--component-ticker-color);
+      height: var(--component-ticker-height);
+      font-family: var(--sem-font-mono);
+      font-size: var(--component-ticker-font-size);
+      letter-spacing: 0.04em;
+      overflow: hidden;
+      border-bottom: 1px solid var(--sem-border-rule);
+    }
+    .org-ticker__inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: var(--sem-space-xl);
+      white-space: nowrap;
+      animation: ticker-scroll 60s linear infinite;
+    }
+    .org-ticker__group {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sem-space-xl);
+      padding-left: var(--sem-space-md);
+    }
+    .org-ticker__item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: var(--sem-space-xs);
+    }
+    .org-ticker__label {
+      color: var(--sem-text-inverse-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.6875rem;
+    }
+    .org-ticker__value { color: var(--sem-text-inverse); font-weight: 500; }
+    .org-ticker__delta--up   { color: oklch(0.72 0.150 145); }
+    .org-ticker__delta--down { color: oklch(0.72 0.165  25); }
+
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .org-ticker__inner { animation: none; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-masthead — title-bar of the publication
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-masthead {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--component-masthead-bg);
+      border-bottom: 1px solid var(--component-masthead-border);
+      padding-top: var(--component-masthead-padding-y);
+      padding-bottom: var(--component-masthead-padding-y);
+      transition: padding var(--sem-motion-base) var(--sem-motion-ease);
+    }
+    .org-masthead__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--sem-space-lg);
+    }
+    .org-masthead__nav {
+      display: none;
+      gap: var(--sem-space-lg);
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .org-masthead__nav a { color: var(--sem-text-secondary); }
+    .org-masthead__nav a:hover { color: var(--sem-text-accent); }
+    .org-masthead__brand {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: clamp(1.5rem, 3vw + 0.5rem, 2.25rem);
+      letter-spacing: 0.16em;
+      text-align: center;
+      line-height: 1;
+    }
+    .org-masthead__brand-mark {
+      display: block;
+      font-family: var(--sem-font-body);
+      font-size: 0.625rem;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .org-masthead__actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--sem-space-md);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .org-masthead__cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: var(--sem-brand-default);
+      color: var(--sem-text-inverse);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      border-radius: var(--sem-radius-sm);
+      transition: background var(--sem-motion-fast) var(--sem-motion-ease);
+    }
+    .org-masthead__cta:hover { background: var(--sem-brand-deep); }
+    .org-masthead__cta:focus-visible { outline-offset: 3px; }
+
+    @media (min-width: 1024px) {
+      .org-masthead__nav { display: flex; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-edition-bar — section / date / read time
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-edition-bar {
+      border-bottom: 1px solid var(--component-edition-bar-border);
+      padding: var(--sem-space-md) 0;
+      color: var(--component-edition-bar-color);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .mol-edition-bar__inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-space-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mol-edition-bar__crumbs {
+      display: flex;
+      gap: var(--sem-space-xs);
+      align-items: center;
+    }
+    .mol-edition-bar__crumbs span + span::before {
+      content: "·";
+      margin-right: var(--sem-space-xs);
+      color: var(--sem-text-muted);
+    }
+    .mol-edition-bar__section {
+      color: var(--sem-text-accent);
+      font-weight: 600;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-article-hero — kicker, title, deck, byline, lead image
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-article-hero {
+      background: var(--component-article-hero-bg);
+      padding: var(--sem-space-2xl) 0 var(--sem-space-xl);
+    }
+    @media (min-width: 768px) {
+      .org-article-hero { padding: var(--sem-space-3xl) 0 var(--sem-space-2xl); }
+    }
+    .org-article-hero__inner {
+      display: grid;
+      gap: var(--sem-space-lg);
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    .org-article-hero__kicker {
+      font-family: var(--sem-font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--component-article-hero-color-kicker);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sem-space-sm);
+    }
+    .org-article-hero__kicker::before {
+      content: "";
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--sem-border-accent);
+    }
+    .atom-title--display {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(2.25rem, 5.5vw + 1rem, 5rem);
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      color: var(--component-article-hero-color-title);
+      max-width: 22ch;
+    }
+    .atom-title--display em {
+      font-style: italic;
+      color: var(--sem-text-accent);
+      font-weight: 600;
+    }
+    .org-article-hero__deck {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.125rem, 1vw + 0.8rem, 1.5rem);
+      line-height: 1.45;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--component-article-hero-color-deck);
+      max-width: 56ch;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-byline — author + meta + share
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-byline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sem-space-md);
+      padding-top: var(--sem-space-md);
+      padding-bottom: var(--sem-space-md);
+      border-top: 1px solid var(--component-byline-rule);
+      border-bottom: 1px solid var(--component-byline-rule);
+      color: var(--component-byline-color);
+      font-size: 0.875rem;
+    }
+    .mol-byline__author {
+      display: flex;
+      align-items: center;
+      gap: var(--sem-space-sm);
+    }
+    .mol-byline__author-name {
+      color: var(--sem-text-primary);
+      font-weight: 600;
+    }
+    .mol-byline__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--sem-radius-pill);
+      background: var(--sem-brand-faint);
+      display: grid;
+      place-items: center;
+      font-family: var(--sem-font-display);
+      font-size: 0.875rem;
+      color: var(--sem-text-accent);
+      font-weight: 600;
+    }
+    .mol-byline__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-space-md);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .mol-byline__share {
+      margin-left: auto;
+      display: flex;
+      gap: var(--sem-space-xs);
+    }
+    .mol-byline__share-btn {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--sem-border-subtle);
+      border-radius: var(--sem-radius-pill);
+      color: var(--sem-text-secondary);
+      transition: border-color var(--sem-motion-fast) var(--sem-motion-ease),
+                  color var(--sem-motion-fast) var(--sem-motion-ease);
+    }
+    .mol-byline__share-btn:hover {
+      border-color: var(--sem-border-accent);
+      color: var(--sem-text-accent);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       Hero figure (lead image)
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-article-hero__figure {
+      max-width: 1080px;
+      margin: var(--sem-space-2xl) auto 0;
+      padding: 0 var(--sem-space-md);
+    }
+    .org-article-hero__figure img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      filter: contrast(0.96) saturate(0.92);
+    }
+    .org-article-hero__caption {
+      margin-top: var(--sem-space-sm);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: var(--sem-text-tertiary);
+      font-style: italic;
+      max-width: 60ch;
+    }
+    .org-article-hero__caption strong {
+      color: var(--sem-text-secondary);
+      font-weight: 600;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-right: var(--sem-space-xs);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-article-body — main reading column + sidebar
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-article-body {
+      padding: var(--sem-space-2xl) 0 var(--sem-space-3xl);
+    }
+    .org-article-body__layout {
+      display: grid;
+      gap: var(--sem-space-2xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 1024px) {
+      .org-article-body__layout {
+        grid-template-columns: minmax(0, 680px) minmax(280px, 1fr);
+        gap: var(--sem-space-3xl);
+        align-items: start;
+      }
+    }
+
+    .org-article-body__column {
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .org-article-body__column p {
+      font-family: var(--sem-font-display);
+      font-size: 1.1875rem;
+      line-height: 1.7;
+      color: var(--component-article-body-color);
+      margin-bottom: var(--sem-space-lg);
+    }
+    .org-article-body__column p strong {
+      color: var(--component-article-body-color-strong);
+      font-weight: 600;
+    }
+    .org-article-body__column a {
+      color: var(--component-article-body-link);
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+    .org-article-body__column a:hover { color: var(--sem-brand-deep); }
+
+    /* Drop cap — first letter of first paragraph */
+    .org-article-body__column p:first-of-type::first-letter {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: 4.75rem;
+      line-height: 0.85;
+      float: left;
+      margin: 0.25rem 0.5rem 0 0;
+      color: var(--sem-text-accent);
+    }
+
+    .atom-title--h2 {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      font-weight: 600;
+      color: var(--sem-text-primary);
+      margin-top: var(--sem-space-2xl);
+      margin-bottom: var(--sem-space-md);
+      max-width: 28ch;
+    }
+    .atom-title--h2::before {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--sem-border-rule);
+      margin-bottom: var(--sem-space-md);
+    }
+
+    .atom-title--h3 {
+      font-family: var(--sem-font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sem-text-primary);
+      margin-top: var(--sem-space-xl);
+      margin-bottom: var(--sem-space-sm);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-pull-quote — large editorial quote, full column width
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-pull-quote {
+      margin: var(--sem-space-2xl) 0;
+      padding-left: var(--sem-space-lg);
+      border-left: 3px solid var(--component-pull-quote-rule);
+    }
+    .mol-pull-quote__body {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.5rem, 2vw + 0.8rem, 2rem);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--component-pull-quote-color);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .mol-pull-quote__body::before {
+      content: "“";
+      font-size: 1em;
+      line-height: 0;
+      color: var(--sem-text-accent);
+      margin-right: 0.1em;
+    }
+    .mol-pull-quote__attrib {
+      display: block;
+      margin-top: var(--sem-space-md);
+      font-family: var(--sem-font-body);
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--component-pull-quote-attrib);
+    }
+    .mol-pull-quote__attrib::before {
+      content: "— ";
+      color: var(--sem-text-muted);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-data-card — sidebar with chart + numbers
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-article-body__sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sem-space-xl);
+      position: sticky;
+      top: 96px;
+    }
+    @media (max-width: 1023px) {
+      .org-article-body__sidebar { position: static; }
+    }
+
+    .mol-data-card {
+      background: var(--component-data-card-bg);
+      border: 1px solid var(--component-data-card-border);
+      border-top: 3px solid var(--component-data-card-rule);
+      padding: var(--component-data-card-padding);
+    }
+    .mol-data-card__eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-space-xs);
+    }
+    .mol-data-card__title {
+      font-family: var(--sem-font-display);
+      font-size: 1.375rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--sem-text-primary);
+      font-weight: 600;
+      margin-bottom: var(--sem-space-sm);
+    }
+    .mol-data-card__lede {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--sem-text-tertiary);
+      margin-bottom: var(--sem-space-md);
+    }
+    .mol-data-card__chart {
+      margin: var(--sem-space-md) 0;
+    }
+    .mol-data-card__chart svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .mol-data-card__legend {
+      display: grid;
+      gap: var(--sem-space-2xs);
+      margin-top: var(--sem-space-sm);
+      font-size: 0.75rem;
+      font-family: var(--sem-font-mono);
+    }
+    .mol-data-card__legend-row {
+      display: grid;
+      grid-template-columns: 12px 1fr auto;
+      gap: var(--sem-space-xs);
+      align-items: center;
+      color: var(--sem-text-secondary);
+    }
+    .mol-data-card__swatch {
+      width: 10px;
+      height: 10px;
+      display: block;
+      border-radius: 0;
+    }
+    .mol-data-card__legend-value {
+      font-weight: 500;
+      color: var(--sem-text-primary);
+    }
+    .mol-data-card__source {
+      margin-top: var(--sem-space-md);
+      padding-top: var(--sem-space-md);
+      border-top: 1px solid var(--sem-border-subtle);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--sem-text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Stat list inside data card */
+    .mol-data-card__stats {
+      list-style: none;
+      display: grid;
+      gap: var(--sem-space-md);
+      margin-top: var(--sem-space-md);
+    }
+    .mol-data-card__stat {
+      display: grid;
+      gap: 2px;
+      padding-bottom: var(--sem-space-md);
+      border-bottom: 1px solid var(--sem-border-subtle);
+    }
+    .mol-data-card__stat:last-child { border-bottom: 0; padding-bottom: 0; }
+    .mol-data-card__stat-value {
+      font-family: var(--sem-font-display);
+      font-size: 1.875rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+      line-height: 1;
+    }
+    .mol-data-card__stat-value--accent { color: var(--sem-text-accent); }
+    .mol-data-card__stat-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+      font-weight: 500;
+    }
+    .mol-data-card__stat-trend {
+      font-family: var(--sem-font-mono);
+      font-size: 0.75rem;
+    }
+    .mol-data-card__stat-trend--up   { color: var(--sem-state-positive); }
+    .mol-data-card__stat-trend--down { color: var(--sem-state-negative); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-takeaway — dark "Las claves" box
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-takeaway {
+      background: var(--component-takeaway-bg);
+      color: var(--component-takeaway-color);
+      padding: var(--sem-space-xl);
+      border-top: 3px solid var(--component-takeaway-rule);
+      margin: var(--sem-space-2xl) 0;
+    }
+    .mol-takeaway__eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-accent-gold-soft);
+      margin-bottom: var(--sem-space-md);
+    }
+    .mol-takeaway__list {
+      list-style: none;
+      display: grid;
+      gap: var(--sem-space-md);
+    }
+    .mol-takeaway__item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: var(--sem-space-md);
+      align-items: start;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--sem-text-inverse);
+    }
+    .mol-takeaway__num {
+      font-family: var(--sem-font-display);
+      font-size: 1.25rem;
+      color: var(--sem-accent-gold);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       atom-pill — tag (luxury / quiet / etc)
+       ──────────────────────────────────────────────────────────────────────── */
+    .atom-pill {
+      display: inline-flex;
+      align-items: center;
+      background: var(--component-pill-bg);
+      color: var(--component-pill-color);
+      border: 1px solid var(--component-pill-border);
+      border-radius: var(--component-pill-radius);
+      padding: var(--component-pill-padding-y) var(--component-pill-padding-x);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Tag rail (after article) */
+    .mol-tag-rail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-space-xs);
+      margin: var(--sem-space-2xl) 0 var(--sem-space-lg);
+      padding-top: var(--sem-space-lg);
+      border-top: 1px solid var(--sem-border-subtle);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-related-card — "Continúa leyendo" cards
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-related {
+      background: var(--sem-surface-alt);
+      padding: var(--sem-space-3xl) 0;
+      border-top: 1px solid var(--sem-border-subtle);
+    }
+    .org-related__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--sem-space-xl);
+      gap: var(--sem-space-md);
+      flex-wrap: wrap;
+    }
+    .org-related__title {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+      letter-spacing: -0.015em;
+      color: var(--sem-text-primary);
+      font-weight: 600;
+    }
+    .org-related__see-more {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      font-weight: 600;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+    .org-related__grid {
+      display: grid;
+      gap: var(--sem-space-xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .org-related__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .org-related__grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .mol-related-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sem-space-sm);
+      background: var(--component-related-card-bg);
+      border: 1px solid var(--component-related-card-border);
+      transition: transform var(--sem-motion-base) var(--sem-motion-ease),
+                  border-color var(--sem-motion-base) var(--sem-motion-ease);
+    }
+    .mol-related-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--sem-border-accent);
+    }
+    .mol-related-card__media {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--sem-surface-alt);
+    }
+    .mol-related-card__media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 400ms var(--sem-motion-ease);
+    }
+    .mol-related-card:hover .mol-related-card__media img {
+      transform: scale(1.04);
+    }
+    .mol-related-card__body {
+      padding: var(--sem-space-md) var(--sem-space-lg) var(--sem-space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sem-space-sm);
+      flex: 1;
+    }
+    .mol-related-card__kicker {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+    }
+    .mol-related-card__title {
+      font-family: var(--sem-font-display);
+      font-size: 1.25rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--component-related-card-color);
+      font-weight: 600;
+    }
+    .mol-related-card__deck {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--sem-text-secondary);
+    }
+    .mol-related-card__meta {
+      margin-top: auto;
+      padding-top: var(--sem-space-sm);
+      border-top: 1px solid var(--sem-border-subtle);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sem-text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--sem-space-sm);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-author-bio
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-author-bio {
+      padding: var(--sem-space-2xl) 0;
+      border-top: 1px solid var(--sem-border-subtle);
+    }
+    .org-author-bio__inner {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: var(--sem-space-lg);
+      max-width: 680px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .org-author-bio__avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--sem-radius-pill);
+      background: var(--sem-brand-faint);
+      display: grid;
+      place-items: center;
+      font-family: var(--sem-font-display);
+      font-size: 1.5rem;
+      color: var(--sem-text-accent);
+      font-weight: 600;
+    }
+    .org-author-bio__eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+      margin-bottom: 4px;
+    }
+    .org-author-bio__name {
+      font-family: var(--sem-font-display);
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--sem-text-primary);
+      margin-bottom: var(--sem-space-xs);
+    }
+    .org-author-bio__bio {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--sem-text-secondary);
+    }
+    .org-author-bio__links {
+      margin-top: var(--sem-space-md);
+      display: flex;
+      gap: var(--sem-space-md);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .org-author-bio__links a:hover { color: var(--sem-text-accent); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-newsletter
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-newsletter {
+      padding: var(--sem-space-3xl) 0;
+      background: var(--sem-surface-paper);
+      border-top: 1px solid var(--sem-border-subtle);
+      border-bottom: 1px solid var(--sem-border-subtle);
+    }
+    .org-newsletter__inner {
+      display: grid;
+      gap: var(--sem-space-lg);
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .org-newsletter__eyebrow {
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      font-weight: 700;
+    }
+    .org-newsletter__title {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+      font-weight: 600;
+      color: var(--sem-text-primary);
+    }
+    .org-newsletter__deck {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--sem-text-secondary);
+      max-width: 48ch;
+      margin: 0 auto;
+    }
+    .org-newsletter__form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sem-space-sm);
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    @media (min-width: 480px) {
+      .org-newsletter__form { flex-direction: row; }
+    }
+    .atom-form {
+      flex: 1;
+      padding: 12px 16px;
+      background: var(--sem-surface-paper);
+      border: 1px solid var(--sem-border-default);
+      border-radius: var(--sem-radius-sm);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      color: var(--sem-text-primary);
+      transition: border-color var(--sem-motion-fast) var(--sem-motion-ease);
+    }
+    .atom-form:focus-visible {
+      border-color: var(--sem-brand-default);
+      outline: 2px solid var(--sem-brand-default);
+      outline-offset: 1px;
+    }
+    .atom-btn--primary {
+      padding: 12px 24px;
+      background: var(--sem-brand-default);
+      color: var(--sem-text-inverse);
+      border-radius: var(--sem-radius-sm);
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background var(--sem-motion-fast) var(--sem-motion-ease);
+    }
+    .atom-btn--primary:hover { background: var(--sem-brand-deep); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-article-footer — dark masthead-style footer
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-article-footer {
+      background: var(--component-article-footer-bg);
+      color: var(--component-article-footer-color);
+      padding: var(--sem-space-3xl) 0 var(--sem-space-xl);
+      border-top: 3px solid var(--component-article-footer-rule);
+    }
+    .org-article-footer__grid {
+      display: grid;
+      gap: var(--sem-space-xl);
+      grid-template-columns: 1fr;
+      margin-bottom: var(--sem-space-2xl);
+    }
+    @media (min-width: 768px) {
+      .org-article-footer__grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+      }
+    }
+    .org-article-footer__brand-mark {
+      font-family: var(--sem-font-display);
+      font-size: 1.75rem;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+      color: var(--sem-text-inverse);
+      margin-bottom: var(--sem-space-sm);
+    }
+    .org-article-footer__brand-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sem-accent-gold-soft);
+      margin-bottom: var(--sem-space-md);
+    }
+    .org-article-footer__brand-desc {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--component-article-footer-muted);
+      max-width: 38ch;
+    }
+    .org-article-footer__col h4 {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sem-accent-gold);
+      margin-bottom: var(--sem-space-md);
+    }
+    .org-article-footer__col ul {
+      list-style: none;
+      display: grid;
+      gap: var(--sem-space-xs);
+      font-size: 0.875rem;
+    }
+    .org-article-footer__col a {
+      color: var(--component-article-footer-muted);
+      transition: color var(--sem-motion-fast) var(--sem-motion-ease);
+    }
+    .org-article-footer__col a:hover { color: var(--sem-text-inverse); }
+
+    .org-article-footer__legal {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sem-space-md);
+      padding-top: var(--sem-space-lg);
+      border-top: 1px solid var(--prim-ink-700);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--component-article-footer-muted);
+    }
+    .org-article-footer__legal-links {
+      display: flex;
+      gap: var(--sem-space-lg);
+      flex-wrap: wrap;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-ticker — Luxury index live data
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <aside class="org-ticker" role="complementary" aria-label="Cotizaciones del sector lujo">
+    <div class="org-ticker__inner">
+      <div class="org-ticker__group" aria-hidden="false">
+        <div class="org-ticker__item"><span class="org-ticker__label">LVMH</span><span class="org-ticker__value">€684,30</span><span class="org-ticker__delta--up">+1,42 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Hermès</span><span class="org-ticker__value">€2.318</span><span class="org-ticker__delta--up">+0,86 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Kering</span><span class="org-ticker__value">€312,15</span><span class="org-ticker__delta--down">−2,18 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Richemont</span><span class="org-ticker__value">CHF 152,60</span><span class="org-ticker__delta--up">+0,42 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Brunello Cucinelli</span><span class="org-ticker__value">€118,40</span><span class="org-ticker__delta--up">+1,07 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Inditex</span><span class="org-ticker__value">€48,20</span><span class="org-ticker__delta--down">−0,38 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Prada</span><span class="org-ticker__value">HKD 64,50</span><span class="org-ticker__delta--up">+2,74 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">EuroLuxe 50</span><span class="org-ticker__value">3.184,22</span><span class="org-ticker__delta--up">+0,68 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Birkin Index</span><span class="org-ticker__value">+14,2 % YTD</span><span class="org-ticker__delta--up">▲</span></div>
+      </div>
+      <!-- duplicado para loop continuo -->
+      <div class="org-ticker__group" aria-hidden="true">
+        <div class="org-ticker__item"><span class="org-ticker__label">LVMH</span><span class="org-ticker__value">€684,30</span><span class="org-ticker__delta--up">+1,42 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Hermès</span><span class="org-ticker__value">€2.318</span><span class="org-ticker__delta--up">+0,86 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Kering</span><span class="org-ticker__value">€312,15</span><span class="org-ticker__delta--down">−2,18 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Richemont</span><span class="org-ticker__value">CHF 152,60</span><span class="org-ticker__delta--up">+0,42 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Brunello Cucinelli</span><span class="org-ticker__value">€118,40</span><span class="org-ticker__delta--up">+1,07 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Inditex</span><span class="org-ticker__value">€48,20</span><span class="org-ticker__delta--down">−0,38 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Prada</span><span class="org-ticker__value">HKD 64,50</span><span class="org-ticker__delta--up">+2,74 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">EuroLuxe 50</span><span class="org-ticker__value">3.184,22</span><span class="org-ticker__delta--up">+0,68 %</span></div>
+        <div class="org-ticker__item"><span class="org-ticker__label">Birkin Index</span><span class="org-ticker__value">+14,2 % YTD</span><span class="org-ticker__delta--up">▲</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-masthead — sticky publication header
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <header class="org-masthead" role="banner">
+    <div class="layout-grid">
+      <div class="org-masthead__inner">
+        <nav class="org-masthead__nav" aria-label="Secciones principales">
+          <a href="#">Marcas</a>
+          <a href="#">Mercados</a>
+          <a href="#">Estilo</a>
+          <a href="#">Datos</a>
+        </nav>
+
+        <div class="org-masthead__brand" aria-label="VITRINA — Moda y Capital">
+          VITRINA
+          <span class="org-masthead__brand-mark">Moda &amp; Capital</span>
+        </div>
+
+        <div class="org-masthead__actions">
+          <span aria-hidden="true">N.º 042</span>
+          <a class="org-masthead__cta" href="#newsletter">Suscribirse</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       mol-edition-bar — section / date / read time
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <div class="mol-edition-bar">
+    <div class="layout-grid">
+      <div class="mol-edition-bar__inner">
+        <div class="mol-edition-bar__crumbs">
+          <span class="mol-edition-bar__section">Análisis · Mercados</span>
+          <span>Sábado · 25 de abril de 2026</span>
+          <span>Edición Europa</span>
+        </div>
+        <div>Lectura · 9 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-article-hero
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <article>
+    <section class="org-article-hero" aria-labelledby="art-title">
+      <div class="layout-grid">
+        <div class="org-article-hero__inner">
+          <p class="org-article-hero__kicker">Activos refugio · Lujo silencioso</p>
+          <h1 id="art-title" class="atom-title atom-title--display">
+            El bolso que <em>venció</em> al S&amp;P 500
+          </h1>
+          <p class="org-article-hero__deck">
+            En cuarenta años, el Birkin se ha revalorizado más que el oro y casi tres veces más que la bolsa estadounidense. Cómo Hermès, sin proponérselo, construyó el activo financiero más rentable y discreto del siglo.
+          </p>
+
+          <div class="mol-byline">
+            <div class="mol-byline__author">
+              <span class="mol-byline__avatar" aria-hidden="true">AS</span>
+              <div>
+                <div class="mol-byline__author-name">Ana Salvador-Mella</div>
+                <div class="mol-byline__meta" style="margin-top: 4px;">
+                  <span>Editora de Mercados de Lujo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mol-byline__share" role="group" aria-label="Compartir artículo">
+              <button class="mol-byline__share-btn" type="button" aria-label="Copiar enlace">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path>
+                </svg>
+              </button>
+              <button class="mol-byline__share-btn" type="button" aria-label="Compartir en LinkedIn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 18V10H6v8zM7.25 8.75A1.5 1.5 0 1 0 7.24 5.75a1.5 1.5 0 0 0 0 3zM18 18v-4.7c0-2.4-1.3-3.5-3-3.5-1.4 0-2 .8-2.4 1.4V10H10v8h2.6v-4.4c0-1.2.4-2 1.6-2s1.6.8 1.6 2V18z"></path>
+                </svg>
+              </button>
+              <button class="mol-byline__share-btn" type="button" aria-label="Guardar artículo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <figure class="org-article-hero__figure">
+          <picture>
+            <source type="image/webp"
+                    srcset="https://placehold.co/640x360/1a1410/f4ede4.webp 640w,
+                            https://placehold.co/1280x720/1a1410/f4ede4.webp 1280w,
+                            https://placehold.co/1920x1080/1a1410/f4ede4.webp 1920w"
+                    sizes="(max-width: 1059px) 100vw, 1080px">
+            <img src="https://placehold.co/1280x720/1a1410/f4ede4.png"
+                 alt="Bolso Hermès Birkin de cuero negro sobre fondo de mármol travertino, fotografía editorial"
+                 width="1280" height="720" fetchpriority="high">
+          </picture>
+          <figcaption class="org-article-hero__caption">
+            <strong>Foto</strong>
+            Un Birkin 30 negro Togo &mdash; el modelo más cotizado del mercado secundario &mdash; fotografiado en el atelier parisino de Hermès. La lista de espera supera, en algunos modelos, los seis años.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         org-article-body
+         ═════════════════════════════════════════════════════════════════════ -->
+    <section class="org-article-body">
+      <div class="layout-grid">
+        <div class="org-article-body__layout">
+
+          <!-- COLUMNA PRINCIPAL ─────────────────────────────────────────── -->
+          <div class="org-article-body__column">
+
+            <p>
+              <strong>En 1984, una funda de cuero negra costaba 2.000 dólares.</strong> Hoy, el mismo objeto &mdash;ahora canónico, todavía cosido a mano por un único artesano en el taller de Hermès en Pantin&mdash; se subasta por más de 20.000 en el mercado primario y multiplica esa cifra en el secundario. La progresión es sencilla, casi cruel: un Birkin Togo de tamaño 30 ha rendido un <strong>14,2 % anualizado</strong> entre 1984 y 2025, según el índice que la firma de inversión Baghunter ha mantenido durante doce años. El S&amp;P 500, en el mismo periodo, retornó un 11,7 %. El oro, un 5,4 %.
+            </p>
+
+            <p>
+              Que un bolso bata al índice bursátil más seguido del planeta es una anomalía estadística. Que lo haga durante cuarenta años, sin un solo ejercicio negativo y con una volatilidad cinco veces inferior a la de Wall Street, lo convierte en otra cosa: en un <strong>activo refugio</strong> con todas las propiedades de los bonos del Tesoro pero con la opcionalidad estética de una pieza de arte. Las gestoras de patrimonios suizas lo han comprendido antes que nadie. <a href="#">Pictet, Lombard Odier y Julius Baer</a> incluyen, desde 2022, las llamadas <em>passion assets</em> &mdash;bolsos, relojes, vino, manuscritos&mdash; en sus cestas multiactivo para clientes de muy alto patrimonio.
+            </p>
+
+            <h2 class="atom-title atom-title--h2">La economía de la lista de espera</h2>
+
+            <p>
+              El secreto del modelo no está en el cuero, ni en el cierre de paladio, ni siquiera en el monograma cosido. Está en la <strong>oferta deliberadamente insuficiente</strong>. Hermès produce, según estimaciones de HSBC, alrededor de 200.000 Birkin al año. La demanda global se calcula en seis veces esa cifra. La diferencia &mdash;tres cuartos del mercado&mdash; se traslada al canal secundario, donde plataformas como The RealReal, Vestiaire Collective o Sotheby's actúan como bolsas paralelas con sus propios bid-ask spreads, sus volúmenes y sus picos especulativos.
+            </p>
+
+            <div class="mol-pull-quote">
+              <p class="mol-pull-quote__body">
+                Hermès no fabrica bolsos: fabrica escasez con costuras de seda. Es la única empresa que cotiza en el CAC 40 cuyo principal producto se compra mejor cuando no se vende.
+                <span class="mol-pull-quote__attrib">Luca Solca, analista jefe de lujo, Bernstein Research</span>
+              </p>
+            </div>
+
+            <p>
+              La métrica clave del sector, el <em>price-to-sell</em> &mdash;lo que un bolso recupera frente a su precio de boutique en cuestión de días tras la compra&mdash;, se sitúa de media en el <strong>86 %</strong> para el Birkin negro Togo, frente al 38 % de un Chanel Classic Flap o el 22 % de un Louis Vuitton Neverfull. Nada en el armario que no esté firmado por Hermès se aproxima a esos niveles, y la firma lo sabe: en febrero subió un 8 % los precios sin generar caída de demanda. La ley de oferta y demanda se desactiva cuando el oferente decide que la demanda no es un problema suyo.
+            </p>
+
+            <h2 class="atom-title atom-title--h2">Quiet luxury: el mercado del que no se habla</h2>
+
+            <p>
+              El fenómeno Birkin se produce en paralelo a un <strong>desplazamiento más amplio del consumo</strong>. Tras dos años de revalorización del lujo accesible &mdash;LVMH multiplicó por cuatro su capitalización entre 2020 y 2023&mdash;, el mercado se ha bifurcado. La franja media, monogramada y reconocible, ha entrado en estancamiento. La franja superior, <em>quiet</em>, sin logos visibles, hecha a medida y a menudo invisible para quien no pertenece al círculo, sigue creciendo a doble dígito.
+            </p>
+
+            <p>
+              Brunello Cucinelli, Loro Piana, The Row y la propia Hermès se reparten ese segmento. La constante: <strong>marcas que penalizan al cliente que pide notoriedad</strong>. La paradoja: cuanto más discretas, más cotizan en bolsa. Cucinelli ha subido un 92 % desde su salida a cotización en 2012; Hermès, un 1.420 %. Comparativa: el Eurostoxx 50, en el mismo periodo, ha rendido un 84 %.
+            </p>
+
+            <h3 class="atom-title atom-title--h3">El alfa estético</h3>
+
+            <p>
+              Para los gestores patrimoniales, lo interesante no es el rendimiento absoluto sino la <strong>correlación con el resto de la cartera</strong>. El Birkin tiene una correlación de 0,11 con el S&amp;P 500 y de -0,03 con bonos a 10 años. Para un asesor financiero, esto es oro: añade rendimiento sin añadir riesgo sistémico. Lo que ocurra con la Reserva Federal, las elecciones americanas o el petróleo no mueve el precio de un bolso que se vende en menos de seis horas en Manhattan.
+            </p>
+
+            <div class="mol-takeaway" aria-label="Las claves del análisis">
+              <p class="mol-takeaway__eyebrow">Las claves</p>
+              <ol class="mol-takeaway__list">
+                <li class="mol-takeaway__item">
+                  <span class="mol-takeaway__num">01</span>
+                  <span>El Birkin ha rendido un 14,2&nbsp;% anualizado durante 40 años. El S&amp;P 500, un 11,7&nbsp;%; el oro, un 5,4&nbsp;%.</span>
+                </li>
+                <li class="mol-takeaway__item">
+                  <span class="mol-takeaway__num">02</span>
+                  <span>Su volatilidad es cinco veces inferior a la del índice bursátil estadounidense, sin un solo ejercicio negativo desde 1984.</span>
+                </li>
+                <li class="mol-takeaway__item">
+                  <span class="mol-takeaway__num">03</span>
+                  <span>Hermès produce 200.000 unidades al año frente a una demanda global estimada de 1,2 millones &mdash;la escasez es deliberada y arquitectónica&mdash;.</span>
+                </li>
+                <li class="mol-takeaway__item">
+                  <span class="mol-takeaway__num">04</span>
+                  <span>Pictet, Lombard Odier y Julius Baer integran <em>passion assets</em> en cestas multiactivo desde 2022 para clientes de muy alto patrimonio.</span>
+                </li>
+                <li class="mol-takeaway__item">
+                  <span class="mol-takeaway__num">05</span>
+                  <span>La correlación del Birkin con el S&amp;P 500 es de 0,11. Lo convierte en un diversificador genuino, no en un activo de moda.</span>
+                </li>
+              </ol>
+            </div>
+
+            <h2 class="atom-title atom-title--h2">El próximo Birkin probablemente no será un bolso</h2>
+
+            <p>
+              La pregunta evidente, tras cuarenta años de revalorización inalterable, es si el modelo se replica. La industria está intentándolo: Loro Piana lo ensayó con el Bale Bag en 2024, Bottega Veneta apuesta por el Andiamo, The Row reescribe el manual con el Margaux. Ninguno tiene aún las cuatro condiciones que el Birkin reúne &mdash;artesanía verificable, escasez estructural, tracción intergeneracional y narrativa cultural acumulada&mdash;.
+            </p>
+
+            <p>
+              Es probable que el sucesor no sea un bolso. Es probable que sea una <strong>chaqueta de cashmere</strong>, un par de zapatos hechos a medida, un manuscrito iluminado o una botella conmemorativa. Lo que el Birkin ha demostrado no es que un objeto pueda revalorizarse: lo sabíamos. Ha demostrado que, en un mercado financiero saturado de información en tiempo real y rentabilidades cada vez más correladas, la única clase de activo que sigue funcionando es la que se compra mirando a un artesano a los ojos. Eso, por improbable que parezca, es <em>alfa</em>.
+            </p>
+
+            <!-- Tags -->
+            <div class="mol-tag-rail" aria-label="Etiquetas del artículo">
+              <span class="atom-pill">Hermès</span>
+              <span class="atom-pill">Activos alternativos</span>
+              <span class="atom-pill">Quiet luxury</span>
+              <span class="atom-pill">Mercado secundario</span>
+              <span class="atom-pill">CAC 40</span>
+              <span class="atom-pill">Inversión refugio</span>
+            </div>
+          </div>
+
+          <!-- SIDEBAR ──────────────────────────────────────────────────── -->
+          <aside class="org-article-body__sidebar" aria-label="Datos y rendimiento del activo">
+
+            <!-- DATA CARD: Chart Birkin vs S&P 500 vs Gold -->
+            <div class="mol-data-card">
+              <p class="mol-data-card__eyebrow">Rentabilidad acumulada</p>
+              <h3 class="mol-data-card__title">Birkin frente al S&amp;P 500 y el oro</h3>
+              <p class="mol-data-card__lede">Inversión nominal de 100&thinsp;€ en 1984. Rentabilidad acumulada en euros, sin reinversión de dividendos.</p>
+
+              <div class="mol-data-card__chart" aria-hidden="false">
+                <!-- Inline SVG chart, 100% accessibility-friendly via aria-label -->
+                <svg viewBox="0 0 320 200" role="img" aria-label="Gráfico de líneas: Birkin (oxblood) supera al S&P 500 (azul oscuro) y al oro (champán) entre 1984 y 2025">
+                  <!-- grid -->
+                  <g stroke="#d9cdb9" stroke-width="0.5" stroke-dasharray="2 3">
+                    <line x1="32" y1="40"  x2="312" y2="40" />
+                    <line x1="32" y1="80"  x2="312" y2="80" />
+                    <line x1="32" y1="120" x2="312" y2="120" />
+                    <line x1="32" y1="160" x2="312" y2="160" />
+                  </g>
+                  <!-- axes -->
+                  <line x1="32" y1="20" x2="32" y2="170" stroke="#1a1410" stroke-width="1" />
+                  <line x1="32" y1="170" x2="312" y2="170" stroke="#1a1410" stroke-width="1" />
+                  <!-- y labels -->
+                  <g font-family="JetBrains Mono, monospace" font-size="8" fill="#574639">
+                    <text x="28" y="42"  text-anchor="end">25 000</text>
+                    <text x="28" y="82"  text-anchor="end">15 000</text>
+                    <text x="28" y="122" text-anchor="end">5 000</text>
+                    <text x="28" y="162" text-anchor="end">100</text>
+                  </g>
+                  <!-- x labels -->
+                  <g font-family="JetBrains Mono, monospace" font-size="8" fill="#574639" text-anchor="middle">
+                    <text x="32"  y="184">1984</text>
+                    <text x="102" y="184">1995</text>
+                    <text x="172" y="184">2005</text>
+                    <text x="242" y="184">2015</text>
+                    <text x="312" y="184">2025</text>
+                  </g>
+                  <!-- Gold line (champagne) -->
+                  <polyline fill="none" stroke="#b89a5c" stroke-width="2"
+                    points="32,168 70,162 110,156 150,148 190,138 230,124 270,110 312,98" />
+                  <!-- S&P 500 line (ink) -->
+                  <polyline fill="none" stroke="#2c241d" stroke-width="2"
+                    points="32,168 70,158 110,144 150,128 190,108 230,82 270,58 312,42" />
+                  <!-- Birkin line (oxblood) -->
+                  <polyline fill="none" stroke="#6e1f2a" stroke-width="2.4"
+                    points="32,168 70,156 110,140 150,118 190,90 230,62 270,38 312,24" />
+                  <!-- end-point markers -->
+                  <circle cx="312" cy="24"  r="3" fill="#6e1f2a" />
+                  <circle cx="312" cy="42"  r="3" fill="#2c241d" />
+                  <circle cx="312" cy="98"  r="3" fill="#b89a5c" />
+                </svg>
+              </div>
+
+              <div class="mol-data-card__legend">
+                <div class="mol-data-card__legend-row">
+                  <span class="mol-data-card__swatch" style="background: #6e1f2a;" aria-hidden="true"></span>
+                  <span>Birkin 30 Togo</span>
+                  <span class="mol-data-card__legend-value">+14,2 %</span>
+                </div>
+                <div class="mol-data-card__legend-row">
+                  <span class="mol-data-card__swatch" style="background: #2c241d;" aria-hidden="true"></span>
+                  <span>S&amp;P 500 (TR)</span>
+                  <span class="mol-data-card__legend-value">+11,7 %</span>
+                </div>
+                <div class="mol-data-card__legend-row">
+                  <span class="mol-data-card__swatch" style="background: #b89a5c;" aria-hidden="true"></span>
+                  <span>Oro spot</span>
+                  <span class="mol-data-card__legend-value">+5,4 %</span>
+                </div>
+              </div>
+
+              <p class="mol-data-card__source">Fuente: Baghunter, Bloomberg, World Gold Council · Series 1984-2025</p>
+            </div>
+
+            <!-- DATA CARD: stats -->
+            <div class="mol-data-card">
+              <p class="mol-data-card__eyebrow">Mercado primario</p>
+              <h3 class="mol-data-card__title">Hermès en cifras</h3>
+
+              <ul class="mol-data-card__stats">
+                <li class="mol-data-card__stat">
+                  <span class="mol-data-card__stat-value mol-data-card__stat-value--accent">€2.318</span>
+                  <span class="mol-data-card__stat-label">Cotización · 25-abr-2026</span>
+                  <span class="mol-data-card__stat-trend mol-data-card__stat-trend--up">+0,86 % &middot; +1.420 % desde IPO</span>
+                </li>
+                <li class="mol-data-card__stat">
+                  <span class="mol-data-card__stat-value">200.000</span>
+                  <span class="mol-data-card__stat-label">Birkin producidos al año</span>
+                  <span class="mol-data-card__stat-trend">Demanda global estimada · 1,2 M</span>
+                </li>
+                <li class="mol-data-card__stat">
+                  <span class="mol-data-card__stat-value">86 %</span>
+                  <span class="mol-data-card__stat-label">Price-to-sell · Birkin negro</span>
+                  <span class="mol-data-card__stat-trend">Vs. 38 % Chanel · 22 % LV Neverfull</span>
+                </li>
+                <li class="mol-data-card__stat">
+                  <span class="mol-data-card__stat-value mol-data-card__stat-value--accent">0,11</span>
+                  <span class="mol-data-card__stat-label">Correlación con S&amp;P 500</span>
+                  <span class="mol-data-card__stat-trend">Diversificador genuino</span>
+                </li>
+              </ul>
+
+              <p class="mol-data-card__source">Fuente: Bernstein, HSBC Luxury Watch · Cierre del informe Q1-2026</p>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         org-author-bio
+         ═════════════════════════════════════════════════════════════════════ -->
+    <section class="org-author-bio">
+      <div class="layout-grid">
+        <div class="org-author-bio__inner">
+          <div class="org-author-bio__avatar" aria-hidden="true">AS</div>
+          <div>
+            <p class="org-author-bio__eyebrow">Sobre la autora</p>
+            <p class="org-author-bio__name">Ana Salvador-Mella</p>
+            <p class="org-author-bio__bio">
+              Editora de Mercados de Lujo en VITRINA. Anteriormente fue analista en Bain &amp; Company y reportera de moda en el Wall Street Journal Europa. Cubre la intersección entre patrimonio, cultura material y mercados financieros desde 2014.
+            </p>
+            <div class="org-author-bio__links">
+              <a href="#">Ver biografía completa</a>
+              <a href="#">Contactar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-related — "Continúa leyendo"
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-related" aria-labelledby="related-title">
+    <div class="layout-grid">
+      <div class="org-related__head">
+        <h2 id="related-title" class="org-related__title">Continúa leyendo</h2>
+        <a href="#" class="org-related__see-more">Ver todo el archivo &rarr;</a>
+      </div>
+
+      <div class="org-related__grid">
+        <article class="mol-related-card">
+          <div class="mol-related-card__media">
+            <img src="https://placehold.co/600x450/c2b29a/1a1410.png" alt="Detalle de hilos de cashmere en el atelier Brunello Cucinelli" loading="lazy">
+          </div>
+          <div class="mol-related-card__body">
+            <p class="mol-related-card__kicker">Marcas · Italia</p>
+            <h3 class="mol-related-card__title">Brunello Cucinelli, el filósofo del cashmere que cotiza en bolsa</h3>
+            <p class="mol-related-card__deck">Cómo un pueblo umbro de 580 habitantes se convirtió en uno de los modelos de capitalismo humanista más estudiados por las escuelas de negocio.</p>
+            <div class="mol-related-card__meta">
+              <span>Margaux Roselli</span>
+              <span>14 abr 2026</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="mol-related-card">
+          <div class="mol-related-card__media">
+            <img src="https://placehold.co/600x450/d9cdb9/1a1410.png" alt="Vitrina de joyería antigua iluminada en penumbra" loading="lazy">
+          </div>
+          <div class="mol-related-card__body">
+            <p class="mol-related-card__kicker">Mercados · Subastas</p>
+            <h3 class="mol-related-card__title">Sotheby's apuesta por la joyería del siglo XX como nuevo refugio</h3>
+            <p class="mol-related-card__deck">El segmento de Cartier 1930-1970 ha subido un 38 % en dos años. Las casas de subastas dedican ya departamentos exclusivos al periodo Art Déco.</p>
+            <div class="mol-related-card__meta">
+              <span>James Auriol</span>
+              <span>09 abr 2026</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="mol-related-card">
+          <div class="mol-related-card__media">
+            <img src="https://placehold.co/600x450/8a7560/fbf6ee.png" alt="Maniquí de costura sobre tarima de madera oscura, con tela cruda" loading="lazy">
+          </div>
+          <div class="mol-related-card__body">
+            <p class="mol-related-card__kicker">Datos · Sector lujo</p>
+            <h3 class="mol-related-card__title">Por qué el lujo accesible se está estancando (y el premium acelera)</h3>
+            <p class="mol-related-card__deck">Una bifurcación silenciosa entre LVMH y Hermès está reorganizando el mapa del sector. Cuatro gráficos para entenderla.</p>
+            <div class="mol-related-card__meta">
+              <span>Sara Gutiérrez</span>
+              <span>02 abr 2026</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-newsletter
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-newsletter" id="newsletter" aria-labelledby="newsletter-title">
+    <div class="layout-grid">
+      <div class="org-newsletter__inner">
+        <p class="org-newsletter__eyebrow">Capital · El boletín semanal</p>
+        <h2 id="newsletter-title" class="org-newsletter__title">El dinero que se viste de moda, cada sábado en su correo</h2>
+        <p class="org-newsletter__deck">
+          Análisis de mercados, marcas y subastas escrito para inversores, asesores patrimoniales y profesionales del lujo. Sin promociones, sin ruido, sin productos para vender.
+        </p>
+        <form class="org-newsletter__form" novalidate>
+          <label class="syx-sr-only" for="news-email">Correo electrónico</label>
+          <input class="atom-form" id="news-email" type="email" name="email"
+                 placeholder="su.correo@firma.com"
+                 autocomplete="email" required
+                 aria-describedby="news-hint">
+          <button class="atom-btn--primary" type="submit">Suscribirme</button>
+        </form>
+        <p id="news-hint" style="font-size: 0.75rem; color: var(--sem-text-muted); letter-spacing: 0.06em;">
+          Gratuito · Cancelable con un clic · Sin compartir datos con terceros
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       org-article-footer
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <footer class="org-article-footer" role="contentinfo">
+    <div class="layout-grid">
+      <div class="org-article-footer__grid">
+        <div class="org-article-footer__brand">
+          <p class="org-article-footer__brand-mark">VITRINA</p>
+          <p class="org-article-footer__brand-tag">Moda &amp; Capital · Edición Europa</p>
+          <p class="org-article-footer__brand-desc">
+            Una publicación independiente sobre los mercados, las marcas y los objetos del lujo contemporáneo. Editada en Madrid y París desde 2024.
+          </p>
+        </div>
+
+        <div class="org-article-footer__col">
+          <h4>Secciones</h4>
+          <ul>
+            <li><a href="#">Marcas</a></li>
+            <li><a href="#">Mercados</a></li>
+            <li><a href="#">Estilo</a></li>
+            <li><a href="#">Datos</a></li>
+            <li><a href="#">Subastas</a></li>
+          </ul>
+        </div>
+
+        <div class="org-article-footer__col">
+          <h4>Boletines</h4>
+          <ul>
+            <li><a href="#">Capital · semanal</a></li>
+            <li><a href="#">Atelier · marcas</a></li>
+            <li><a href="#">Subasta · jueves</a></li>
+            <li><a href="#">Patrimonios</a></li>
+          </ul>
+        </div>
+
+        <div class="org-article-footer__col">
+          <h4>Editorial</h4>
+          <ul>
+            <li><a href="#">Acerca de</a></li>
+            <li><a href="#">Equipo</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Anúnciese</a></li>
+            <li><a href="#">Empleo</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="org-article-footer__legal">
+        <span>&copy; 2026 VITRINA Editorial S.L. &middot; ISSN 2980-1224</span>
+        <div class="org-article-footer__legal-links">
+          <a href="#">Aviso legal</a>
+          <a href="#">Privacidad</a>
+          <a href="#">Cookies</a>
+          <a href="#">Términos</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

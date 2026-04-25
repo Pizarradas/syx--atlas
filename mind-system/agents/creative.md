@@ -22,11 +22,16 @@
 |--------|-----|-----------------|
 | `knowledges/syx/component-patterns.md` | `#bem` | Como guía de naming — aplicación flexible |
 | `knowledges/ui/color-theory.md` | `#color` | Para distribución de color y decisiones de paleta |
-| `knowledges/ui/motion-principles.md` | `#motion` | Siempre — easing, duración, propiedades GPU-composited |
+| `knowledges/ui/motion-principles.md` | `#motion` | Siempre — principios físicos: easing, duración, propiedades GPU, reduced-motion (prevalecen) |
 | `knowledges/ui/typography-systems.md` | `#typography` | Para tipografía experimental y variable fonts |
 | `knowledges/ui/practical-ui.md` | `#visual-craft` | Para decisiones de composición y detalle visual |
 | `knowledges/branding/perception-of-prestige-foundations.md` | `#prestige` `#branding` | Siempre — fundamento para decisiones de registro premium y credibilidad |
 | `knowledges/branding/perception-of-prestige.rules.md` | `#prestige-audit` | On-demand — cuando el brief exige premium, lujo, autoridad o credibilidad explícita |
+| `knowledges/motion/01-fundamentos/modelo-mental.md` | `#gsap` `#motion-mental` | Siempre cuando hay GSAP — las cuatro capas (qué/cuándo/qué activa/función) |
+| `knowledges/motion/01-fundamentos/vocabulario-base.md` | `#gsap` `#vocabulary` | Siempre cuando hay GSAP — tween, timeline, stagger, ease, ScrollTrigger |
+| `knowledges/motion/02-capacidades/index.md` | `#gsap` `#capabilities` | Siempre cuando hay GSAP — catálogo de capacidades de la librería |
+| `knowledges/motion/03-patrones/` | `#gsap` `#patterns` | Siempre cuando hay GSAP — un patrón concreto del catálogo (character-cascade, pinned-scrub, mask-reveal, magnetic-button, cursor-follower, scramble-text, typewriter, draw-svg-path, parallax, horizontal-scroll) |
+| `knowledges/motion/04-glosario/index.md` | `#gsap` `#prompts` | On-demand — para alinear vocabulario con el brief y validar que el efecto pedido tiene nombre operativo |
 | `knowledges/vendors/awesome-design/index.md` | `#reference` | On-demand — cuando el brief cita un referente o estética concreta |
 
 ---

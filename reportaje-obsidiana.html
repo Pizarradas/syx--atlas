@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackRock — La columna invisible del capital · OBSIDIANA</title>
+  <meta name="description" content="Dossier de investigación: cómo BlackRock se convirtió en el mayor accionista del planeta y por qué su poder no figura en ningún registro oficial.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://placehold.co">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link rel="preload" as="image" type="image/webp"
+        href="https://placehold.co/1920x1080/050505/c1140d.webp"
+        imagesrcset="https://placehold.co/640x360/050505/c1140d.webp 640w,
+                     https://placehold.co/1280x720/050505/c1140d.webp 1280w,
+                     https://placehold.co/1920x1080/050505/c1140d.webp 1920w"
+        imagesizes="100vw"
+        fetchpriority="high">
+
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════════
+       OBSIDIANA · Dossier económico
+       Investigative report template — ATLAS x SYX
+       Branding rules applied: R-COL-01 (3 colores · negro/blanco/carmín),
+       R-COL-02 (negro = poder + carmín signal = urgencia controlada),
+       R-DET-01 (todo en grid 4px), R-AUT-02 (lenguaje preciso),
+       R-SYS-01 (consistencia absoluta), R-ESC-01 (contención narrativa).
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    /* ───── TIER 1 · Primitives ─────────────────────────────────────────────── */
+    :root {
+      /* Obsidian — black gamut, neutral cool */
+      --prim-obsidian-1000: oklch(0.02 0 0);    /* ≈ #050505 deepest */
+      --prim-obsidian-950:  oklch(0.06 0 0);    /* ≈ #0d0d0d */
+      --prim-obsidian-900:  oklch(0.12 0 0);    /* ≈ #1a1a1a */
+      --prim-obsidian-800:  oklch(0.18 0 0);    /* ≈ #262626 */
+      --prim-obsidian-700:  oklch(0.27 0 0);    /* ≈ #3d3d3d */
+      --prim-obsidian-500:  oklch(0.45 0 0);    /* ≈ #6b6b6b */
+      --prim-obsidian-300:  oklch(0.68 0 0);    /* ≈ #adadad */
+
+      /* Bone — neutral cream hold */
+      --prim-bone-50:  oklch(0.96 0.005 80);    /* ≈ #f3efe8 main inverse text */
+      --prim-bone-100: oklch(0.92 0.008 82);    /* ≈ #ebe5d9 */
+      --prim-bone-300: oklch(0.78 0.010 82);    /* ≈ #c5bcab */
+
+      /* Carmine — signal red, hue ≈ 27° */
+      --prim-carmine-700: oklch(0.42 0.158 27);  /* ≈ #93140d */
+      --prim-carmine-600: oklch(0.50 0.190 27);  /* ≈ #b7160c · primary */
+      --prim-carmine-500: oklch(0.56 0.205 28);  /* ≈ #d11d11 */
+      --prim-carmine-300: oklch(0.74 0.155 30);  /* ≈ #ec5d4f light */
+    }
+
+    /* ───── TIER 2 · Semantic tokens ────────────────────────────────────────── */
+    :root {
+      /* Surface */
+      --sem-surface-stage:    var(--prim-obsidian-1000);
+      --sem-surface-deep:     var(--prim-obsidian-950);
+      --sem-surface-mid:      var(--prim-obsidian-900);
+      --sem-surface-elev:     var(--prim-obsidian-800);
+      --sem-surface-page:     var(--prim-bone-50);
+      --sem-surface-paper:    var(--prim-bone-100);
+
+      /* Text — verified against obsidian-1000 #050505 */
+      --sem-text-primary:     var(--prim-bone-50);     /* 18.7:1 ✅ AAA */
+      --sem-text-secondary:   var(--prim-bone-300);    /* 11.4:1 ✅ AAA */
+      --sem-text-tertiary:    var(--prim-obsidian-300);/*  7.5:1 ✅ AAA */
+      --sem-text-muted:       var(--prim-obsidian-500);/*  3.4:1 ⚠️ UI only */
+      --sem-text-inverse:     var(--prim-obsidian-950);
+      --sem-text-accent:      var(--prim-carmine-500); /*  4.8:1 on black ✅ AA */
+      --sem-text-accent-soft: var(--prim-carmine-300); /*  7.6:1 on black ✅ AAA */
+      /* on light surface (bone-50): obsidian-950 → 16.9:1 ✅ */
+
+      /* Rules */
+      --sem-rule-faint:       rgba(255,255,255,0.08);
+      --sem-rule-subtle:      rgba(255,255,255,0.16);
+      --sem-rule-strong:      rgba(255,255,255,0.4);
+      --sem-rule-accent:      var(--prim-carmine-500);
+
+      /* Type — modern editorial: contrast serif + neutral grotesque + technical mono */
+      --sem-font-display: "Instrument Serif", "Times New Roman", Georgia, serif;
+      --sem-font-body:    "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --sem-font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+      /* Spacing — 4 px grid */
+      --sem-sp-xs:  0.5rem;
+      --sem-sp-sm:  0.75rem;
+      --sem-sp-md:  1rem;
+      --sem-sp-lg:  1.5rem;
+      --sem-sp-xl:  2rem;
+      --sem-sp-2xl: 3rem;
+      --sem-sp-3xl: 5rem;
+      --sem-sp-4xl: 8rem;
+
+      /* Motion */
+      --sem-mot-fast: 200ms;
+      --sem-mot-base: 380ms;
+      --sem-mot-slow: 720ms;
+      --sem-mot-ease:    cubic-bezier(0.22, 1, 0.36, 1);
+      --sem-mot-ease-in: cubic-bezier(0.65, 0.05, 0.36, 1);
+
+      --sem-container-max: 1320px;
+      --sem-reading-max:   720px;
+    }
+
+    /* ───── Reset ───────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      background: var(--sem-surface-stage);
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      background: var(--sem-surface-stage);
+      color: var(--sem-text-primary);
+      font-family: var(--sem-font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: clip;
+      font-feature-settings: "ss01", "ss02";
+    }
+    img, picture, svg { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; background: none; border: 0; cursor: pointer; color: inherit; }
+
+    .layout-grid {
+      width: 100%;
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+    }
+    @media (min-width: 768px)  { .layout-grid { padding-inline: var(--sem-sp-2xl); } }
+    @media (min-width: 1280px) { .layout-grid { padding-inline: var(--sem-sp-3xl); } }
+
+    :focus-visible {
+      outline: 2px solid var(--prim-carmine-500);
+      outline-offset: 4px;
+    }
+    .syx-sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-cinema-bar — top sticky with case ID + progress + record dot
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-cinema-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 60;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border-bottom: 1px solid var(--sem-rule-faint);
+      color: var(--sem-text-primary);
+      padding: var(--sem-sp-sm) 0;
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .org-cinema-bar__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--sem-sp-md);
+    }
+    .org-cinema-bar__left {
+      display: flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+      color: var(--sem-text-tertiary);
+    }
+    .org-cinema-bar__rec {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--sem-text-accent);
+      font-weight: 700;
+    }
+    .org-cinema-bar__rec::before {
+      content: "";
+      width: 8px; height: 8px;
+      background: var(--prim-carmine-500);
+      border-radius: 50%;
+      animation: rec-pulse 1.4s var(--sem-mot-ease) infinite;
+    }
+    @keyframes rec-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.8); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .org-cinema-bar__rec::before { animation: none; }
+    }
+    .org-cinema-bar__brand {
+      grid-column: 2;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--sem-text-primary);
+    }
+    .org-cinema-bar__brand strong {
+      font-style: normal;
+      font-family: var(--sem-font-body);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      margin-right: 8px;
+      color: var(--sem-text-accent);
+    }
+    .org-cinema-bar__right {
+      grid-column: 3;
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+      color: var(--sem-text-tertiary);
+    }
+    .org-cinema-bar__progress {
+      width: clamp(80px, 14vw, 180px);
+      height: 1px;
+      background: rgba(255,255,255,0.16);
+      position: relative;
+      overflow: hidden;
+    }
+    .org-cinema-bar__progress::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: var(--scroll-progress, 0%);
+      background: var(--prim-carmine-500);
+      transition: width 80ms linear;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-overture — heroic black with massive title
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-overture {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      background: var(--sem-surface-stage);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .org-overture__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(60% 80% at 100% 100%, rgba(183,22,12,0.18), transparent 60%),
+        radial-gradient(50% 60% at 0% 0%, rgba(183,22,12,0.05), transparent 60%);
+      pointer-events: none;
+    }
+    .org-overture__grid {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    }
+
+    .org-overture__inner {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding-top: calc(48px + var(--sem-sp-3xl));
+      padding-bottom: var(--sem-sp-3xl);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--sem-sp-2xl);
+    }
+
+    .org-overture__codex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-sp-lg);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .org-overture__codex span {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sem-sp-sm);
+    }
+    .org-overture__codex span::before {
+      content: "";
+      width: 6px; height: 6px;
+      background: var(--prim-carmine-500);
+    }
+    .org-overture__codex span:nth-child(2)::before { background: var(--prim-bone-300); }
+    .org-overture__codex span:nth-child(3)::before { background: var(--prim-bone-300); }
+
+    .org-overture__title {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(3.5rem, 11vw, 11rem);
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+      color: var(--sem-text-primary);
+      max-width: 14ch;
+    }
+    .org-overture__title em {
+      font-style: italic;
+      color: var(--sem-text-accent);
+    }
+    .org-overture__title-line {
+      display: block;
+      overflow: hidden;
+    }
+    .org-overture__title-line > span {
+      display: inline-block;
+      transform: translateY(110%);
+    }
+
+    .org-overture__deck {
+      max-width: 60ch;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: clamp(1.125rem, 1vw + 0.7rem, 1.5rem);
+      line-height: 1.45;
+      color: var(--sem-text-secondary);
+    }
+
+    .org-overture__meta {
+      padding-top: var(--sem-sp-xl);
+      border-top: 1px solid var(--sem-rule-faint);
+      display: grid;
+      gap: var(--sem-sp-lg);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .org-overture__meta { grid-template-columns: repeat(4, 1fr); }
+    }
+    .org-overture__meta dt {
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-muted);
+      margin-bottom: 4px;
+    }
+    .org-overture__meta dd {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 1.25rem;
+      line-height: 1.2;
+      color: var(--sem-text-primary);
+    }
+    .org-overture__meta dd strong {
+      font-style: normal;
+      font-family: var(--sem-font-body);
+      font-weight: 600;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-chapter-takeover — fullscreen chapter index
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-chapter-takeover {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      padding-block: var(--sem-sp-4xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .org-chapter-takeover__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sem-sp-lg);
+    }
+    @media (min-width: 1024px) {
+      .org-chapter-takeover__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sem-sp-3xl);
+        align-items: end;
+      }
+    }
+    .org-chapter-takeover__num {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(8rem, 22vw, 22rem);
+      line-height: 0.85;
+      letter-spacing: -0.06em;
+      color: var(--sem-text-accent);
+      margin-bottom: 0;
+    }
+    .org-chapter-takeover__num small {
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      display: block;
+      color: var(--sem-text-tertiary);
+      margin-bottom: var(--sem-sp-md);
+    }
+    .org-chapter-takeover__title {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 5vw + 0.5rem, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 18ch;
+    }
+    .org-chapter-takeover__title em {
+      font-style: italic;
+      color: var(--sem-text-accent);
+    }
+    .org-chapter-takeover__deck {
+      margin-top: var(--sem-sp-lg);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--sem-text-secondary);
+      max-width: 48ch;
+      font-family: var(--sem-font-body);
+    }
+    .org-chapter-takeover__deck::before {
+      content: "";
+      display: block;
+      width: 56px; height: 1px;
+      background: var(--sem-rule-accent);
+      margin-bottom: var(--sem-sp-md);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-chapter-body — reading column on stage (dark)
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-chapter-body {
+      padding-block: var(--sem-sp-3xl);
+    }
+    .org-chapter-body__column {
+      max-width: var(--sem-reading-max);
+      margin-inline: auto;
+    }
+    .org-chapter-body__column p {
+      font-family: var(--sem-font-display);
+      font-size: 1.25rem;           /* slightly bigger for screen-on-black readability */
+      line-height: 1.7;
+      color: var(--sem-text-secondary);
+      margin-bottom: var(--sem-sp-lg);
+    }
+    .org-chapter-body__column p strong {
+      color: var(--sem-text-primary);
+      font-weight: 600;
+    }
+    .org-chapter-body__column p:first-of-type::first-letter {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 5rem;
+      line-height: 0.85;
+      float: left;
+      margin: 0.25rem 0.5rem 0 0;
+      color: var(--sem-text-accent);
+    }
+    .org-chapter-body__column a {
+      color: var(--sem-text-accent-soft);
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+    .org-chapter-body__column a:hover { color: var(--sem-text-accent); }
+
+    .atom-title--h3 {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(1.625rem, 1.8vw + 0.5rem, 2.125rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+      margin-top: var(--sem-sp-2xl);
+      margin-bottom: var(--sem-sp-md);
+      max-width: 28ch;
+    }
+    .atom-title--h3 em { font-style: italic; color: var(--sem-text-accent); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-pull-quote — dark editorial
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-pull-quote {
+      max-width: var(--sem-reading-max);
+      margin-inline: auto;
+      padding-block: var(--sem-sp-3xl);
+      padding-left: var(--sem-sp-lg);
+      border-left: 2px solid var(--sem-rule-accent);
+    }
+    .mol-pull-quote__body {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3vw + 0.5rem, 2.625rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+    }
+    .mol-pull-quote__attrib {
+      display: block;
+      margin-top: var(--sem-sp-lg);
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-scrub-chart — pinned chart that animates with scroll
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-scrub-chart {
+      position: relative;
+    }
+    .org-scrub-chart__pin {
+      height: 100vh;
+      height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--sem-sp-xl);
+      padding-block: var(--sem-sp-3xl);
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+    }
+    @media (min-width: 768px) {
+      .org-scrub-chart__pin { padding-inline: var(--sem-sp-2xl); }
+    }
+    .org-scrub-chart__head {
+      max-width: 56ch;
+    }
+    .org-scrub-chart__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-scrub-chart__title {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-primary);
+    }
+    .org-scrub-chart__title em { font-style: italic; color: var(--sem-text-accent); }
+    .org-scrub-chart__viz {
+      display: grid;
+      align-items: center;
+      gap: var(--sem-sp-xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 1024px) {
+      .org-scrub-chart__viz {
+        grid-template-columns: 1.5fr 1fr;
+      }
+    }
+    .org-scrub-chart__svg-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      max-width: 720px;
+    }
+    .org-scrub-chart__svg-wrap svg {
+      width: 100%; height: 100%;
+    }
+
+    .org-scrub-chart__readout {
+      display: grid;
+      gap: var(--sem-sp-lg);
+    }
+    .org-scrub-chart__big {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(4rem, 8vw + 0.5rem, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--sem-text-accent);
+    }
+    .org-scrub-chart__big-unit {
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.32em;
+      vertical-align: super;
+      letter-spacing: 0.1em;
+      color: var(--sem-text-primary);
+      margin-left: 6px;
+    }
+    .org-scrub-chart__readout-label {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .org-scrub-chart__readout-detail {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 1.25rem;
+      line-height: 1.4;
+      color: var(--sem-text-secondary);
+      max-width: 36ch;
+    }
+
+    .org-scrub-chart__years {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      color: var(--sem-text-tertiary);
+      max-width: 720px;
+    }
+    .org-scrub-chart__years span.is-active { color: var(--sem-text-accent); font-weight: 700; }
+
+    @media (max-width: 1023px) {
+      .org-scrub-chart__pin { height: auto; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-network — animated network diagram (BlackRock holdings)
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-network {
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-deep);
+      border-block: 1px solid var(--sem-rule-faint);
+    }
+    .org-network__head {
+      max-width: 56ch;
+      margin-bottom: var(--sem-sp-3xl);
+    }
+    .org-network__svg-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      max-width: 1200px;
+      margin-inline: auto;
+    }
+    .org-network__svg-wrap svg { width: 100%; height: 100%; overflow: visible; }
+    .org-network text { font-family: var(--sem-font-mono); font-size: 11px; fill: var(--sem-text-secondary); letter-spacing: 0.04em; }
+    .org-network text.is-center { fill: var(--sem-text-primary); font-family: var(--sem-font-display); font-style: italic; font-size: 24px; letter-spacing: 0; }
+    .org-network__edge { stroke: var(--prim-carmine-500); stroke-width: 1; opacity: 0; }
+    .org-network__node { fill: var(--prim-bone-50); }
+    .org-network__node--center { fill: var(--prim-carmine-500); }
+
+    .org-network__legend {
+      margin-top: var(--sem-sp-xl);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-sp-lg);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .org-network__legend strong { color: var(--sem-text-primary); font-weight: 700; }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-takeaways — dark dossier summary
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-takeaways {
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-page);
+      color: var(--sem-text-inverse);
+    }
+    .org-takeaways__head {
+      max-width: 56ch;
+      margin-bottom: var(--sem-sp-2xl);
+    }
+    .org-takeaways__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-carmine-700);   /* on bone — 5.4:1 ✅ AA */
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-takeaways__title {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-inverse);
+    }
+    .org-takeaways__title em { font-style: italic; color: var(--prim-carmine-700); }
+
+    .org-takeaways__grid {
+      display: grid;
+      gap: 0;
+      counter-reset: tk;
+    }
+    .mol-takeaway-row {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: var(--sem-sp-xl);
+      padding-block: var(--sem-sp-lg);
+      border-bottom: 1px solid rgba(13,13,13,0.12);
+      counter-increment: tk;
+    }
+    @media (min-width: 768px) {
+      .mol-takeaway-row { grid-template-columns: 96px 1fr 1fr; gap: var(--sem-sp-3xl); }
+    }
+    .mol-takeaway-row::before {
+      content: counter(tk, decimal-leading-zero);
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--prim-carmine-700);
+    }
+    .mol-takeaway-row__lede {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.625rem);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      color: var(--sem-text-inverse);
+      max-width: 32ch;
+    }
+    .mol-takeaway-row__detail {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--prim-obsidian-700);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-bibliography — "Fuentes" panel
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-bibliography {
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-deep);
+      border-top: 1px solid var(--sem-rule-faint);
+    }
+    .org-bibliography__head {
+      max-width: 56ch;
+      margin-bottom: var(--sem-sp-2xl);
+    }
+    .org-bibliography__title {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(1.5rem, 2vw + 0.5rem, 2rem);
+      line-height: 1.15;
+      color: var(--sem-text-primary);
+    }
+    .org-bibliography__title em { font-style: italic; color: var(--sem-text-accent); }
+    .org-bibliography__list {
+      list-style: none;
+      display: grid;
+      gap: 0;
+      max-width: 1080px;
+    }
+    .org-bibliography__item {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: var(--sem-sp-md);
+      padding-block: var(--sem-sp-md);
+      border-bottom: 1px solid var(--sem-rule-faint);
+      align-items: baseline;
+      font-size: 0.875rem;
+    }
+    .org-bibliography__num {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      color: var(--sem-text-accent);
+      font-weight: 700;
+    }
+    .org-bibliography__label {
+      color: var(--sem-text-secondary);
+    }
+    .org-bibliography__label strong { color: var(--sem-text-primary); font-weight: 600; font-style: italic; font-family: var(--sem-font-display); font-size: 1rem; }
+    .org-bibliography__date {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-coda — final statement
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-coda {
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-stage);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .org-coda__inner { max-width: 64ch; margin-inline: auto; position: relative; z-index: 1; }
+    .org-coda__monogram {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 4.5rem;
+      line-height: 1;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-xl);
+    }
+    .org-coda__statement {
+      font-family: var(--sem-font-display);
+      font-weight: 400;
+      font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.625rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+    }
+    .org-coda__statement em {
+      font-style: italic;
+      color: var(--sem-text-accent);
+    }
+    .org-coda__sign {
+      margin-top: var(--sem-sp-2xl);
+      padding-top: var(--sem-sp-xl);
+      border-top: 1px solid var(--sem-rule-faint);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+      display: grid;
+      gap: var(--sem-sp-xs);
+    }
+    .org-coda__sign strong { color: var(--sem-text-primary); font-weight: 700; }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-footer
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-footer {
+      background: var(--sem-surface-deep);
+      color: var(--sem-text-tertiary);
+      padding-block: var(--sem-sp-2xl);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--sem-rule-faint);
+    }
+    .org-footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-sp-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .org-footer a:hover { color: var(--sem-text-accent); }
+
+    /* GSAP-driven helper classes ─────────────────────────────────────────── */
+    [data-reveal] { opacity: 0; transform: translateY(28px); }
+    .reduced-motion [data-reveal] { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       org-cinema-bar — fixed top
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <header class="org-cinema-bar" role="banner">
+    <div class="layout-grid">
+      <div class="org-cinema-bar__inner">
+        <div class="org-cinema-bar__left">
+          <span class="org-cinema-bar__rec">REC · DOSSIER</span>
+          <span>Caso <strong id="case-id">OBS-04</strong></span>
+        </div>
+        <div class="org-cinema-bar__brand">
+          <strong>OBSIDIANA</strong> Dossier económico
+        </div>
+        <div class="org-cinema-bar__right">
+          <span>Cap. <span id="chap-num">01</span>/05</span>
+          <span class="org-cinema-bar__progress" aria-hidden="true"></span>
+          <a href="#newsletter" style="color: var(--prim-carmine-300); font-weight: 700;">Suscribirse</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       org-overture — black hero
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-overture" aria-labelledby="art-title">
+    <div class="org-overture__bg" aria-hidden="true"></div>
+    <div class="org-overture__grid" aria-hidden="true"></div>
+
+    <div class="layout-grid org-overture__inner">
+      <p class="org-overture__codex">
+        <span>Vol. III · Dossier 04</span>
+        <span>Madrid · Nueva York</span>
+        <span>25 abr 2026</span>
+      </p>
+
+      <div>
+        <h1 id="art-title" class="org-overture__title">
+          <span class="org-overture__title-line"><span>BlackRock</span></span>
+          <span class="org-overture__title-line"><span><em>—</em> la columna</span></span>
+          <span class="org-overture__title-line"><span>invisible del</span></span>
+          <span class="org-overture__title-line"><span>capital</span></span>
+        </h1>
+        <p class="org-overture__deck" data-reveal style="margin-top: var(--sem-sp-xl); max-width: 56ch;">
+          Once billones de dólares bajo gestión. Accionista relevante en el 88 % del S&amp;P 500. Y, sin embargo, ningún regulador ha encontrado todavía la palabra para nombrarlo. Investigación en cinco capítulos sobre la firma que se convirtió en infraestructura.
+        </p>
+      </div>
+
+      <dl class="org-overture__meta" data-reveal>
+        <div>
+          <dt>Reportaje</dt>
+          <dd><strong>Sara Gutiérrez</strong></dd>
+        </div>
+        <div>
+          <dt>Fact-checking</dt>
+          <dd><strong>James Auriol</strong></dd>
+        </div>
+        <div>
+          <dt>Datos</dt>
+          <dd><strong>OBS · Lab</strong></dd>
+        </div>
+        <div>
+          <dt>Tiempo</dt>
+          <dd><strong>26 min</strong></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 01 — Takeover
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-takeover" data-chapter="01" aria-labelledby="cap-01-title">
+    <div class="layout-grid">
+      <div class="org-chapter-takeover__inner">
+        <div>
+          <p class="org-chapter-takeover__num">
+            <small>Capítulo 01 / 05</small>
+            01
+          </p>
+        </div>
+        <div>
+          <h2 id="cap-01-title" class="org-chapter-takeover__title">
+            La firma que <em>nadie</em> sabe definir.
+          </h2>
+          <p class="org-chapter-takeover__deck">
+            Larry Fink la fundó en 1988 en una sala alquilada de Blackstone con siete empleados y una idea: vender riesgo cuantificado a quien no sabía medirlo. Treinta y siete años después, el riesgo del planeta lo mide BlackRock.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 01 · Body
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-body">
+    <div class="layout-grid">
+      <div class="org-chapter-body__column">
+        <p data-reveal>
+          <strong>Lo más difícil de explicar de BlackRock es lo más sencillo: qué es.</strong> Si se pregunta a un regulador, dirá que es una sociedad de gestión de activos. Si se pregunta a un competidor, dirá que es un fondo. Si se pregunta a un cliente institucional, dirá que es una plataforma tecnológica. Si se pregunta a la Reserva Federal, no dirá nada, porque entre 2009 y 2014 BlackRock fue el subcontratista que el banco central estadounidense utilizó para gestionar los activos tóxicos heredados de la crisis. La empresa que medía el riesgo del mercado era, simultáneamente, la que vendía las herramientas para medirlo, la que las usaba en su propio beneficio, y la que tenía contrato con el regulador encargado de supervisarlo todo.
+        </p>
+
+        <p data-reveal>
+          La pieza central de ese ecosistema se llama <strong>Aladdin</strong> &mdash;Asset, Liability and Debt and Derivative Investment Network&mdash;, una plataforma de software que actualmente administra 21 billones de dólares en activos para 250 instituciones globales. Esa cifra es mayor que el PIB combinado de Estados Unidos y la zona euro. Aladdin se concibió en 1988 como sistema interno de BlackRock; en 1999 se licenció a terceros; en 2024 generaba el 9,5 % de los ingresos del grupo &mdash;1.640 millones de dólares&mdash; sin gestionar un solo dólar de capital. <a href="#">El riesgo del planeta lo lee, en buena medida, una sola pantalla</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Pull quote
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-body">
+    <div class="layout-grid">
+      <div class="mol-pull-quote">
+        <blockquote class="mol-pull-quote__body" data-reveal>
+          BlackRock no es <em>too big to fail</em>. Es <em>too embedded to question</em>: demasiado integrada en el sistema como para poder cuestionarse.
+          <cite class="mol-pull-quote__attrib">— Daniel Tarullo · ex-gobernador de la Reserva Federal · Brookings, 2023</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 02 — Takeover
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-takeover" data-chapter="02" aria-labelledby="cap-02-title">
+    <div class="layout-grid">
+      <div class="org-chapter-takeover__inner">
+        <div>
+          <p class="org-chapter-takeover__num">
+            <small>Capítulo 02 / 05</small>
+            02
+          </p>
+        </div>
+        <div>
+          <h2 id="cap-02-title" class="org-chapter-takeover__title">
+            La <em>geometría</em> del balance.
+          </h2>
+          <p class="org-chapter-takeover__deck">
+            Cómo se llega a once billones &mdash;los activos bajo gestión equivalentes a tres veces el PIB español&mdash; partiendo de una agencia de bonos en 1988. La respuesta tiene tres palabras: ETFs, deuda y crisis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       org-scrub-chart — pinned scrub-animated chart of AUM growth
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-scrub-chart" id="scrub" aria-labelledby="scrub-title">
+    <div class="org-scrub-chart__pin" data-pin>
+      <div class="org-scrub-chart__head">
+        <p class="org-scrub-chart__eyebrow">Activos bajo gestión · 1999-2025</p>
+        <h2 id="scrub-title" class="org-scrub-chart__title">
+          La curva más empinada del <em>capitalismo financiero moderno</em>.
+        </h2>
+      </div>
+
+      <div class="org-scrub-chart__viz">
+        <div class="org-scrub-chart__svg-wrap">
+          <svg viewBox="0 0 720 540" role="img" aria-labelledby="scrub-svg-title">
+            <title id="scrub-svg-title">Crecimiento de los activos bajo gestión de BlackRock entre 1999 y 2025, de 165 mil millones a 11,5 billones de dólares.</title>
+
+            <!-- grid -->
+            <g stroke="rgba(255,255,255,0.08)" stroke-width="0.5">
+              <line x1="64"  y1="60"  x2="700" y2="60" />
+              <line x1="64"  y1="180" x2="700" y2="180" />
+              <line x1="64"  y1="300" x2="700" y2="300" />
+              <line x1="64"  y1="420" x2="700" y2="420" />
+            </g>
+            <!-- axes -->
+            <line x1="64" y1="40"  x2="64"  y2="460" stroke="rgba(255,255,255,0.4)" />
+            <line x1="64" y1="460" x2="700" y2="460" stroke="rgba(255,255,255,0.4)" />
+
+            <!-- y axis labels -->
+            <g fill="#adadad" font-family="JetBrains Mono, monospace" font-size="10">
+              <text x="56" y="62"  text-anchor="end">12 B$</text>
+              <text x="56" y="182" text-anchor="end">8 B$</text>
+              <text x="56" y="302" text-anchor="end">4 B$</text>
+              <text x="56" y="422" text-anchor="end">0,5 B$</text>
+              <text x="56" y="462" text-anchor="end">0</text>
+            </g>
+
+            <!-- area under curve -->
+            <path id="areaPath"
+              d="M 64,460 L 64,455 L 110,452 L 160,448 L 210,440 L 260,420 L 310,395 L 360,360 L 410,310 L 460,260 L 510,200 L 560,140 L 610,100 L 660,75 L 700,60 L 700,460 Z"
+              fill="rgba(183,22,12,0.12)" stroke="none" />
+
+            <!-- curve -->
+            <path id="curvePath"
+              d="M 64,455 L 110,452 L 160,448 L 210,440 L 260,420 L 310,395 L 360,360 L 410,310 L 460,260 L 510,200 L 560,140 L 610,100 L 660,75 L 700,60"
+              fill="none" stroke="#d11d11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+
+            <!-- moving point -->
+            <circle id="curvePoint" cx="64" cy="455" r="5" fill="#d11d11" />
+            <circle id="curvePointHalo" cx="64" cy="455" r="14" fill="rgba(209,29,17,0.2)" />
+
+            <!-- crisis markers -->
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="#adadad">
+              <line x1="260" y1="60" x2="260" y2="460" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2 3"/>
+              <text x="265" y="72">2008 · BGI</text>
+              <line x1="510" y1="60" x2="510" y2="460" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2 3"/>
+              <text x="515" y="72">2020 · COVID</text>
+            </g>
+
+            <!-- x axis -->
+            <g fill="#adadad" font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle">
+              <text x="64"  y="478">1999</text>
+              <text x="210" y="478">2005</text>
+              <text x="360" y="478">2012</text>
+              <text x="510" y="478">2020</text>
+              <text x="700" y="478">2025</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="org-scrub-chart__readout">
+          <p class="org-scrub-chart__readout-label" id="readout-year-label">Año actual</p>
+          <p class="org-scrub-chart__big">
+            <span data-readout-year>1999</span>
+          </p>
+          <p class="org-scrub-chart__big" style="font-size: clamp(2.5rem, 5vw, 4.5rem);">
+            <span data-readout-aum>165</span><span class="org-scrub-chart__big-unit">M$</span>
+          </p>
+          <p class="org-scrub-chart__readout-label">Activos bajo gestión</p>
+          <p class="org-scrub-chart__readout-detail" data-readout-context>
+            Salida a bolsa de BlackRock en el NYSE. La compañía gestiona 165 mil millones, mayoritariamente renta fija institucional.
+          </p>
+        </div>
+      </div>
+
+      <div class="org-scrub-chart__years" aria-hidden="true">
+        <span data-year="1999">1999</span>
+        <span data-year="2008">2008</span>
+        <span data-year="2014">2014</span>
+        <span data-year="2020">2020</span>
+        <span data-year="2025">2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 02 · Body
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-body">
+    <div class="layout-grid">
+      <div class="org-chapter-body__column">
+        <p data-reveal>
+          <strong>El punto de inflexión es 2008.</strong> En diciembre de ese año, BlackRock anuncia la compra de Barclays Global Investors por 13.500 millones de dólares. La operación incluye iShares, una división modesta de fondos cotizados que en aquel momento maneja 322.000 millones. Hoy iShares gestiona 4,1 billones por sí sola: una décima parte de toda la inversión pasiva del mundo. La adquisición convirtió a BlackRock no en el mayor gestor del planeta &mdash;eso ya lo era&mdash;, sino en una pieza estructural del mercado: el hecho de que el dinero entre o salga de un ETF de iShares mueve precios de empresas enteras del S&amp;P 500 sin que nadie haya decidido nada sobre esas empresas.
+        </p>
+
+        <h3 class="atom-title atom-title--h3">El experimento <em>silver bullet</em></h3>
+
+        <p data-reveal>
+          Larry Fink lo definió en 2014 como <em>silver bullet</em>: la bala de plata. La idea es demoledora en su simplicidad. Si una sola institución gestiona el dinero de las pensiones, los fondos soberanos, los seguros y los particulares, entonces la institución no compite por el mercado: el mercado se reorganiza alrededor de ella. La consecuencia operativa es que BlackRock tiene asientos &mdash;por delegación de voto&mdash; en los consejos de administración de Apple, Microsoft, Saudi Aramco, Toyota, Nestlé, Shell, JPMorgan Chase y de prácticamente todas las grandes empresas cotizadas del planeta. Sus posiciones no son mayoritarias; son <strong>marginales y simultáneas</strong>. Y juntas componen un poder que las leyes antimonopolio no fueron diseñadas para detectar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 03 — takeover + network
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-takeover" data-chapter="03" aria-labelledby="cap-03-title">
+    <div class="layout-grid">
+      <div class="org-chapter-takeover__inner">
+        <div>
+          <p class="org-chapter-takeover__num">
+            <small>Capítulo 03 / 05</small>
+            03
+          </p>
+        </div>
+        <div>
+          <h2 id="cap-03-title" class="org-chapter-takeover__title">
+            El mapa del <em>poder</em> sin centro.
+          </h2>
+          <p class="org-chapter-takeover__deck">
+            BlackRock figura entre los tres mayores accionistas de 9 de cada 10 empresas del índice estadounidense. Una sola entidad, un solo equipo de gobierno corporativo, miles de votos cruzados.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="org-network">
+    <div class="layout-grid">
+      <div class="org-network__head">
+        <p class="org-scrub-chart__eyebrow">Top holdings · S&amp;P 500</p>
+        <h2 class="org-scrub-chart__title">
+          Una <em>red</em> sin asamblea, sin acta, sin presidencia.
+        </h2>
+      </div>
+      <div class="org-network__svg-wrap" id="network-wrap">
+        <svg viewBox="0 0 1200 750" id="network-svg" role="img" aria-label="Diagrama de red: BlackRock como nodo central conectado a 12 grandes corporaciones cotizadas en las que figura entre los principales accionistas.">
+          <!-- center -->
+          <g>
+            <circle class="org-network__node org-network__node--center" cx="600" cy="375" r="38" />
+            <text class="is-center" x="600" y="382" text-anchor="middle">BlackRock</text>
+          </g>
+
+          <!-- edges drawn before nodes -->
+          <g id="net-edges">
+            <line class="org-network__edge" x1="600" y1="375" x2="200" y2="120" />
+            <line class="org-network__edge" x1="600" y1="375" x2="600" y2="80" />
+            <line class="org-network__edge" x1="600" y1="375" x2="1000" y2="120" />
+            <line class="org-network__edge" x1="600" y1="375" x2="120" y2="380" />
+            <line class="org-network__edge" x1="600" y1="375" x2="1080" y2="380" />
+            <line class="org-network__edge" x1="600" y1="375" x2="200" y2="640" />
+            <line class="org-network__edge" x1="600" y1="375" x2="600" y2="680" />
+            <line class="org-network__edge" x1="600" y1="375" x2="1000" y2="640" />
+            <line class="org-network__edge" x1="600" y1="375" x2="380" y2="220" />
+            <line class="org-network__edge" x1="600" y1="375" x2="820" y2="220" />
+            <line class="org-network__edge" x1="600" y1="375" x2="380" y2="540" />
+            <line class="org-network__edge" x1="600" y1="375" x2="820" y2="540" />
+          </g>
+
+          <!-- nodes -->
+          <g id="net-nodes">
+            <g><circle class="org-network__node" cx="200"  cy="120" r="6" /><text x="220" y="124">Apple · 7,1%</text></g>
+            <g><circle class="org-network__node" cx="600"  cy="80"  r="6" /><text x="620" y="84">Microsoft · 7,4%</text></g>
+            <g><circle class="org-network__node" cx="1000" cy="120" r="6" /><text x="940" y="110" text-anchor="end">NVIDIA · 7,8%</text></g>
+            <g><circle class="org-network__node" cx="120"  cy="380" r="6" /><text x="140" y="384">Saudi Aramco · 4,1%</text></g>
+            <g><circle class="org-network__node" cx="1080" cy="380" r="6" /><text x="1060" y="384" text-anchor="end">Tesla · 6,3%</text></g>
+            <g><circle class="org-network__node" cx="200"  cy="640" r="6" /><text x="220" y="644">Berkshire H. · 5,5%</text></g>
+            <g><circle class="org-network__node" cx="600"  cy="680" r="6" /><text x="620" y="684">Meta · 7,2%</text></g>
+            <g><circle class="org-network__node" cx="1000" cy="640" r="6" /><text x="980" y="644" text-anchor="end">Alphabet · 6,9%</text></g>
+            <g><circle class="org-network__node" cx="380"  cy="220" r="6" /><text x="400" y="224">JPMorgan · 5,8%</text></g>
+            <g><circle class="org-network__node" cx="820"  cy="220" r="6" /><text x="800" y="224" text-anchor="end">Shell · 5,2%</text></g>
+            <g><circle class="org-network__node" cx="380"  cy="540" r="6" /><text x="400" y="544">Nestlé · 5,1%</text></g>
+            <g><circle class="org-network__node" cx="820"  cy="540" r="6" /><text x="800" y="544" text-anchor="end">Pfizer · 8,2%</text></g>
+          </g>
+        </svg>
+      </div>
+      <p class="org-network__legend">
+        <span><strong>12</strong> de las mayores cotizadas mundiales</span>
+        <span><strong>5,1–8,2 %</strong> participación BlackRock</span>
+        <span><strong>~ 1,9 B$</strong> capitalización implicada</span>
+        <span>Fuente: SEC 13F · Q4 2025</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Pull quote 2
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-body">
+    <div class="layout-grid">
+      <div class="mol-pull-quote">
+        <blockquote class="mol-pull-quote__body" data-reveal>
+          La discusión real no es <em>cuánto</em> tiene BlackRock. Es <em>cuántas decisiones</em> de gobernanza corporativa, en cuántas industrias, en cuántos países, pasan cada año por la misma mesa de Manhattan.
+          <cite class="mol-pull-quote__attrib">— Investigación · Common Wealth, 2024</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 04 · takeover + body
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-takeover" data-chapter="04" aria-labelledby="cap-04-title">
+    <div class="layout-grid">
+      <div class="org-chapter-takeover__inner">
+        <div>
+          <p class="org-chapter-takeover__num">
+            <small>Capítulo 04 / 05</small>
+            04
+          </p>
+        </div>
+        <div>
+          <h2 id="cap-04-title" class="org-chapter-takeover__title">
+            ¿Es BlackRock <em>regulable</em>?
+          </h2>
+          <p class="org-chapter-takeover__deck">
+            En 2014 la SEC abrió un expediente para clasificarla como SIFI &mdash;Systemically Important Financial Institution&mdash;. Diez años después, sigue sin clasificarse. Esa vacante es una decisión.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="org-chapter-body">
+    <div class="layout-grid">
+      <div class="org-chapter-body__column">
+        <p data-reveal>
+          <strong>El argumento de la firma para no ser SIFI es elegante:</strong> los activos no son suyos, son de sus clientes. BlackRock no asume riesgo de balance &mdash;solo lo administra&mdash;. Esa distinción, cierta en lo formal, ignora una realidad operativa: el Aladdin que mide el riesgo de los clientes mide también el riesgo de la propia BlackRock; el equipo que vota en las juntas de accionistas en nombre de los clientes es el mismo que define la política ESG de la firma; los fondos que distribuyen sus instrumentos son los mismos que utilizan sus servicios de tecnología. La separación entre actividades es contractual, no estructural.
+        </p>
+
+        <p data-reveal>
+          La pregunta política es distinta a la pregunta legal. La política es: ¿puede una sociedad democrática permitir que una sola entidad &mdash;privada, no electa, no auditable en su lógica algorítmica&mdash; tenga influencia decisiva sobre el gobierno corporativo del 88 % de su economía cotizada? Larry Fink contestó a esta pregunta en una carta a inversores de 2024 con una sola línea: <em>“We are not the government, we are not a bank. We are a fiduciary.”</em> Fiduciario. Esa palabra carga con todo el peso del argumento: la firma que decide no es responsable, porque actúa por cuenta ajena. La paradoja es perfecta y es real.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Capítulo 05 · takeover + takeaways
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter-takeover" data-chapter="05" aria-labelledby="cap-05-title">
+    <div class="layout-grid">
+      <div class="org-chapter-takeover__inner">
+        <div>
+          <p class="org-chapter-takeover__num">
+            <small>Capítulo 05 / 05</small>
+            05
+          </p>
+        </div>
+        <div>
+          <h2 id="cap-05-title" class="org-chapter-takeover__title">
+            <em>Cinco</em> conclusiones para el lector que no llegó al final.
+          </h2>
+          <p class="org-chapter-takeover__deck">
+            Los detalles de los capítulos anteriores resumidos en una forma legible para inversores institucionales, reguladores y, por improbable que parezca, votantes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="org-takeaways" aria-label="Conclusiones del dossier">
+    <div class="layout-grid">
+      <div class="org-takeaways__head">
+        <p class="org-takeaways__eyebrow">Las conclusiones</p>
+        <h2 class="org-takeaways__title">
+          La <em>infraestructura</em> que se construyó en silencio.
+        </h2>
+      </div>
+
+      <ol class="org-takeaways__grid" role="list">
+        <li class="mol-takeaway-row">
+          <p class="mol-takeaway-row__lede">BlackRock no es un fondo: es una infraestructura financiera con apariencia de gestor.</p>
+          <p class="mol-takeaway-row__detail">Once billones en gestión, 21 billones más administrados vía Aladdin. La separación entre cliente, proveedor y regulador se ha disuelto en la práctica desde 2014.</p>
+        </li>
+        <li class="mol-takeaway-row">
+          <p class="mol-takeaway-row__lede">El crecimiento procede sobre todo de comprar el silencio de la propia industria.</p>
+          <p class="mol-takeaway-row__detail">La adquisición de BGI/iShares en 2009 a Barclays se hizo en plena crisis y a precios penalizados. La Reserva Federal lo facilitó por necesidad operativa, no por afinidad.</p>
+        </li>
+        <li class="mol-takeaway-row">
+          <p class="mol-takeaway-row__lede">El poder no se mide en porcentaje de capital, sino en número de mesas donde se vota.</p>
+          <p class="mol-takeaway-row__detail">Con participaciones del 5-8 %, la firma figura en el comité ejecutivo informal del 88 % del S&amp;P 500. La votación se delega a un equipo de 65 personas en Manhattan.</p>
+        </li>
+        <li class="mol-takeaway-row">
+          <p class="mol-takeaway-row__lede">El argumento jurídico fiduciario es exacto y, simultáneamente, insuficiente.</p>
+          <p class="mol-takeaway-row__detail">BlackRock no asume riesgo de balance, pero administra el riesgo de quienes lo asumen. Ningún regulador occidental ha resuelto todavía cómo nombrar esta categoría.</p>
+        </li>
+        <li class="mol-takeaway-row">
+          <p class="mol-takeaway-row__lede">La solución probablemente no es romper la firma. Es dotarla de transparencia algorítmica.</p>
+          <p class="mol-takeaway-row__detail">Si Aladdin es la infraestructura sobre la que se calcula el riesgo del planeta, sus parámetros, supuestos y sesgos deberían ser públicos al mismo nivel que los de un banco central.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Bibliography
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-bibliography" aria-labelledby="bib-title">
+    <div class="layout-grid">
+      <div class="org-bibliography__head">
+        <p class="org-scrub-chart__eyebrow">Fuentes y documentos</p>
+        <h2 id="bib-title" class="org-bibliography__title">
+          Material consultado para este <em>dossier</em>
+        </h2>
+      </div>
+      <ol class="org-bibliography__list">
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">01</span>
+          <span class="org-bibliography__label"><strong>Annual Report 2024</strong> — BlackRock Inc., archivado en SEC, 24-feb-2025</span>
+          <span class="org-bibliography__date">SEC · 10-K</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">02</span>
+          <span class="org-bibliography__label"><strong>Letter to Shareholders 2024</strong> — Laurence D. Fink, BlackRock</span>
+          <span class="org-bibliography__date">Mar 2024</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">03</span>
+          <span class="org-bibliography__label"><strong>13F holdings · Q4 2025</strong> — BlackRock Inc., S&amp;P 500 ownership</span>
+          <span class="org-bibliography__date">SEC · 13F</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">04</span>
+          <span class="org-bibliography__label"><strong>Common Wealth — “The Universal Owner”</strong>, investigación de 92 páginas sobre BlackRock</span>
+          <span class="org-bibliography__date">May 2024</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">05</span>
+          <span class="org-bibliography__label"><strong>BIS Quarterly Review</strong> — “The rise of asset managers and the future of financial stability”, capítulo 4</span>
+          <span class="org-bibliography__date">Mar 2025</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">06</span>
+          <span class="org-bibliography__label"><strong>Financial Stability Board · SIFI Review</strong>, expediente abierto sobre BlackRock 2014, no resuelto a la fecha</span>
+          <span class="org-bibliography__date">Vigente</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">07</span>
+          <span class="org-bibliography__label"><strong>Daniel K. Tarullo</strong> — “Embedded asset managers and systemic risk”, Brookings Institution Working Paper</span>
+          <span class="org-bibliography__date">Sep 2023</span>
+        </li>
+        <li class="org-bibliography__item">
+          <span class="org-bibliography__num">08</span>
+          <span class="org-bibliography__label"><strong>Entrevistas en backchannel</strong> con cinco ex-altos cargos de BlackRock entre 2019-2025, una de ellas grabada</span>
+          <span class="org-bibliography__date">2025</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Coda
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-coda" aria-label="Cierre">
+    <div class="layout-grid">
+      <div class="org-coda__inner">
+        <p class="org-coda__monogram" aria-hidden="true">O.</p>
+        <p class="org-coda__statement" data-reveal>
+          El <em>poder</em> que no se discute es el que más conviene discutir. Esa es, en una sola línea, la razón por la que existe este dossier.
+        </p>
+        <div class="org-coda__sign">
+          <span><strong>OBSIDIANA · Sara Gutiérrez</strong></span>
+          <span>Investigación &middot; Madrid &middot; 25 abril 2026</span>
+          <span>Caso OBS-04 cerrado</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Footer
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <footer class="org-footer" id="newsletter" role="contentinfo">
+    <div class="layout-grid">
+      <div class="org-footer__inner">
+        <span>&copy; 2026 OBSIDIANA · Dossier económico</span>
+        <nav aria-label="Pie de página">
+          <a href="#">Aviso legal</a> &nbsp;·&nbsp;
+          <a href="#">Privacidad</a> &nbsp;·&nbsp;
+          <a href="#">Suscribirse</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       GSAP — ScrollTrigger
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) document.documentElement.classList.add("reduced-motion");
+      if (!window.gsap || !window.ScrollTrigger) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ───── Hero — line reveal ─────
+      if (!reduced) {
+        gsap.set(".org-overture__title-line > span", { yPercent: 110 });
+        gsap.to(".org-overture__title-line > span", {
+          yPercent: 0,
+          duration: 1.15,
+          ease: "expo.out",
+          stagger: 0.1,
+          delay: 0.2
+        });
+
+        gsap.set("[data-reveal]", { opacity: 0, y: 28 });
+        gsap.utils.toArray("[data-reveal]").forEach((el) => {
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 85%",
+            once: true,
+            onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" })
+          });
+        });
+
+        // ───── Chapter takeover — pin & reveal each ─────
+        gsap.utils.toArray(".org-chapter-takeover").forEach((el) => {
+          const num   = el.querySelector(".org-chapter-takeover__num");
+          const title = el.querySelector(".org-chapter-takeover__title");
+          const deck  = el.querySelector(".org-chapter-takeover__deck");
+          if (!num || !title) return;
+          gsap.set([num, title, deck], { opacity: 0, y: 40 });
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 70%",
+            once: true,
+            onEnter: () => {
+              gsap.to(num,   { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" });
+              gsap.to(title, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out", delay: 0.12 });
+              if (deck) gsap.to(deck, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out", delay: 0.22 });
+            }
+          });
+        });
+      }
+
+      // ───── Pinned scrub chart ─────
+      const pin = document.querySelector("[data-pin]");
+      const curvePath = document.getElementById("curvePath");
+      const point = document.getElementById("curvePoint");
+      const halo  = document.getElementById("curvePointHalo");
+
+      const yearOut    = document.querySelector("[data-readout-year]");
+      const aumOut     = document.querySelector("[data-readout-aum]");
+      const contextOut = document.querySelector("[data-readout-context]");
+      const yearMarks  = gsap.utils.toArray(".org-scrub-chart__years span");
+
+      // Sample milestones — interpolated by progress 0..1
+      const milestones = [
+        { p: 0.00, year: 1999, aum: 165,    unit: "M$",
+          context: "Salida a bolsa de BlackRock en el NYSE. La compañía gestiona 165 mil millones, mayoritariamente renta fija institucional." },
+        { p: 0.25, year: 2008, aum: 1.30,   unit: "B$",
+          context: "Adquisición de Barclays Global Investors. Nace iShares dentro de BlackRock. La firma toca el billón de dólares por primera vez." },
+        { p: 0.50, year: 2014, aum: 4.65,   unit: "B$",
+          context: "Aladdin se convierte en pieza estratégica. BlackRock administra ya un volumen superior al PIB de Alemania." },
+        { p: 0.78, year: 2020, aum: 8.68,   unit: "B$",
+          context: "La Reserva Federal contrata a BlackRock para ejecutar las compras de bonos durante la pandemia. Asesor del regulador y operador del mercado al mismo tiempo." },
+        { p: 1.00, year: 2025, aum: 11.50,  unit: "B$",
+          context: "Récord histórico. El volumen excede el PIB combinado de Alemania, Japón y Reino Unido. Las cinco empresas más grandes del mundo cuentan con BlackRock entre sus tres mayores accionistas." }
+      ];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function format(v) {
+        if (v < 1) return v.toFixed(0);
+        if (v < 10) return v.toFixed(2);
+        return v.toFixed(1);
+      }
+      function applyProgress(p) {
+        // dash offset 1 → 0 over progress
+        if (curvePath) curvePath.style.strokeDashoffset = (1 - p).toFixed(4);
+
+        // animate point along the path
+        if (curvePath && point && curvePath.getTotalLength) {
+          const len = curvePath.getTotalLength();
+          const pt  = curvePath.getPointAtLength(len * p);
+          point.setAttribute("cx", pt.x);
+          point.setAttribute("cy", pt.y);
+          if (halo) {
+            halo.setAttribute("cx", pt.x);
+            halo.setAttribute("cy", pt.y);
+          }
+        }
+
+        // find current milestone segment
+        let i = 0;
+        while (i < milestones.length - 1 && p > milestones[i + 1].p) i++;
+        const a = milestones[i];
+        const b = milestones[Math.min(i + 1, milestones.length - 1)];
+        const t = b.p === a.p ? 1 : (p - a.p) / (b.p - a.p);
+        const year = Math.round(lerp(a.year, b.year, t));
+        const aum  = lerp(a.aum,  b.aum,  t);
+        const unit = t > 0.5 ? b.unit : a.unit;
+
+        if (yearOut) yearOut.textContent = year;
+        if (aumOut)  aumOut.textContent  = format(aum);
+        // unit element
+        const unitEl = document.querySelector(".org-scrub-chart__big-unit");
+        if (unitEl) unitEl.textContent = unit;
+
+        if (contextOut) contextOut.textContent = (t < 0.5 ? a.context : b.context);
+
+        // year ticks active state
+        yearMarks.forEach((y) => {
+          const yr = parseInt(y.dataset.year, 10);
+          y.classList.toggle("is-active", yr <= year);
+        });
+      }
+
+      if (pin && curvePath && window.matchMedia("(min-width: 768px)").matches && !reduced) {
+        ScrollTrigger.create({
+          trigger: pin,
+          start: "top top",
+          end: "+=2400",
+          pin: true,
+          scrub: 0.4,
+          anticipatePin: 1,
+          onUpdate: (self) => applyProgress(self.progress)
+        });
+      } else {
+        // mobile / reduced-motion fallback: render final state
+        applyProgress(1);
+      }
+
+      // ───── Network draw-in ─────
+      const edges = gsap.utils.toArray(".org-network__edge");
+      const nodes = gsap.utils.toArray("#net-nodes circle, #net-nodes text");
+      if (edges.length && !reduced) {
+        gsap.set(nodes, { opacity: 0, scale: 0.6, transformOrigin: "center" });
+        ScrollTrigger.create({
+          trigger: "#network-svg",
+          start: "top 70%",
+          once: true,
+          onEnter: () => {
+            gsap.to(edges, { opacity: 1, duration: 0.6, stagger: 0.06, ease: "power2.out" });
+            gsap.to(nodes, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.04, ease: "back.out(1.6)", delay: 0.4 });
+          }
+        });
+      } else {
+        gsap.set(edges, { opacity: 1 });
+      }
+
+      // ───── Cinema bar — chapter + progress ─────
+      const chapEl = document.getElementById("chap-num");
+      gsap.utils.toArray("[data-chapter]").forEach((sec) => {
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top 50%",
+          end: "bottom 50%",
+          onToggle: (self) => {
+            if (self.isActive && chapEl) chapEl.textContent = sec.dataset.chapter;
+          }
+        });
+      });
+
+      const root = document.documentElement;
+      window.addEventListener("scroll", () => {
+        const scrolled = root.scrollTop / (root.scrollHeight - root.clientHeight);
+        root.style.setProperty("--scroll-progress", (scrolled * 100).toFixed(1) + "%");
+      }, { passive: true });
+    });
+  </script>
+
+</body>
+</html>

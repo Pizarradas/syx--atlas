@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>James R. Dimon — El último monarca de Wall Street · ATELIER</title>
+  <meta name="description" content="ATELIER v4 · Película editorial: master timeline en hero, cuts orquestados por capítulo, spotlight gallery, counter scramble brass, pull-quote scroll-coupled, monogram draw-in.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preconnect" href="https://videos.pexels.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════════
+       ATELIER v4 — Película editorial
+       Cambios narrativos sobre v3:
+         1. Master timeline en hero (todos los reveals coreografiados como crédito de película)
+         2. Chapter cut timeline (rule SVG draw → número → eyebrow → h2 word stagger → primer párrafo)
+         3. Photo gallery spotlight (hover una → otras a opacity 0.55, scale 0.98)
+         4. Counter scramble brass (alfabeto 0-9, no hex)
+         5. Pull-quote scroll-coupled (giant " rota -8deg → 0 con scrub)
+         6. Coda monogram draw-in (anillo SVG dibujándose alrededor de la "A")
+       Aplicación de knowledges/motion/ + branding R-ESC-01 contención.
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --prim-ink-950: oklch(0.06 0.005 60);
+      --prim-ink-900: oklch(0.10 0.006 58);
+      --prim-ink-800: oklch(0.16 0.008 56);
+      --prim-ink-700: oklch(0.24 0.010 54);
+      --prim-ink-600: oklch(0.34 0.012 52);
+      --prim-ink-500: oklch(0.46 0.014 50);
+      --prim-ink-400: oklch(0.60 0.014 48);
+      --prim-ink-300: oklch(0.76 0.012 50);
+
+      --prim-bone-50:  oklch(0.98 0.010 84);
+      --prim-bone-100: oklch(0.95 0.020 82);
+      --prim-bone-200: oklch(0.90 0.030 80);
+      --prim-bone-300: oklch(0.83 0.034 79);
+
+      --prim-brass-700: oklch(0.50 0.072 75);
+      --prim-brass-500: oklch(0.66 0.094 76);
+      --prim-brass-400: oklch(0.74 0.100 78);
+    }
+    :root {
+      --sem-surface-stage:  var(--prim-ink-950);
+      --sem-surface-page:   var(--prim-bone-50);
+      --sem-surface-paper:  var(--prim-bone-100);
+      --sem-surface-deep:   var(--prim-ink-900);
+      --sem-surface-deeper: var(--prim-ink-950);
+
+      --sem-text-primary:     var(--prim-ink-900);
+      --sem-text-secondary:   var(--prim-ink-700);
+      --sem-text-tertiary:    var(--prim-ink-600);
+      --sem-text-muted:       var(--prim-ink-500);
+      --sem-text-inverse:     var(--prim-bone-50);
+      --sem-text-inverse-muted: var(--prim-bone-300);
+      --sem-text-accent:      var(--prim-brass-700);
+
+      --sem-rule-subtle: var(--prim-bone-300);
+      --sem-rule-strong: var(--prim-ink-900);
+      --sem-rule-accent: var(--prim-brass-500);
+
+      --sem-font-display: "Cormorant Garamond", Georgia, serif;
+      --sem-font-body:    "Inter", system-ui, sans-serif;
+      --sem-font-mono:    "DM Mono", ui-monospace, Menlo, monospace;
+
+      --sem-sp-xs:  0.5rem;  --sem-sp-sm:  0.75rem;
+      --sem-sp-md:  1rem;    --sem-sp-lg:  1.5rem;
+      --sem-sp-xl:  2rem;    --sem-sp-2xl: 3rem;
+      --sem-sp-3xl: 5rem;    --sem-sp-4xl: 8rem;
+
+      --sem-mot-fast: 200ms;
+      --sem-mot-base: 380ms;
+      --sem-mot-slow: 720ms;
+      --sem-mot-ease:    cubic-bezier(0.22, 1, 0.36, 1);
+
+      --sem-container-max: 1280px;
+      --sem-reading-max:   720px;
+
+      --sem-img-filter-stage: contrast(1.02) saturate(0.78) brightness(0.78);
+      --sem-img-filter-spread: contrast(1.04) saturate(0.85) brightness(0.85);
+      --sem-img-filter-gallery: contrast(1.02) saturate(0.9) brightness(0.95);
+    }
+
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--sem-surface-page); }
+    body {
+      background: var(--sem-surface-page);
+      color: var(--sem-text-primary);
+      font-family: var(--sem-font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: clip;
+    }
+    img, picture, svg, video { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; background: none; border: 0; cursor: pointer; color: inherit; }
+
+    .layout-grid {
+      width: 100%;
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+    }
+    @media (min-width: 768px)  { .layout-grid { padding-inline: var(--sem-sp-2xl); } }
+    @media (min-width: 1280px) { .layout-grid { padding-inline: var(--sem-sp-3xl); } }
+    :focus-visible { outline: 2px solid var(--prim-brass-400); outline-offset: 4px; }
+    .syx-sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       atom-cursor
+       ──────────────────────────────────────────────────────────────────────── */
+    .atom-cursor {
+      position: fixed; top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--prim-brass-400);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      will-change: transform, width, height;
+      transition: width 0.4s var(--sem-mot-ease), height 0.4s var(--sem-mot-ease), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .atom-cursor.is-active { opacity: 1; }
+    .atom-cursor.is-hover {
+      width: 72px; height: 72px;
+      background: rgba(195,163,91,0.18);
+      border: 1px solid var(--prim-brass-400);
+      mix-blend-mode: normal;
+    }
+    .atom-cursor__label {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .atom-cursor.is-hover .atom-cursor__label { opacity: 1; }
+    @media (hover: none), (prefers-reduced-motion: reduce) { .atom-cursor { display: none; } }
+    body.has-cursor { cursor: none; }
+    body.has-cursor a, body.has-cursor button { cursor: none; }
+
+    /* Masthead */
+    .org-masthead {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 60;
+      padding: var(--sem-sp-md) 0;
+      background: rgba(14,13,11,0.86);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      color: var(--sem-text-inverse);
+      transition: background var(--sem-mot-base) var(--sem-mot-ease),
+                  border-color var(--sem-mot-base) var(--sem-mot-ease),
+                  color var(--sem-mot-base) var(--sem-mot-ease);
+    }
+    .org-masthead.is-light {
+      background: rgba(250,246,238,0.86);
+      border-color: rgba(14,13,11,0.08);
+      color: var(--sem-text-primary);
+    }
+    .org-masthead__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--sem-sp-lg);
+    }
+    .org-masthead__brand {
+      grid-column: 2;
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: 1.125rem;
+      letter-spacing: 0.32em;
+      text-align: center;
+    }
+    .org-masthead__brand-tag {
+      display: block;
+      font-family: var(--sem-font-body);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+    .org-masthead__progress {
+      grid-column: 1;
+      display: flex; align-items: center;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .org-masthead__progress-bar {
+      width: clamp(80px, 15vw, 200px);
+      height: 1px;
+      background: currentColor;
+      opacity: 0.3;
+      position: relative;
+      overflow: hidden;
+    }
+    .org-masthead__progress-bar::after {
+      content: ""; position: absolute; top: 0; left: 0; bottom: 0;
+      width: var(--scroll-progress, 0%);
+      background: var(--prim-brass-400);
+      transition: width 80ms linear;
+    }
+    .atom-btn-magnetic {
+      grid-column: 3;
+      justify-self: end;
+      position: relative;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      border: 1px solid currentColor;
+      transition: background var(--sem-mot-fast) var(--sem-mot-ease),
+                  color var(--sem-mot-fast) var(--sem-mot-ease);
+      will-change: transform;
+    }
+    .atom-btn-magnetic > span { display: inline-block; will-change: transform; }
+    .atom-btn-magnetic:hover {
+      background: var(--prim-brass-400);
+      color: var(--prim-ink-950);
+      border-color: var(--prim-brass-400);
+    }
+
+    /* mol-bg-media (igual que v3) */
+    .mol-bg-media { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+    .mol-bg-media__layer { position: absolute; inset: -10% -2% -2%; will-change: transform; }
+    .mol-bg-media__poster,
+    .mol-bg-media__video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: 50% 35%;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .mol-bg-media__poster { filter: var(--sem-img-filter-stage); transition: opacity 0.6s var(--sem-mot-ease); }
+    .mol-bg-media__video { filter: var(--sem-img-filter-stage); opacity: 0; transition: opacity 0.8s var(--sem-mot-ease); }
+    .mol-bg-media.is-video-ready .mol-bg-media__video { opacity: 1; }
+    .mol-bg-media.is-video-failed .mol-bg-media__video { display: none; }
+    .mol-bg-media__veil {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(14,13,11,0.4) 0%,
+          rgba(14,13,11,0.15) 30%,
+          rgba(14,13,11,0.5) 70%,
+          rgba(14,13,11,0.92) 100%);
+      pointer-events: none;
+    }
+    .mol-bg-media--spread .mol-bg-media__veil {
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(14,13,11,0.55) 100%),
+        linear-gradient(180deg, rgba(14,13,11,0.25) 0%, transparent 50%, rgba(14,13,11,0.35) 100%);
+    }
+    .mol-bg-media--spread .mol-bg-media__poster,
+    .mol-bg-media--spread .mol-bg-media__video {
+      filter: var(--sem-img-filter-spread);
+    }
+
+    /* Overture */
+    .org-overture {
+      position: relative;
+      min-height: 100vh; min-height: 100svh;
+      background: var(--sem-surface-stage);
+      color: var(--sem-text-inverse);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .org-overture__crops {
+      position: absolute;
+      inset: calc(64px + var(--sem-sp-2xl)) var(--sem-sp-md) var(--sem-sp-3xl);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .org-overture__crops::before,
+    .org-overture__crops::after {
+      content: "";
+      position: absolute;
+      width: 24px; height: 24px;
+      border: 1px solid var(--prim-brass-400);
+    }
+    .org-overture__crops::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .org-overture__crops::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+    .org-overture__inner {
+      position: relative; z-index: 2;
+      min-height: 100vh; min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding-block: calc(64px + var(--sem-sp-3xl)) var(--sem-sp-3xl);
+    }
+    .org-overture__edition {
+      align-self: start;
+      display: flex; align-items: center; gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .org-overture__edition::before { content: ""; width: 32px; height: 1px; background: var(--prim-brass-400); }
+    .org-overture__title-wrap {
+      align-self: end;
+      display: grid; gap: var(--sem-sp-lg);
+      max-width: 18ch;
+    }
+    .org-overture__kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+    }
+    .org-overture__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(3rem, 8vw + 1rem, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.035em;
+    }
+    .org-overture__title em { font-style: italic; color: var(--prim-brass-400); font-weight: 400; }
+    .split-line { display: block; overflow: hidden; }
+    .split-char { display: inline-block; will-change: transform, opacity; }
+    .split-word {
+      display: inline-block;
+      white-space: nowrap;            /* impide que un carácter rompa línea dentro de la palabra */
+      will-change: transform, opacity;
+    }
+    .org-overture__deck {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.125rem, 1.4vw + 0.6rem, 1.5rem);
+      font-style: italic;
+      font-weight: 400;
+      max-width: 56ch;
+      line-height: 1.5;
+      color: var(--sem-text-inverse-muted);
+    }
+    .org-overture__byline {
+      align-self: end;
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: var(--sem-sp-md) var(--sem-sp-xl);
+      padding-top: var(--sem-sp-xl);
+      margin-top: var(--sem-sp-2xl);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .org-overture__byline strong { color: var(--sem-text-inverse); font-weight: 600; }
+    .org-overture__scroll {
+      position: absolute;
+      bottom: var(--sem-sp-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sem-sp-xs);
+    }
+    .org-overture__scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(180deg, transparent, var(--prim-brass-400));
+      animation: scroll-pulse 2.4s var(--sem-mot-ease) infinite;
+    }
+    @keyframes scroll-pulse {
+      0%, 100% { transform: scaleY(0.5); transform-origin: top; opacity: 0.4; }
+      50%      { transform: scaleY(1);   transform-origin: top; opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) { .org-overture__scroll-line { animation: none; } }
+
+    .atom-floating-mark {
+      position: absolute;
+      pointer-events: none;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      color: var(--prim-brass-400);
+      opacity: 0.4;
+      will-change: transform;
+    }
+    .atom-floating-mark--top { top: 30%; right: 8%; font-size: 6rem; line-height: 0.8; }
+    @media (prefers-reduced-motion: reduce) { .atom-floating-mark { display: none; } }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       v4 NEW · org-chapter__rule — line that draws across at chapter entry
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-chapter__rule {
+      width: 100%;
+      height: 1px;
+      margin-bottom: var(--sem-sp-3xl);
+      display: block;
+      color: var(--sem-rule-strong);
+    }
+    .org-chapter__rule line {
+      stroke: currentColor;
+      stroke-width: 0.5;
+      vector-effect: non-scaling-stroke;
+      pathLength: 1;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+
+    /* Chapter */
+    .org-chapter {
+      position: relative;
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-page);
+      color: var(--sem-text-primary);
+    }
+    .org-chapter__rail {
+      position: sticky; top: 80px;
+      align-self: start;
+      display: none;
+    }
+    @media (min-width: 1024px) { .org-chapter__rail { display: block; } }
+    .org-chapter__rail-label {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-muted);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding-block: var(--sem-sp-md);
+      border-top: 1px solid var(--sem-rule-subtle);
+    }
+    .org-chapter__rail-label strong { color: var(--sem-text-accent); font-weight: 600; }
+
+    .org-chapter__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sem-sp-2xl);
+    }
+    @media (min-width: 1024px) {
+      .org-chapter__inner {
+        grid-template-columns: 60px minmax(0, 1fr);
+        gap: var(--sem-sp-3xl);
+      }
+    }
+    .org-chapter__body { max-width: var(--sem-reading-max); margin-inline: auto; }
+    .org-chapter__numero {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(4rem, 8vw, 7rem);
+      line-height: 0.85;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-md);
+      will-change: transform, opacity;
+    }
+    .org-chapter__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-md);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+    }
+    .org-chapter__eyebrow::before {
+      content: "";
+      width: 32px; height: 1px;
+      background: currentColor;
+    }
+    .atom-title--display-h2 {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-primary);
+      max-width: 22ch;
+      margin-bottom: var(--sem-sp-2xl);
+    }
+    .atom-title--display-h2 em { font-style: italic; color: var(--sem-text-accent); }
+    .atom-title--h3 {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: clamp(1.5rem, 1.8vw + 0.5rem, 2rem);
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: var(--sem-text-primary);
+      margin-top: var(--sem-sp-2xl);
+      margin-bottom: var(--sem-sp-md);
+      max-width: 28ch;
+    }
+
+    .org-chapter__body p {
+      font-family: var(--sem-font-display);
+      font-size: 1.1875rem;
+      line-height: 1.7;
+      color: var(--sem-text-secondary);
+      margin-bottom: var(--sem-sp-lg);
+    }
+    .org-chapter__body p strong { color: var(--sem-text-primary); font-weight: 600; }
+    .org-chapter__body p:first-of-type::first-letter {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 5.5rem;
+      float: left;
+      line-height: 0.85;
+      margin-right: 0.5rem;
+      margin-top: 0.4rem;
+      color: var(--sem-text-accent);
+    }
+    .org-chapter__body a {
+      color: var(--sem-text-accent);
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+
+    /* Cinematic quote */
+    .org-cinematic-quote {
+      position: relative;
+      min-height: 100vh; min-height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .org-cinematic-quote__inner {
+      position: relative; z-index: 2;
+      min-height: 100vh; min-height: 100svh;
+      display: grid; place-items: center;
+      padding: var(--sem-sp-3xl) var(--sem-sp-md);
+      color: var(--sem-text-inverse);
+    }
+    .org-cinematic-quote__text {
+      max-width: 28ch;
+      text-align: center;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3vw + 0.6rem, 3.25rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+    }
+    .org-cinematic-quote__text em { color: var(--prim-brass-400); font-weight: 500; }
+    .org-cinematic-quote__credit {
+      display: block;
+      margin-top: var(--sem-sp-xl);
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.625rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+    }
+    .org-cinematic-quote__caption {
+      position: absolute;
+      bottom: var(--sem-sp-xl);
+      left: var(--sem-sp-md);
+      right: var(--sem-sp-md);
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-bone-300);
+      flex-wrap: wrap;
+    }
+    .org-cinematic-quote__caption span:first-child { color: var(--prim-brass-400); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       v4 NEW · mol-pull-quote with real <span> mark for scroll-coupled rotation
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-pull-quote {
+      padding-block: var(--sem-sp-3xl);
+      max-width: var(--sem-reading-max);
+      margin-inline: auto;
+    }
+    .mol-pull-quote__body {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3vw + 0.5rem, 2.875rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+      max-width: 22ch;
+      position: relative;
+    }
+    .mol-pull-quote__mark {
+      display: block;
+      font-size: clamp(4rem, 6vw, 6rem);
+      color: var(--sem-rule-accent);
+      line-height: 0.5;
+      margin-bottom: var(--sem-sp-md);
+      transform-origin: left bottom;
+      will-change: transform;
+    }
+    .mol-pull-quote__attrib {
+      display: block;
+      margin-top: var(--sem-sp-lg);
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .mol-pull-quote__attrib::before {
+      content: "—";
+      margin-right: var(--sem-sp-xs);
+      color: var(--sem-text-accent);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       v4 NEW · org-photo-gallery — spotlight orchestration via class is-spotlight
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-photo-gallery {
+      background: var(--sem-surface-deep);
+      color: var(--sem-text-inverse);
+      padding-block: var(--sem-sp-4xl);
+      border-block: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+    .org-photo-gallery__head { max-width: 56ch; margin-bottom: var(--sem-sp-3xl); }
+    .org-photo-gallery__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-photo-gallery__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-inverse);
+    }
+    .org-photo-gallery__title em { font-style: italic; color: var(--prim-brass-400); }
+    .org-photo-gallery__grid {
+      display: grid;
+      gap: var(--sem-sp-xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .org-photo-gallery__grid { grid-template-columns: repeat(12, 1fr); gap: var(--sem-sp-lg); }
+    }
+    .mol-photo {
+      position: relative; overflow: hidden;
+      will-change: transform, opacity, filter;
+    }
+    @media (min-width: 768px) {
+      .mol-photo:nth-child(1) { grid-column: 1 / 7;  aspect-ratio: 4 / 5; }
+      .mol-photo:nth-child(2) { grid-column: 7 / 13; aspect-ratio: 4 / 3; align-self: end; }
+      .mol-photo:nth-child(3) { grid-column: 1 / 5;  aspect-ratio: 1 / 1; align-self: start; }
+      .mol-photo:nth-child(4) { grid-column: 5 / 13; aspect-ratio: 16 / 9; }
+    }
+    .mol-photo__frame {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      position: relative;
+      background: var(--sem-surface-deeper);
+    }
+    .mol-photo__frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scale(1.15);
+      filter: var(--sem-img-filter-gallery);
+      image-rendering: -webkit-optimize-contrast;
+      will-change: transform;
+    }
+    .mol-photo__mask {
+      position: absolute; inset: 0;
+      background: var(--sem-surface-deep);
+      transform-origin: top;
+      will-change: transform;
+    }
+    .mol-photo__caption {
+      margin-top: var(--sem-sp-sm);
+      display: flex; align-items: baseline;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .mol-photo__caption strong { color: var(--prim-brass-400); font-weight: 700; }
+    .mol-photo__caption em {
+      font-style: normal;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--sem-text-inverse);
+    }
+
+    /* Stat strip — v4 uses scramble counters */
+    .org-stat-strip {
+      background: var(--sem-surface-deep);
+      color: var(--sem-text-inverse);
+      padding-block: var(--sem-sp-4xl);
+      border-block: 1px solid rgba(255,255,255,0.06);
+    }
+    .org-stat-strip__head { max-width: 56ch; margin-bottom: var(--sem-sp-3xl); }
+    .org-stat-strip__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      margin-bottom: var(--sem-sp-md);
+    }
+    .org-stat-strip__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.75rem, 2.5vw + 0.5rem, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 22ch;
+    }
+    .org-stat-strip__grid {
+      display: grid;
+      gap: var(--sem-sp-2xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .org-stat-strip__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px){ .org-stat-strip__grid { grid-template-columns: repeat(4, 1fr); } }
+    .mol-stat {
+      display: grid;
+      gap: var(--sem-sp-sm);
+      padding: var(--sem-sp-lg) 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .mol-stat__value {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(3rem, 5vw + 0.5rem, 4.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+    .mol-stat__value--accent { color: var(--prim-brass-400); font-style: italic; }
+    .mol-stat__unit {
+      font-size: 0.5em;
+      vertical-align: super;
+      margin-left: 4px;
+      letter-spacing: 0;
+    }
+    .mol-stat__label {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-bone-300);
+    }
+    .mol-stat__detail {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--sem-text-inverse-muted);
+      max-width: 28ch;
+      line-height: 1.4;
+    }
+
+    /* Timeline */
+    .org-timeline {
+      background: var(--sem-surface-deeper);
+      color: var(--sem-text-inverse);
+      position: relative;
+    }
+    .org-timeline__pin {
+      height: 100vh; height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: var(--sem-sp-2xl) 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .org-timeline__head {
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+      width: 100%;
+    }
+    @media (min-width: 768px) { .org-timeline__head { padding-inline: var(--sem-sp-2xl); } }
+    .org-timeline__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-500);
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-timeline__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.75rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      max-width: 22ch;
+    }
+    .org-timeline__title em { font-style: italic; color: var(--prim-brass-500); }
+    .org-timeline__track {
+      align-self: center;
+      display: flex; gap: var(--sem-sp-3xl);
+      padding-inline: var(--sem-sp-3xl);
+      align-items: center;
+      will-change: transform;
+    }
+    .mol-timepoint {
+      flex: 0 0 min(420px, 80vw);
+      border-top: 1px solid var(--prim-brass-500);
+      padding-top: var(--sem-sp-md);
+      display: grid; gap: var(--sem-sp-sm);
+    }
+    .mol-timepoint__year {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-style: italic;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--prim-brass-500);
+    }
+    .mol-timepoint__title {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: 1.5rem;
+      line-height: 1.18;
+      color: var(--sem-text-inverse);
+      max-width: 18ch;
+    }
+    .mol-timepoint__body {
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--sem-text-inverse-muted);
+      max-width: 38ch;
+    }
+    @media (max-width: 1023px) {
+      .org-timeline__pin { height: auto; padding-block: var(--sem-sp-3xl); }
+      .org-timeline__track { flex-direction: column; padding-inline: var(--sem-sp-md); align-items: stretch; }
+      .mol-timepoint { flex: 1 1 auto; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       v4 NEW · org-coda with monogram ring draw-in
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-coda {
+      background: var(--sem-surface-stage);
+      color: var(--sem-text-inverse);
+      padding-block: var(--sem-sp-4xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .org-coda::before {
+      content: "";
+      position: absolute;
+      inset: -20% 30% 60%;
+      z-index: 0;
+      background: radial-gradient(ellipse at center, rgba(195,163,91,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .org-coda__inner { position: relative; z-index: 1; max-width: 64ch; margin-inline: auto; }
+    .org-coda__monogram-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--sem-sp-xl);
+      width: 120px; height: 120px;
+    }
+    .org-coda__monogram {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 4.5rem;
+      line-height: 1;
+      color: var(--prim-brass-400);
+    }
+    .org-coda__ring {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      color: var(--prim-brass-400);
+    }
+    .org-coda__ring circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1;
+      pathLength: 1;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    .org-coda__statement {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.5rem);
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+    }
+    .org-coda__statement em { font-style: italic; color: var(--prim-brass-400); }
+    .org-coda__sign {
+      margin-top: var(--sem-sp-2xl);
+      padding-top: var(--sem-sp-xl);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      display: grid; gap: var(--sem-sp-xs);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .org-coda__sign strong { color: var(--sem-text-inverse); font-weight: 600; }
+
+    .org-footer {
+      background: var(--sem-surface-deeper);
+      color: var(--sem-text-inverse-muted);
+      padding-block: var(--sem-sp-2xl);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .org-footer__inner {
+      display: flex; flex-wrap: wrap;
+      gap: var(--sem-sp-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .org-footer a:hover { color: var(--prim-brass-400); }
+
+    /* v4 reduced-motion fallback final state */
+    .reduced-motion .org-overture__crops,
+    .reduced-motion [data-reveal-block] *,
+    .reduced-motion .mol-photo__mask,
+    .reduced-motion .org-chapter__rule line,
+    .reduced-motion .org-coda__ring circle {
+      opacity: 1;
+      transform: none;
+      stroke-dashoffset: 0;
+      filter: none;
+    }
+    .reduced-motion .mol-photo__mask { transform: scaleY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="atom-cursor" id="cursor" aria-hidden="true">
+    <span class="atom-cursor__label">ver</span>
+  </div>
+
+  <header class="org-masthead" id="masthead" role="banner">
+    <div class="layout-grid">
+      <div class="org-masthead__inner">
+        <div class="org-masthead__progress" aria-hidden="true">
+          <span>Cap. <strong id="ms-chap">01</strong>/04</span>
+          <span class="org-masthead__progress-bar"></span>
+        </div>
+        <div class="org-masthead__brand">
+          ATELIER
+          <span class="org-masthead__brand-tag">Retratos del poder</span>
+        </div>
+        <a href="#newsletter" class="atom-btn-magnetic" data-magnetic data-cursor-hover="suscribir">
+          <span>Suscribirse</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       OVERTURE — vídeo + master timeline (1.8s coreografía completa)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-overture" aria-labelledby="overture-title">
+
+    <div class="mol-bg-media" data-bg-media data-parallax="0.32">
+      <div class="mol-bg-media__layer">
+        <picture>
+          <source type="image/avif"
+                  srcset="https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=avif&w=1280&q=80 1280w,
+                          https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=avif&w=1920&q=85 1920w,
+                          https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=avif&w=2880&q=85 2880w">
+          <source type="image/webp"
+                  srcset="https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=webp&w=1280&q=80 1280w,
+                          https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=webp&w=1920&q=85 1920w,
+                          https://images.unsplash.com/photo-1444723121867-7a241cacace9?fm=webp&w=2880&q=85 2880w">
+          <img class="mol-bg-media__poster"
+               src="https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=1920&q=85"
+               srcset="https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=1280&q=80 1280w,
+                       https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=1920&q=85 1920w,
+                       https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=2880&q=85 2880w"
+               sizes="100vw"
+               alt="" fetchpriority="high" decoding="async">
+        </picture>
+        <video class="mol-bg-media__video" autoplay muted loop playsinline preload="auto"
+               aria-hidden="true" disablepictureinpicture>
+          <source src="https://videos.pexels.com/video-files/3045163/3045163-uhd_2732_1440_25fps.mp4" type="video/mp4">
+          <source src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_25fps.mp4" type="video/mp4">
+          <source src="https://videos.pexels.com/video-files/2491284/2491284-uhd_2560_1440_25fps.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="mol-bg-media__veil"></div>
+    </div>
+
+    <div class="org-overture__crops" id="overture-crops" aria-hidden="true"></div>
+    <div class="atom-floating-mark atom-floating-mark--top" aria-hidden="true" data-float>&mdash;&nbsp;I.</div>
+
+    <div class="layout-grid org-overture__inner">
+      <p class="org-overture__edition" data-overture-step="edition">
+        <span>VOL. 04 · NÚMERO 12</span>
+        <span>· Edición Madrid</span>
+        <span>· Sábado, 25 de abril de 2026</span>
+      </p>
+
+      <div class="org-overture__title-wrap">
+        <p class="org-overture__kicker" data-overture-step="kicker">Capítulo I — El imperio</p>
+        <h1 id="overture-title" class="org-overture__title" data-split-chars data-overture-step="title">
+          James R.&nbsp;Dimon&nbsp;<em>—</em> el último monarca de Wall Street
+        </h1>
+        <p class="org-overture__deck" data-overture-step="deck">
+          Cuarenta años en la industria. Cuatro crisis financieras sobrevividas. Cuatro billones de dólares en activos. El retrato de una era que termina cuando él decida marcharse.
+        </p>
+      </div>
+
+      <div class="org-overture__byline" data-overture-step="byline">
+        <span>Por <strong>Margaux Roselli</strong> · 32 min de lectura</span>
+        <span>Fotografía · <strong>Henri Bautista</strong></span>
+        <span>Nueva York · Park Avenue</span>
+      </div>
+    </div>
+
+    <div class="org-overture__scroll" aria-hidden="true">
+      <span>Continuar</span>
+      <span class="org-overture__scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       Capítulo I — chapter cut timeline (rule SVG → numero → eyebrow → h2 → p)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter is-light" id="cap-01" data-chapter="01" data-chapter-cut aria-labelledby="cap-01-title">
+    <div class="layout-grid">
+      <svg class="org-chapter__rule" viewBox="0 0 1000 1" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="0.5" x2="1000" y2="0.5" />
+      </svg>
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>01 — El reino</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-cut="numero">I.</p>
+          <p class="org-chapter__eyebrow" data-cut="eyebrow">El reino</p>
+          <h2 id="cap-01-title" class="atom-title atom-title--display-h2" data-cut="title" data-split-words>
+            En la planta cuarenta y dos hay un hombre con la <em>geografía</em> del capital americano sobre la mesa.
+          </h2>
+          <p data-cut="lede">
+            <strong>Eight times a week, James Dimon le concede sesenta segundos al periodista que entra en su despacho.</strong> No es una metáfora: es una norma. El consejero delegado de JPMorgan Chase no responde por correo, no responde por teléfono, no responde a través de los gabinetes de prensa.
+          </p>
+          <p data-reveal>
+            La torre tiene 1.388 pies de altura, 270 South Park Avenue, fue terminada en abril de 2025 y costó tres mil millones de dólares. La diseñó Foster + Partners. El despacho de Dimon ocupa una esquina de la cuadragésima segunda planta, mira al sur sobre Bryant Park y, según los ejecutivos que la han visto, está pintada en un único tono de blanco roto. <em>Dover White</em>, dicen.
+          </p>
+          <p data-reveal>
+            En su escritorio &mdash;una mesa de roble fumado de dos metros y veinte&mdash; hay tres cosas: una fotografía de su esposa Judith, un cuaderno Smythson encuadernado en piel azul cardenal y una hoja de papel tamaño carta con cinco columnas. <a href="#" data-cursor-hover="leer más">Existen 8.000 hojas de esas</a>, según el equipo que las custodia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cinematic quote -->
+  <section class="org-cinematic-quote" aria-label="Imagen editorial">
+    <div class="mol-bg-media mol-bg-media--spread" data-bg-media data-ken-burns>
+      <div class="mol-bg-media__layer">
+        <picture>
+          <source type="image/avif"
+                  srcset="https://images.unsplash.com/photo-1554260570-e9689a3418b8?fm=avif&w=1920&q=85 1920w,
+                          https://images.unsplash.com/photo-1554260570-e9689a3418b8?fm=avif&w=2880&q=85 2880w">
+          <img class="mol-bg-media__poster"
+               src="https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=2880&q=85"
+               srcset="https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=1280&q=85 1280w,
+                       https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=1920&q=85 1920w,
+                       https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=2880&q=85 2880w"
+               sizes="100vw" alt="" loading="lazy" decoding="async">
+        </picture>
+        <video class="mol-bg-media__video" autoplay muted loop playsinline preload="metadata"
+               aria-hidden="true" disablepictureinpicture>
+          <source src="https://videos.pexels.com/video-files/2491284/2491284-uhd_2560_1440_25fps.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="mol-bg-media__veil"></div>
+    </div>
+    <div class="org-cinematic-quote__inner">
+      <p class="org-cinematic-quote__text" data-split-words>
+        Lo que JPMorgan no presta no se presta. Lo que JPMorgan no compra <em>no vale la pena comprarse.</em>
+        <span class="org-cinematic-quote__credit">Documento interno · Reserva Federal · 2018</span>
+      </p>
+    </div>
+    <div class="org-cinematic-quote__caption" aria-hidden="true">
+      <span>NYSE · Wall Street</span>
+      <span>Henri Bautista · ATELIER</span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       Pull quote 1 — scroll-coupled rotation on the giant " mark
+       ════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-chapter is-light">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Cita · <strong>Volcker, 2009</strong></div>
+        </aside>
+        <div class="mol-pull-quote">
+          <blockquote class="mol-pull-quote__body" data-reveal>
+            <span class="mol-pull-quote__mark" aria-hidden="true" data-quote-mark>&ldquo;</span>
+            Cuando estalle la próxima crisis, no llamen a la Reserva Federal. Llamen a Jamie. Él decidirá si vale la pena salvarles.
+            <cite class="mol-pull-quote__attrib">Paul Volcker, ex-presidente de la Reserva Federal</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo II -->
+  <section class="org-chapter is-light" id="cap-02" data-chapter="02" data-chapter-cut aria-labelledby="cap-02-title">
+    <div class="layout-grid">
+      <svg class="org-chapter__rule" viewBox="0 0 1000 1" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="0.5" x2="1000" y2="0.5" />
+      </svg>
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>02 — La crisis</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-cut="numero">II.</p>
+          <p class="org-chapter__eyebrow" data-cut="eyebrow">La crisis que lo hizo</p>
+          <h2 id="cap-02-title" class="atom-title atom-title--display-h2" data-cut="title" data-split-words>
+            La fortuna de Dimon no es financiera. Es <em>biográfica</em>.
+          </h2>
+          <p data-cut="lede">
+            La leyenda de Wall Street necesita siempre un mito fundacional. La de Dimon es la del <strong>14 de marzo de 2008</strong>, el viernes en que Bear Stearns se quedó sin liquidez y la Reserva Federal no quiso salvarlo. A las diez de la noche, Henry Paulson, secretario del Tesoro, llamó a Dimon. JPMorgan compró Bear Stearns esa madrugada por dos dólares la acción.
+          </p>
+          <h3 class="atom-title atom-title--h3" data-reveal>El movimiento Washington Mutual</h3>
+          <p data-reveal>
+            Seis meses después, Washington Mutual había caído. Dimon firmó la compra en doce horas por 1.900 millones de dólares. JPMorgan adquirió 2.300 sucursales, 188.000 millones en depósitos y, de paso, se convirtió en el mayor banco minorista del país.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo gallery — spotlight -->
+  <section class="org-photo-gallery" aria-labelledby="gallery-title" data-spotlight>
+    <div class="layout-grid">
+      <div class="org-photo-gallery__head">
+        <p class="org-photo-gallery__eyebrow">Fotorreportaje · Park Avenue, 270</p>
+        <h2 id="gallery-title" class="org-photo-gallery__title">
+          La <em>geografía</em> visible del poder bancario.
+        </h2>
+      </div>
+
+      <div class="org-photo-gallery__grid">
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <picture>
+              <source type="image/avif"
+                      srcset="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?fm=avif&w=1200&q=85 1200w,
+                              https://images.unsplash.com/photo-1485827404703-89b55fcc595e?fm=avif&w=1600&q=85 1600w">
+              <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1600&q=85"
+                   srcset="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=85 800w,
+                           https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=85 1200w,
+                           https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1600&q=85 1600w"
+                   sizes="(min-width: 768px) 50vw, 100vw"
+                   alt="Fachada de torre corporativa de Manhattan" loading="lazy" decoding="async">
+            </picture>
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 01</strong>
+            <em>Torre Park Avenue, 270.</em>
+            <span>Foster + Partners</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <picture>
+              <source type="image/avif"
+                      srcset="https://images.unsplash.com/photo-1554224155-6726b3ff858f?fm=avif&w=1200&q=85 1200w,
+                              https://images.unsplash.com/photo-1554224155-6726b3ff858f?fm=avif&w=1600&q=85 1600w">
+              <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=85"
+                   srcset="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=85 800w,
+                           https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=85 1200w,
+                           https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=85 1600w"
+                   sizes="(min-width: 768px) 50vw, 100vw"
+                   alt="Detalle de monedas y billetes" loading="lazy" decoding="async">
+            </picture>
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 02</strong>
+            <em>Capital de trabajo.</em>
+            <span>Trading floor &middot; Manhattan</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <picture>
+              <source type="image/avif"
+                      srcset="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?fm=avif&w=1200&q=85 1200w,
+                              https://images.unsplash.com/photo-1559526324-4b87b5e36e44?fm=avif&w=1600&q=85 1600w">
+              <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1600&q=85"
+                   srcset="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&q=85 800w,
+                           https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1200&q=85 1200w,
+                           https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1600&q=85 1600w"
+                   sizes="(min-width: 1024px) 33vw, 50vw"
+                   alt="Wall Street por la noche" loading="lazy" decoding="async">
+            </picture>
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 03</strong>
+            <em>NYSE · cierre del viernes.</em>
+            <span>Marzo, 2026</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <picture>
+              <source type="image/avif"
+                      srcset="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?fm=avif&w=1600&q=85 1600w,
+                              https://images.unsplash.com/photo-1556761175-5973dc0f32e7?fm=avif&w=2400&q=85 2400w">
+              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=2400&q=85"
+                   srcset="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=85 1200w,
+                           https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&q=85 1600w,
+                           https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=2400&q=85 2400w"
+                   sizes="(min-width: 768px) 66vw, 100vw"
+                   alt="Sala de juntas" loading="lazy" decoding="async">
+            </picture>
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 04</strong>
+            <em>Sala del consejo.</em>
+            <span>JPMorgan &middot; planta 42</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat strip — v4 scramble counters (alfabeto 0-9) -->
+  <section class="org-stat-strip" aria-label="JPMorgan Chase en cifras">
+    <div class="layout-grid">
+      <div class="org-stat-strip__head">
+        <p class="org-stat-strip__eyebrow" data-reveal>Anatomía de un imperio</p>
+        <h2 class="org-stat-strip__title" data-reveal>JPMorgan Chase, año fiscal 2025.</h2>
+      </div>
+      <div class="org-stat-strip__grid">
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value">
+            <span data-scramble-num data-target="4.1" data-decimals="1">0.0</span><span class="mol-stat__unit">B$</span>
+          </div>
+          <div class="mol-stat__label">Activos totales</div>
+          <div class="mol-stat__detail">El mayor balance bancario consolidado de Estados Unidos.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value mol-stat__value--accent">
+            <span data-scramble-num data-target="58.5" data-decimals="1">0.0</span><span class="mol-stat__unit">M$</span>
+          </div>
+          <div class="mol-stat__label">Beneficio neto · 2025</div>
+          <div class="mol-stat__detail">Récord histórico en banca comercial estadounidense.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value">
+            <span data-scramble-num data-target="320" data-decimals="0">0</span><span class="mol-stat__unit">k</span>
+          </div>
+          <div class="mol-stat__label">Empleados globales</div>
+          <div class="mol-stat__detail">Operaciones en 100 países, presencia en cada G20.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value mol-stat__value--accent">
+            <span data-scramble-num data-target="20" data-decimals="0">0</span><span class="mol-stat__unit">a</span>
+          </div>
+          <div class="mol-stat__label">Como CEO de JPMorgan</div>
+          <div class="mol-stat__detail">El consejero delegado más longevo del Dow Jones desde 1990.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo III -->
+  <section class="org-chapter is-light" id="cap-03" data-chapter="03" data-chapter-cut aria-labelledby="cap-03-title">
+    <div class="layout-grid">
+      <svg class="org-chapter__rule" viewBox="0 0 1000 1" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="0.5" x2="1000" y2="0.5" />
+      </svg>
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>03 — El método</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-cut="numero">III.</p>
+          <p class="org-chapter__eyebrow" data-cut="eyebrow">El método</p>
+          <h2 id="cap-03-title" class="atom-title atom-title--display-h2" data-cut="title" data-split-words>
+            Desconfía de los modelos, lee a los ingenieros, evita las cenas.
+          </h2>
+          <p data-cut="lede">
+            <strong>El método Dimon es, en esencia, un método de auditoría continua.</strong> Cada lunes a las siete de la mañana, los responsables de las cinco divisiones recorren con él una hoja A4 con doce indicadores. No PowerPoints. No diapositivas. Una hoja por división, y un único bolígrafo &mdash;Mont Blanc&mdash; circulando entre ellos.
+          </p>
+          <p data-reveal>
+            Su biblioteca de cabecera no está dedicada a las finanzas. Está dedicada a la ingeniería: Henry Petroski, James Dyson, Robert Pirsig. Repite una idea: <em>"los buenos ingenieros leen incidentes, los malos leen casos de éxito"</em>. JPMorgan tiene un departamento de cuarenta personas dedicado exclusivamente a leer informes de fallos en otras industrias y traducirlos a riesgos bancarios. Se llama, en clave interna, <strong>"el cuaderno de Petroski"</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote 2 — scroll-coupled -->
+  <section class="org-chapter is-light">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Cita · <strong>Buffett, 2017</strong></div>
+        </aside>
+        <div class="mol-pull-quote">
+          <blockquote class="mol-pull-quote__body" data-reveal>
+            <span class="mol-pull-quote__mark" aria-hidden="true" data-quote-mark>&ldquo;</span>
+            Dimon no es un banquero. Es un actuario al que le gustaron mucho las novelas históricas. Por eso es peligroso. Y por eso, también, ha sobrevivido.
+            <cite class="mol-pull-quote__attrib">Warren Buffett, Berkshire Hathaway · Carta anual 2017</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pinned timeline -->
+  <section class="org-timeline" id="timeline" aria-labelledby="timeline-title">
+    <div class="org-timeline__pin" data-pin>
+      <div class="org-timeline__head">
+        <p class="org-timeline__eyebrow">Cronología</p>
+        <h2 id="timeline-title" class="org-timeline__title">Cuarenta años, <em>cuatro</em> crisis y un solo asiento.</h2>
+      </div>
+      <div class="org-timeline__track" data-timeline-track>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">1982</p>
+          <h3 class="mol-timepoint__title">Tufts University</h3>
+          <p class="mol-timepoint__body">Se gradúa en Psicología y Económicas. Su tesis: el comportamiento de los inversores ante eventos de baja probabilidad.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">1990</p>
+          <h3 class="mol-timepoint__title">American Express</h3>
+          <p class="mol-timepoint__body">A los 30 años dirige operaciones bajo Sandy Weill. Rotación cada nueve meses por una división distinta.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2004</p>
+          <h3 class="mol-timepoint__title">CEO de JPMorgan Chase</h3>
+          <p class="mol-timepoint__body">La fusión Bank One + JPMorgan lo coloca en el sillón de Park Avenue. Mensaje al consejo: <em>"no quiero crecer, quiero no morir"</em>.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2008</p>
+          <h3 class="mol-timepoint__title">Bear Stearns + WaMu</h3>
+          <p class="mol-timepoint__body">Compra Bear Stearns en sesenta horas. Seis meses después, integra Washington Mutual. JPMorgan duplica tamaño.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2012</p>
+          <h3 class="mol-timepoint__title">El "London Whale"</h3>
+          <p class="mol-timepoint__body">Pérdida de 6.200 millones por una operación con derivados de la oficina de Londres. La herida que más le ha costado reconocer.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2020</p>
+          <h3 class="mol-timepoint__title">Pandemia · «mañana»</h3>
+          <p class="mol-timepoint__body">Convierte a JPMorgan en el primer prestamista del PPP americano. 28.000 millones distribuidos en 18 días.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2024</p>
+          <h3 class="mol-timepoint__title">First Republic Bank</h3>
+          <p class="mol-timepoint__body">Compra el banco quebrado por 10.600 millones tras la caída de SVB.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2026</p>
+          <h3 class="mol-timepoint__title">Plan de sucesión</h3>
+          <p class="mol-timepoint__body">Anuncia que su sucesión se ejecutará "no antes de cinco años". La industria contiene la respiración.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo IV -->
+  <section class="org-chapter is-light" id="cap-04" data-chapter="04" data-chapter-cut aria-labelledby="cap-04-title">
+    <div class="layout-grid">
+      <svg class="org-chapter__rule" viewBox="0 0 1000 1" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="0.5" x2="1000" y2="0.5" />
+      </svg>
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>04 — La salida</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-cut="numero">IV.</p>
+          <p class="org-chapter__eyebrow" data-cut="eyebrow">La salida</p>
+          <h2 id="cap-04-title" class="atom-title atom-title--display-h2" data-cut="title" data-split-words>
+            La pregunta que nadie hace en voz alta es <em>qué pasa cuando se vaya</em>.
+          </h2>
+          <p data-cut="lede">
+            En los pasillos del banco no se discute. En las cartas a accionistas tampoco. Pero los gestores de patrimonios lo evalúan en silencio: <strong>la prima Dimon</strong>, el sobreprecio que el mercado paga por la acción de JPMorgan frente al sector, se calcula entre el 12 % y el 18 %.
+          </p>
+          <p data-reveal>
+            Hay una idea que circula entre los analistas que más le siguen, una idea que ninguno escribirá en voz alta porque es imposible de verificar: que la próxima crisis financiera no se considerará oficialmente terminada hasta que James Dimon &mdash;ya retirado, ya en su casa de Bedford&mdash; <strong>levante el teléfono</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       Coda — monogram with ring draw-in (firma del editor)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <section class="org-coda" aria-label="Cierre">
+    <div class="layout-grid">
+      <div class="org-coda__inner">
+        <div class="org-coda__monogram-wrap" data-monogram>
+          <svg class="org-coda__ring" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" />
+          </svg>
+          <p class="org-coda__monogram" aria-hidden="true">A</p>
+        </div>
+        <p class="org-coda__statement" data-split-words>
+          Los reinos no se heredan. Se <em>construyen</em>, se sostienen y, casi siempre, terminan tarde.
+        </p>
+        <div class="org-coda__sign">
+          <span><strong>Margaux Roselli</strong></span>
+          <span>Reportera senior · ATELIER</span>
+          <span>Nueva York · 25 de abril de 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="org-footer" id="newsletter" role="contentinfo">
+    <div class="layout-grid">
+      <div class="org-footer__inner">
+        <span>&copy; 2026 ATELIER · Retratos del poder · v4</span>
+        <nav>
+          <a href="#" data-cursor-hover="leer">Aviso legal</a> &middot;
+          <a href="#" data-cursor-hover="leer">Privacidad</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) document.documentElement.classList.add("reduced-motion");
+      if (!window.gsap || !window.ScrollTrigger) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ───── Vídeo de fondo ─────
+      function watchBgVideo(container) {
+        const video = container.querySelector("video.mol-bg-media__video");
+        if (!video) return;
+        let settled = false;
+        const ready = () => {
+          if (settled) return; settled = true;
+          container.classList.add("is-video-ready");
+          const t = video.play(); if (t && t.catch) t.catch(() => fail());
+        };
+        const fail = () => {
+          if (settled) return; settled = true;
+          container.classList.add("is-video-failed");
+          try { video.removeAttribute("src"); video.querySelectorAll("source").forEach(s => s.remove()); video.load(); } catch(e) {}
+        };
+        video.addEventListener("loadeddata", ready, { once: true });
+        video.addEventListener("canplay",     ready, { once: true });
+        video.addEventListener("error",       fail);
+        video.addEventListener("stalled",     () => setTimeout(fail, 4000));
+        setTimeout(() => { if (!settled) fail(); }, 6000);
+      }
+      document.querySelectorAll("[data-bg-media]").forEach(watchBgVideo);
+      if (reduced) {
+        document.querySelectorAll(".mol-bg-media__video").forEach(v => {
+          try { v.pause(); v.removeAttribute("autoplay"); } catch(e) {}
+        });
+      }
+
+      // ───── Lenis ─────
+      let lenis;
+      if (window.Lenis && !reduced) {
+        lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      // ───── Manual SplitText ─────
+      // splitChars: tokeniza el texto en palabras (atómicas, white-space: nowrap)
+      // que contienen caracteres animables individualmente. Los espacios regulares
+      // se preservan como text nodes — son los únicos puntos de wrap naturales.
+      // NBSP (U+00A0) se mantiene dentro de la palabra, no rompe.
+      function splitChars(el) {
+        if (!el || el.dataset.split === "done") return [];
+        const sourceHTML = el.innerHTML;
+        el.innerHTML = "";
+        const chars = [];
+
+        const lineWrap = document.createElement("span");
+        lineWrap.className = "split-line";
+
+        const temp = document.createElement("span");
+        temp.innerHTML = sourceHTML;
+
+        function processInto(srcNode, dstParent) {
+          srcNode.childNodes.forEach((child) => {
+            if (child.nodeType === 3) {
+              // Text node: split solo por espacio regular (no NBSP)
+              const tokens = child.textContent.split(/( +)/);
+              tokens.forEach((tok) => {
+                if (tok.length === 0) return;
+                if (/^ +$/.test(tok)) {
+                  // Espacio regular → text node (punto de wrap natural)
+                  dstParent.appendChild(document.createTextNode(" "));
+                } else {
+                  // Palabra → wrapper inline-block con nowrap, chars dentro
+                  const word = document.createElement("span");
+                  word.className = "split-word";
+                  [...tok].forEach((ch) => {
+                    const c = document.createElement("span");
+                    c.className = "split-char";
+                    c.textContent = ch;
+                    word.appendChild(c);
+                    chars.push(c);
+                  });
+                  dstParent.appendChild(word);
+                }
+              });
+            } else if (child.nodeType === 1) {
+              // Element: preservar tag, recurse para procesar hijos
+              const tag = child.tagName.toLowerCase();
+              const wrap = document.createElement(tag);
+              if (tag === "em") {
+                wrap.style.fontStyle = "italic";
+                wrap.style.color = "var(--prim-brass-400)";
+              }
+              processInto(child, wrap);
+              dstParent.appendChild(wrap);
+            }
+          });
+        }
+
+        processInto(temp, lineWrap);
+        el.appendChild(lineWrap);
+        el.dataset.split = "done";
+        return chars;
+      }
+      function splitWords(el) {
+        if (!el || el.dataset.split === "done") return [];
+        const html = el.innerHTML.replace(/\s+/g, " ");
+        const tokens = html.match(/<[^>]+>[^<]*<\/[^>]+>|[^\s<]+/g) || [];
+        el.innerHTML = "";
+        const words = [];
+        tokens.forEach((tok) => {
+          const sp = document.createElement("span");
+          sp.className = "split-word";
+          sp.innerHTML = tok;
+          el.appendChild(sp);
+          el.appendChild(document.createTextNode(" "));
+          words.push(sp);
+        });
+        el.dataset.split = "done";
+        return words;
+      }
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #1 · MASTER TIMELINE HERO
+      // Choreography: crops fade-in → edition → kicker → title chars → deck → byline
+      // 1.8s total — sensación de "crédito de película"
+      // ════════════════════════════════════════════════════════════════════
+      const heroTitleEl = document.querySelector("[data-split-chars]");
+      const heroChars = heroTitleEl ? splitChars(heroTitleEl) : [];
+
+      gsap.set("#overture-crops", { opacity: 0 });
+      gsap.set('[data-overture-step="edition"]', { opacity: 0, y: 20 });
+      gsap.set('[data-overture-step="kicker"]',  { opacity: 0, y: 20 });
+      gsap.set(heroChars, { yPercent: 110, opacity: 0 });
+      gsap.set('[data-overture-step="deck"]',    { opacity: 0, y: 24 });
+      gsap.set('[data-overture-step="byline"]',  { opacity: 0, y: 20 });
+
+      if (reduced) {
+        gsap.set([
+          "#overture-crops",
+          '[data-overture-step="edition"]',
+          '[data-overture-step="kicker"]',
+          '[data-overture-step="deck"]',
+          '[data-overture-step="byline"]'
+        ], { opacity: 1, y: 0 });
+        gsap.set(heroChars, { yPercent: 0, opacity: 1 });
+      } else {
+        const heroTL = gsap.timeline({ delay: 0.2 });
+        heroTL
+          .to("#overture-crops", { opacity: 1, duration: 1.2, ease: "power2.out" }, 0)
+          .to('[data-overture-step="edition"]', { opacity: 1, y: 0, duration: 0.8, ease: "expo.out" }, 0.3)
+          .to('[data-overture-step="kicker"]',  { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 0.5)
+          .to(heroChars, { yPercent: 0, opacity: 1, duration: 1.0, ease: "expo.out", stagger: 0.018 }, 0.6)
+          .to('[data-overture-step="deck"]',    { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" }, 1.45)
+          .to('[data-overture-step="byline"]',  { opacity: 1, y: 0, duration: 0.8, ease: "expo.out" }, 1.6);
+      }
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #2 · CHAPTER CUT TIMELINE
+      // Cada capítulo entra como una "cut" coreografiada:
+      // rule SVG draw → numero → eyebrow → h2 word stagger blur → primer párrafo
+      // ════════════════════════════════════════════════════════════════════
+      gsap.utils.toArray("[data-chapter-cut]").forEach((chapter) => {
+        const ruleLine = chapter.querySelector(".org-chapter__rule line");
+        const num      = chapter.querySelector('[data-cut="numero"]');
+        const eyebrow  = chapter.querySelector('[data-cut="eyebrow"]');
+        const titleEl  = chapter.querySelector('[data-cut="title"]');
+        const lede     = chapter.querySelector('[data-cut="lede"]');
+
+        const titleWords = titleEl ? splitWords(titleEl) : [];
+
+        if (reduced) {
+          if (ruleLine) gsap.set(ruleLine, { strokeDashoffset: 0 });
+          gsap.set([num, eyebrow, lede], { opacity: 1, y: 0 });
+          gsap.set(titleWords, { opacity: 1, y: 0, filter: "blur(0)" });
+          return;
+        }
+
+        if (ruleLine) gsap.set(ruleLine, { strokeDashoffset: 1 });
+        gsap.set([num, eyebrow, lede], { opacity: 0, y: 28 });
+        gsap.set(titleWords, { opacity: 0, y: 24, filter: "blur(8px)" });
+
+        ScrollTrigger.create({
+          trigger: chapter,
+          start: "top 75%",
+          once: true,
+          onEnter: () => {
+            const tl = gsap.timeline();
+            if (ruleLine) tl.to(ruleLine, { strokeDashoffset: 0, duration: 1.2, ease: "expo.out" }, 0);
+            if (num)      tl.to(num,     { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" }, 0.25);
+            if (eyebrow)  tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 0.45);
+            if (titleWords.length) {
+              tl.to(titleWords, {
+                opacity: 1, y: 0, filter: "blur(0px)",
+                duration: 0.9, ease: "expo.out", stagger: 0.05
+              }, 0.6);
+            }
+            if (lede) tl.to(lede, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" }, 1.05);
+          }
+        });
+      });
+
+      // ───── Reveals genéricos (lo que no entra en el cut) ─────
+      gsap.set("[data-reveal]", { opacity: 0, y: 28 });
+      if (!reduced) {
+        gsap.utils.toArray("[data-reveal]").forEach((el) => {
+          ScrollTrigger.create({
+            trigger: el, start: "top 85%", once: true,
+            onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" })
+          });
+        });
+      } else {
+        gsap.set("[data-reveal]", { opacity: 1, y: 0 });
+      }
+
+      // ───── data-split-words generic (cinematic-quote, coda) ─────
+      gsap.utils.toArray("[data-split-words]").forEach((el) => {
+        if (el.dataset.split === "done") return;  // already split (chapter cuts)
+        if (reduced) return;
+        const words = splitWords(el);
+        gsap.set(words, { y: 30, opacity: 0, filter: "blur(8px)" });
+        ScrollTrigger.create({
+          trigger: el, start: "top 80%", once: true,
+          onEnter: () => {
+            gsap.to(words, { y: 0, opacity: 1, filter: "blur(0px)",
+              duration: 1.0, ease: "expo.out", stagger: 0.05 });
+          }
+        });
+      });
+
+      // ───── Floating mark ─────
+      gsap.utils.toArray("[data-float]").forEach((el) => {
+        if (reduced) return;
+        gsap.to(el, { y: 18, rotation: -3, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+      });
+
+      // ───── Parallax + Ken Burns ─────
+      if (!reduced) {
+        gsap.utils.toArray("[data-parallax]").forEach((el) => {
+          const speed = parseFloat(el.dataset.parallax) || 0.3;
+          const layer = el.querySelector(".mol-bg-media__layer") || el;
+          gsap.to(layer, {
+            yPercent: -speed * 100,
+            ease: "none",
+            scrollTrigger: { trigger: el.parentElement || el, start: "top bottom", end: "bottom top", scrub: true }
+          });
+        });
+        gsap.utils.toArray("[data-ken-burns]").forEach((el) => {
+          const layer = el.querySelector(".mol-bg-media__layer") || el;
+          gsap.fromTo(layer, { scale: 1.05, xPercent: 0, yPercent: 0 }, {
+            scale: 1.18, xPercent: -3, yPercent: -4,
+            ease: "none",
+            scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: 0.8 }
+          });
+        });
+      }
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #3 · PHOTO GALLERY SPOTLIGHT
+      // Hover una foto → otras a opacity 0.55, scale 0.98
+      // ════════════════════════════════════════════════════════════════════
+      const spotlightContainer = document.querySelector("[data-spotlight]");
+      const photos = gsap.utils.toArray("[data-photo]");
+
+      // Mask reveal stagger inicial (con ScrollTrigger por figure)
+      photos.forEach((fig) => {
+        const mask = fig.querySelector(".mol-photo__mask");
+        const img  = fig.querySelector("img");
+        if (!mask || !img) return;
+        if (reduced) {
+          gsap.set(mask, { scaleY: 0 });
+          gsap.set(img, { scale: 1 });
+          return;
+        }
+        gsap.set(mask, { scaleY: 1, transformOrigin: "top" });
+        gsap.set(img,  { scale: 1.18 });
+        ScrollTrigger.create({
+          trigger: fig, start: "top 80%", once: true,
+          onEnter: () => {
+            const tl = gsap.timeline();
+            tl.to(mask, { scaleY: 0, duration: 1.1, ease: "expo.inOut" })
+              .to(img,  { scale: 1.0, duration: 1.6, ease: "expo.out" }, "-=0.8");
+          }
+        });
+      });
+
+      // Spotlight hover orchestration
+      if (spotlightContainer && !reduced) {
+        photos.forEach((photo) => {
+          photo.addEventListener("mouseenter", () => {
+            photos.forEach((other) => {
+              if (other !== photo) {
+                gsap.to(other, { opacity: 0.55, scale: 0.98, duration: 0.5, ease: "power2.out" });
+              }
+            });
+            const img = photo.querySelector("img");
+            if (img) gsap.to(img, { scale: 1.06, duration: 0.6, ease: "power2.out" });
+          });
+          photo.addEventListener("mouseleave", () => {
+            photos.forEach((other) => {
+              gsap.to(other, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
+            });
+            const img = photo.querySelector("img");
+            if (img) gsap.to(img, { scale: 1.0, duration: 0.7, ease: "power2.out" });
+          });
+        });
+      }
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #4 · COUNTER SCRAMBLE BRASS (alfabeto 0-9, no hex)
+      // ════════════════════════════════════════════════════════════════════
+      const SCRAMBLE_NUM = "0123456789";
+      gsap.utils.toArray("[data-scramble-num]").forEach((el) => {
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || "0", 10);
+        const targetStr = target.toFixed(decimals);
+        const len = targetStr.length;
+
+        if (reduced) {
+          el.textContent = targetStr;
+          return;
+        }
+
+        ScrollTrigger.create({
+          trigger: el, start: "top 85%", once: true,
+          onEnter: () => {
+            const obj = { p: 0 };
+            gsap.killTweensOf(obj);
+            gsap.to(obj, {
+              p: 1,
+              duration: 1.4,
+              ease: "expo.out",
+              onUpdate: () => {
+                const reveal = Math.floor(obj.p * len);
+                let out = "";
+                for (let i = 0; i < len; i++) {
+                  if (i < reveal || targetStr[i] === "." || targetStr[i] === "," || targetStr[i] === "-") {
+                    out += targetStr[i];
+                  } else {
+                    out += SCRAMBLE_NUM[(Math.random() * 10) | 0];
+                  }
+                }
+                el.textContent = out;
+              },
+              onComplete: () => { el.textContent = targetStr; }
+            });
+          }
+        });
+      });
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #5 · PULL-QUOTE SCROLL-COUPLED ROTATION
+      // El " gigante rota -8deg → 0deg con scrub durante la entrada
+      // ════════════════════════════════════════════════════════════════════
+      gsap.utils.toArray("[data-quote-mark]").forEach((mark) => {
+        if (reduced) {
+          gsap.set(mark, { rotation: 0 });
+          return;
+        }
+        gsap.fromTo(mark,
+          { rotation: -8, scale: 0.85 },
+          {
+            rotation: 0,
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: mark,
+              start: "top 90%",
+              end: "top 35%",
+              scrub: 0.6
+            }
+          }
+        );
+      });
+
+      // ════════════════════════════════════════════════════════════════════
+      // v4 #6 · CODA MONOGRAM RING DRAW-IN
+      // Anillo SVG dibujándose alrededor de la "A" — firma del editor
+      // ════════════════════════════════════════════════════════════════════
+      const monogramWrap = document.querySelector("[data-monogram]");
+      if (monogramWrap) {
+        const ringCircle = monogramWrap.querySelector(".org-coda__ring circle");
+        const monogramLetter = monogramWrap.querySelector(".org-coda__monogram");
+
+        if (reduced) {
+          if (ringCircle) gsap.set(ringCircle, { strokeDashoffset: 0 });
+          gsap.set(monogramLetter, { opacity: 1, scale: 1 });
+        } else {
+          if (ringCircle) gsap.set(ringCircle, { strokeDashoffset: 1 });
+          gsap.set(monogramLetter, { opacity: 0, scale: 0.9 });
+
+          ScrollTrigger.create({
+            trigger: monogramWrap,
+            start: "top 75%",
+            once: true,
+            onEnter: () => {
+              const tl = gsap.timeline();
+              tl.to(monogramLetter, { opacity: 1, scale: 1, duration: 0.8, ease: "expo.out" }, 0);
+              if (ringCircle) {
+                tl.to(ringCircle, { strokeDashoffset: 0, duration: 1.6, ease: "expo.out" }, 0.1);
+              }
+            }
+          });
+        }
+      }
+
+      // ───── Pinned timeline ─────
+      const pin = document.querySelector("[data-pin]");
+      const track = document.querySelector("[data-timeline-track]");
+      if (pin && track && window.matchMedia("(min-width: 1024px)").matches && !reduced) {
+        const distance = () => track.scrollWidth - window.innerWidth + 80;
+        gsap.to(track, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: pin, start: "top top",
+            end: () => "+=" + distance(),
+            pin: true, scrub: 0.8,
+            invalidateOnRefresh: true, anticipatePin: 1
+          }
+        });
+      }
+
+      // ───── Masthead light/dark + chapter + progress ─────
+      const masthead = document.getElementById("masthead");
+      const chapNum = document.getElementById("ms-chap");
+      const root = document.documentElement;
+      const lightSections = gsap.utils.toArray(".is-light");
+      ScrollTrigger.create({
+        trigger: document.body, start: 0, end: () => document.body.scrollHeight,
+        onUpdate: () => {
+          const anyLight = lightSections.some((s) => {
+            const r = s.getBoundingClientRect();
+            return r.top <= 64 && r.bottom >= 64;
+          });
+          masthead.classList.toggle("is-light", anyLight);
+          const scrolled = root.scrollTop / (root.scrollHeight - root.clientHeight);
+          root.style.setProperty("--scroll-progress", (scrolled * 100).toFixed(1) + "%");
+        }
+      });
+      gsap.utils.toArray("[data-chapter]").forEach((sec) => {
+        ScrollTrigger.create({
+          trigger: sec, start: "top 50%", end: "bottom 50%",
+          onToggle: (self) => { if (self.isActive && chapNum) chapNum.textContent = sec.dataset.chapter; }
+        });
+      });
+
+      // ───── Cursor follower ─────
+      const cursor = document.getElementById("cursor");
+      const fineHover = window.matchMedia("(hover: hover)").matches;
+      if (cursor && fineHover && !reduced) {
+        document.body.classList.add("has-cursor");
+        const xTo = gsap.quickTo(cursor, "x", { duration: 0.5, ease: "power3" });
+        const yTo = gsap.quickTo(cursor, "y", { duration: 0.5, ease: "power3" });
+        let visible = false;
+        window.addEventListener("mousemove", (e) => {
+          if (!visible) { cursor.classList.add("is-active"); visible = true; }
+          xTo(e.clientX); yTo(e.clientY);
+        }, { passive: true });
+        window.addEventListener("mouseleave", () => { cursor.classList.remove("is-active"); visible = false; });
+        const label = cursor.querySelector(".atom-cursor__label");
+        document.querySelectorAll("a, button, [data-cursor-hover]").forEach((el) => {
+          el.addEventListener("mouseenter", () => {
+            cursor.classList.add("is-hover");
+            label.textContent = el.dataset.cursorHover || "ver";
+          });
+          el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
+        });
+      }
+
+      // ───── Magnetic CTA ─────
+      gsap.utils.toArray("[data-magnetic]").forEach((el) => {
+        if (reduced) return;
+        const inner = el.querySelector("span") || el;
+        const xTo = gsap.quickTo(el, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const yTo = gsap.quickTo(el, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const xToInner = gsap.quickTo(inner, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const yToInner = gsap.quickTo(inner, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        el.addEventListener("mousemove", (e) => {
+          const rect = el.getBoundingClientRect();
+          const dx = e.clientX - (rect.left + rect.width / 2);
+          const dy = e.clientY - (rect.top + rect.height / 2);
+          xTo(dx * 0.25); yTo(dy * 0.45);
+          xToInner(dx * 0.4); yToInner(dy * 0.6);
+        });
+        el.addEventListener("mouseleave", () => { xTo(0); yTo(0); xToInner(0); yToInner(0); });
+      });
+    });
+  </script>
+</body>
+</html>

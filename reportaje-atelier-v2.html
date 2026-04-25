@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>James R. Dimon — El último monarca de Wall Street · ATELIER</title>
+  <meta name="description" content="Retrato editorial cinematográfico — ATELIER v2 con GSAP, parallax, Ken Burns, magnetic, cursor follower y galería con mask reveal.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════════
+       ATELIER v2 — Cinematic edition
+       Asset stack: Unsplash photos + HTML5 video w/ poster fallback
+       Motion stack: Lenis smooth + GSAP/ScrollTrigger + manual SplitText
+       Branding rules applied: R-TYP-03, R-SPC-01, R-COL-01, R-DET-02, R-ESC-01
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    /* ───── TIER 1 · Primitives ─────────────────────────────────────────────── */
+    :root {
+      --prim-ink-950: oklch(0.06 0.005 60);
+      --prim-ink-900: oklch(0.10 0.006 58);
+      --prim-ink-800: oklch(0.16 0.008 56);
+      --prim-ink-700: oklch(0.24 0.010 54);
+      --prim-ink-600: oklch(0.34 0.012 52);
+      --prim-ink-500: oklch(0.46 0.014 50);
+      --prim-ink-400: oklch(0.60 0.014 48);
+      --prim-ink-300: oklch(0.76 0.012 50);
+
+      --prim-bone-50:  oklch(0.98 0.010 84);
+      --prim-bone-100: oklch(0.95 0.020 82);
+      --prim-bone-200: oklch(0.90 0.030 80);
+      --prim-bone-300: oklch(0.83 0.034 79);
+
+      --prim-brass-700: oklch(0.50 0.072 75);
+      --prim-brass-500: oklch(0.66 0.094 76);
+      --prim-brass-400: oklch(0.74 0.100 78);
+    }
+
+    /* ───── TIER 2 · Semantic ───────────────────────────────────────────────── */
+    :root {
+      --sem-surface-stage:  var(--prim-ink-950);
+      --sem-surface-page:   var(--prim-bone-50);
+      --sem-surface-paper:  var(--prim-bone-100);
+      --sem-surface-deep:   var(--prim-ink-900);
+      --sem-surface-deeper: var(--prim-ink-950);
+
+      --sem-text-primary:     var(--prim-ink-900);
+      --sem-text-secondary:   var(--prim-ink-700);
+      --sem-text-tertiary:    var(--prim-ink-600);
+      --sem-text-muted:       var(--prim-ink-500);
+      --sem-text-inverse:     var(--prim-bone-50);
+      --sem-text-inverse-muted: var(--prim-bone-300);
+      --sem-text-accent:      var(--prim-brass-700);
+
+      --sem-rule-subtle: var(--prim-bone-300);
+      --sem-rule-strong: var(--prim-ink-900);
+      --sem-rule-accent: var(--prim-brass-500);
+
+      --sem-font-display: "Cormorant Garamond", Georgia, serif;
+      --sem-font-body:    "Inter", system-ui, -apple-system, sans-serif;
+      --sem-font-mono:    "DM Mono", ui-monospace, Menlo, monospace;
+
+      --sem-sp-xs:  0.5rem;  --sem-sp-sm:  0.75rem;
+      --sem-sp-md:  1rem;    --sem-sp-lg:  1.5rem;
+      --sem-sp-xl:  2rem;    --sem-sp-2xl: 3rem;
+      --sem-sp-3xl: 5rem;    --sem-sp-4xl: 8rem;
+
+      --sem-mot-fast: 200ms;
+      --sem-mot-base: 380ms;
+      --sem-mot-slow: 720ms;
+      --sem-mot-ease:    cubic-bezier(0.22, 1, 0.36, 1);
+      --sem-mot-ease-in: cubic-bezier(0.65, 0, 0.35, 1);
+
+      --sem-container-max: 1280px;
+      --sem-reading-max:   720px;
+    }
+
+    /* ───── TIER 3 · Component contracts ────────────────────────────────────── */
+    :root {
+      --component-cursor-bg:        var(--prim-brass-400);
+      --component-cursor-size:      10px;
+      --component-cursor-size-lg:   72px;
+
+      --component-overture-bg:        var(--sem-surface-stage);
+      --component-overture-color:     var(--sem-text-inverse);
+      --component-overture-color-mute: var(--sem-text-inverse-muted);
+      --component-overture-color-accent: var(--prim-brass-400);
+
+      --component-masthead-bg:     rgba(14,13,11,0.86);
+      --component-masthead-color:  var(--sem-text-inverse);
+      --component-masthead-border: rgba(255,255,255,0.08);
+
+      --component-photo-gallery-bg: var(--sem-surface-deep);
+      --component-photo-gallery-rule: rgba(255,255,255,0.12);
+      --component-photo-gallery-color: var(--sem-text-inverse);
+
+      --component-cinematic-quote-color: var(--sem-text-inverse);
+    }
+
+    /* ───── Reset ───────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--sem-surface-page); }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      background: var(--sem-surface-page);
+      color: var(--sem-text-primary);
+      font-family: var(--sem-font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: clip;
+    }
+    img, picture, svg, video { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; background: none; border: 0; cursor: pointer; color: inherit; }
+
+    .layout-grid {
+      width: 100%;
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+    }
+    @media (min-width: 768px)  { .layout-grid { padding-inline: var(--sem-sp-2xl); } }
+    @media (min-width: 1280px) { .layout-grid { padding-inline: var(--sem-sp-3xl); } }
+
+    :focus-visible {
+      outline: 2px solid var(--prim-brass-400);
+      outline-offset: 4px;
+    }
+    .syx-sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       atom-cursor — premium cursor follower (brass dot)
+       ──────────────────────────────────────────────────────────────────────── */
+    .atom-cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--component-cursor-size);
+      height: var(--component-cursor-size);
+      background: var(--component-cursor-bg);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      will-change: transform, width, height;
+      transition: width 0.4s var(--sem-mot-ease), height 0.4s var(--sem-mot-ease), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .atom-cursor.is-active { opacity: 1; }
+    .atom-cursor.is-hover {
+      width: var(--component-cursor-size-lg);
+      height: var(--component-cursor-size-lg);
+      background: rgba(195,163,91,0.18);
+      border: 1px solid var(--prim-brass-400);
+      mix-blend-mode: normal;
+    }
+    .atom-cursor__label {
+      position: absolute;
+      inset: 0;
+      display: grid; place-items: center;
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .atom-cursor.is-hover .atom-cursor__label { opacity: 1; }
+    @media (hover: none), (prefers-reduced-motion: reduce) {
+      .atom-cursor { display: none; }
+    }
+    body.has-cursor { cursor: none; }
+    body.has-cursor a, body.has-cursor button { cursor: none; }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-masthead — sticky, magnetic CTA
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-masthead {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 60;
+      padding: var(--sem-sp-md) 0;
+      background: var(--component-masthead-bg);
+      border-bottom: 1px solid var(--component-masthead-border);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      color: var(--component-masthead-color);
+      transition: background var(--sem-mot-base) var(--sem-mot-ease),
+                  border-color var(--sem-mot-base) var(--sem-mot-ease),
+                  color var(--sem-mot-base) var(--sem-mot-ease);
+    }
+    .org-masthead.is-light {
+      background: rgba(250,246,238,0.86);
+      border-color: rgba(14,13,11,0.08);
+      color: var(--sem-text-primary);
+    }
+    .org-masthead__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--sem-sp-lg);
+    }
+    .org-masthead__brand {
+      grid-column: 2;
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: 1.125rem;
+      letter-spacing: 0.32em;
+      text-align: center;
+    }
+    .org-masthead__brand-tag {
+      display: block;
+      font-family: var(--sem-font-body);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+    .org-masthead__progress {
+      grid-column: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .org-masthead__progress-bar {
+      width: clamp(80px, 15vw, 200px);
+      height: 1px;
+      background: currentColor;
+      opacity: 0.3;
+      position: relative;
+      overflow: hidden;
+    }
+    .org-masthead__progress-bar::after {
+      content: "";
+      position: absolute; top: 0; left: 0; bottom: 0;
+      width: var(--scroll-progress, 0%);
+      background: var(--prim-brass-400);
+      transition: width 80ms linear;
+    }
+    .atom-btn-magnetic {
+      grid-column: 3;
+      justify-self: end;
+      position: relative;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      border: 1px solid currentColor;
+      transition: background var(--sem-mot-fast) var(--sem-mot-ease),
+                  color var(--sem-mot-fast) var(--sem-mot-ease);
+      will-change: transform;
+    }
+    .atom-btn-magnetic > span { display: inline-block; will-change: transform; }
+    .atom-btn-magnetic:hover {
+      background: var(--prim-brass-400);
+      color: var(--prim-ink-950);
+      border-color: var(--prim-brass-400);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-overture v2 — VIDEO + character cascade hero
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-overture {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      background: var(--component-overture-bg);
+      color: var(--component-overture-color);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .org-overture__media {
+      position: absolute;
+      inset: -10% -2% -2%;
+      z-index: 0;
+      will-change: transform;
+    }
+    .org-overture__media video,
+    .org-overture__media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: 50% 35%;
+      filter: contrast(1.05) saturate(0.5) brightness(0.55);
+    }
+    .org-overture__media::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(14,13,11,0.45) 0%,
+          rgba(14,13,11,0.2) 30%,
+          rgba(14,13,11,0.55) 70%,
+          rgba(14,13,11,0.95) 100%);
+      pointer-events: none;
+    }
+
+    /* Editorial grid markers (corner crops) */
+    .org-overture__crops {
+      position: absolute;
+      inset: calc(64px + var(--sem-sp-2xl)) var(--sem-sp-md) var(--sem-sp-3xl);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .org-overture__crops::before,
+    .org-overture__crops::after {
+      content: "";
+      position: absolute;
+      width: 24px; height: 24px;
+      border: 1px solid var(--prim-brass-400);
+      opacity: 0;
+    }
+    .org-overture__crops::before {
+      top: 0; left: 0;
+      border-right: 0; border-bottom: 0;
+    }
+    .org-overture__crops::after {
+      bottom: 0; right: 0;
+      border-left: 0; border-top: 0;
+    }
+
+    .org-overture__inner {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding-block: calc(64px + var(--sem-sp-3xl)) var(--sem-sp-3xl);
+    }
+
+    .org-overture__edition {
+      align-self: start;
+      display: flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--component-overture-color-mute);
+    }
+    .org-overture__edition::before {
+      content: "";
+      width: 32px; height: 1px;
+      background: var(--component-overture-color-accent);
+    }
+
+    .org-overture__title-wrap {
+      align-self: end;
+      display: grid;
+      gap: var(--sem-sp-lg);
+      max-width: 18ch;
+    }
+    .org-overture__kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--component-overture-color-accent);
+    }
+    .org-overture__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(3rem, 8vw + 1rem, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.035em;
+    }
+    .org-overture__title em {
+      font-style: italic;
+      color: var(--component-overture-color-accent);
+      font-weight: 400;
+    }
+    /* split text — character cascade — line wrappers */
+    .split-line { display: block; overflow: hidden; }
+    .split-char,
+    .split-word {
+      display: inline-block;
+      will-change: transform, opacity;
+    }
+    .org-overture__deck {
+      font-family: var(--sem-font-display);
+      font-size: clamp(1.125rem, 1.4vw + 0.6rem, 1.5rem);
+      font-style: italic;
+      font-weight: 400;
+      max-width: 56ch;
+      line-height: 1.5;
+      color: var(--component-overture-color-mute);
+    }
+
+    .org-overture__byline {
+      align-self: end;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--sem-sp-md) var(--sem-sp-xl);
+      padding-top: var(--sem-sp-xl);
+      margin-top: var(--sem-sp-2xl);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--component-overture-color-mute);
+    }
+    .org-overture__byline strong { color: var(--component-overture-color); font-weight: 600; }
+
+    .org-overture__scroll {
+      position: absolute;
+      bottom: var(--sem-sp-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--component-overture-color-mute);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sem-sp-xs);
+    }
+    .org-overture__scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(180deg, transparent, var(--component-overture-color-accent));
+      animation: scroll-pulse 2.4s var(--sem-mot-ease) infinite;
+    }
+    @keyframes scroll-pulse {
+      0%, 100% { transform: scaleY(0.5); transform-origin: top; opacity: 0.4; }
+      50%      { transform: scaleY(1);   transform-origin: top; opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .org-overture__scroll-line { animation: none; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       atom-floating-mark — small editorial detail that drifts
+       ──────────────────────────────────────────────────────────────────────── */
+    .atom-floating-mark {
+      position: absolute;
+      pointer-events: none;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      color: var(--prim-brass-400);
+      opacity: 0.4;
+      will-change: transform;
+    }
+    .atom-floating-mark--top {
+      top: 30%;
+      right: 8%;
+      font-size: 6rem;
+      line-height: 0.8;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .atom-floating-mark { display: none; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-chapter
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-chapter {
+      position: relative;
+      padding-block: var(--sem-sp-4xl);
+      background: var(--sem-surface-page);
+      color: var(--sem-text-primary);
+    }
+    .org-chapter__rail {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+      display: none;
+    }
+    @media (min-width: 1024px) { .org-chapter__rail { display: block; } }
+    .org-chapter__rail-label {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-muted);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding-block: var(--sem-sp-md);
+      border-top: 1px solid var(--sem-rule-subtle);
+    }
+    .org-chapter__rail-label strong { color: var(--sem-text-accent); font-weight: 600; }
+
+    .org-chapter__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sem-sp-2xl);
+    }
+    @media (min-width: 1024px) {
+      .org-chapter__inner {
+        grid-template-columns: 60px minmax(0, 1fr);
+        gap: var(--sem-sp-3xl);
+      }
+    }
+    .org-chapter__body {
+      max-width: var(--sem-reading-max);
+      margin-inline: auto;
+    }
+    .org-chapter__numero {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(4rem, 8vw, 7rem);
+      line-height: 0.85;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-md);
+    }
+    .org-chapter__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sem-text-accent);
+      margin-bottom: var(--sem-sp-md);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sem-sp-md);
+    }
+    .org-chapter__eyebrow::before {
+      content: "";
+      width: 32px; height: 1px;
+      background: currentColor;
+    }
+    .atom-title--display-h2 {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-primary);
+      max-width: 22ch;
+      margin-bottom: var(--sem-sp-2xl);
+    }
+    .atom-title--display-h2 em { font-style: italic; color: var(--sem-text-accent); }
+
+    .atom-title--h3 {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: clamp(1.5rem, 1.8vw + 0.5rem, 2rem);
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: var(--sem-text-primary);
+      margin-top: var(--sem-sp-2xl);
+      margin-bottom: var(--sem-sp-md);
+      max-width: 28ch;
+    }
+
+    .org-chapter__body p {
+      font-family: var(--sem-font-display);
+      font-size: 1.1875rem;
+      line-height: 1.7;
+      color: var(--sem-text-secondary);
+      margin-bottom: var(--sem-sp-lg);
+    }
+    .org-chapter__body p strong { color: var(--sem-text-primary); font-weight: 600; }
+    .org-chapter__body p:first-of-type::first-letter {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 5.5rem;
+      float: left;
+      line-height: 0.85;
+      margin-right: 0.5rem;
+      margin-top: 0.4rem;
+      color: var(--sem-text-accent);
+    }
+    .org-chapter__body a {
+      color: var(--sem-text-accent);
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+
+    [data-reveal] { opacity: 0; transform: translateY(28px); }
+    .reduced-motion [data-reveal] { opacity: 1; transform: none; }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-cinematic-quote — full-bleed image with Ken Burns + parallax overlay
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-cinematic-quote {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .org-cinematic-quote__bg {
+      position: absolute;
+      inset: -10% -5% -10%;
+      z-index: 0;
+      will-change: transform;
+    }
+    .org-cinematic-quote__bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(0.55) brightness(0.7);
+    }
+    .org-cinematic-quote__bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(14,13,11,0.65) 100%),
+        linear-gradient(180deg, rgba(14,13,11,0.3) 0%, transparent 50%, rgba(14,13,11,0.4) 100%);
+    }
+    .org-cinematic-quote__inner {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: var(--sem-sp-3xl) var(--sem-sp-md);
+      color: var(--component-cinematic-quote-color);
+    }
+    .org-cinematic-quote__text {
+      max-width: 28ch;
+      text-align: center;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3vw + 0.6rem, 3.25rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+    }
+    .org-cinematic-quote__text em {
+      color: var(--prim-brass-400);
+      font-weight: 500;
+    }
+    .org-cinematic-quote__credit {
+      display: block;
+      margin-top: var(--sem-sp-xl);
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.625rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+    }
+    .org-cinematic-quote__caption {
+      position: absolute;
+      bottom: var(--sem-sp-xl);
+      left: var(--sem-sp-md);
+      right: var(--sem-sp-md);
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-bone-300);
+      flex-wrap: wrap;
+    }
+    .org-cinematic-quote__caption span:first-child { color: var(--prim-brass-400); }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       mol-pull-quote
+       ──────────────────────────────────────────────────────────────────────── */
+    .mol-pull-quote {
+      padding-block: var(--sem-sp-3xl);
+      max-width: var(--sem-reading-max);
+      margin-inline: auto;
+    }
+    .mol-pull-quote__body {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3vw + 0.5rem, 2.875rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--sem-text-primary);
+      max-width: 22ch;
+    }
+    .mol-pull-quote__body::before {
+      content: "“";
+      display: block;
+      font-size: clamp(4rem, 6vw, 6rem);
+      color: var(--sem-rule-accent);
+      line-height: 0.5;
+      margin-bottom: var(--sem-sp-md);
+    }
+    .mol-pull-quote__attrib {
+      display: block;
+      margin-top: var(--sem-sp-lg);
+      font-family: var(--sem-font-mono);
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-tertiary);
+    }
+    .mol-pull-quote__attrib::before {
+      content: "—";
+      margin-right: var(--sem-sp-xs);
+      color: var(--sem-text-accent);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-photo-gallery — 4 photos, mask reveal stagger
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-photo-gallery {
+      background: var(--component-photo-gallery-bg);
+      color: var(--component-photo-gallery-color);
+      padding-block: var(--sem-sp-4xl);
+      border-block: 1px solid var(--component-photo-gallery-rule);
+      overflow: hidden;
+    }
+    .org-photo-gallery__head {
+      max-width: 56ch;
+      margin-bottom: var(--sem-sp-3xl);
+    }
+    .org-photo-gallery__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-photo-gallery__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--sem-text-inverse);
+    }
+    .org-photo-gallery__title em { font-style: italic; color: var(--prim-brass-400); }
+
+    .org-photo-gallery__grid {
+      display: grid;
+      gap: var(--sem-sp-xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .org-photo-gallery__grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap: var(--sem-sp-lg);
+      }
+    }
+    /* asymmetric editorial layout */
+    .mol-photo {
+      position: relative;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) {
+      .mol-photo:nth-child(1) { grid-column: 1 / 7;  aspect-ratio: 4 / 5; }
+      .mol-photo:nth-child(2) { grid-column: 7 / 13; aspect-ratio: 4 / 3; align-self: end; }
+      .mol-photo:nth-child(3) { grid-column: 1 / 5;  aspect-ratio: 1 / 1; align-self: start; }
+      .mol-photo:nth-child(4) { grid-column: 5 / 13; aspect-ratio: 16 / 9; }
+    }
+    .mol-photo__frame {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    .mol-photo__frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scale(1.15);
+      filter: contrast(1.05) saturate(0.6) brightness(0.85);
+      will-change: transform;
+    }
+    .mol-photo__mask {
+      position: absolute;
+      inset: 0;
+      background: var(--component-photo-gallery-bg);
+      transform-origin: top;
+      will-change: transform;
+    }
+    .mol-photo__caption {
+      margin-top: var(--sem-sp-sm);
+      display: flex;
+      align-items: baseline;
+      gap: var(--sem-sp-md);
+      font-family: var(--sem-font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .mol-photo__caption strong { color: var(--prim-brass-400); font-weight: 700; }
+    .mol-photo__caption em {
+      font-style: normal;
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--sem-text-inverse);
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-stat-strip
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-stat-strip {
+      background: var(--sem-surface-deep);
+      color: var(--sem-text-inverse);
+      padding-block: var(--sem-sp-4xl);
+      border-block: 1px solid rgba(255,255,255,0.06);
+    }
+    .org-stat-strip__head { max-width: 56ch; margin-bottom: var(--sem-sp-3xl); }
+    .org-stat-strip__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-400);
+      margin-bottom: var(--sem-sp-md);
+    }
+    .org-stat-strip__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.75rem, 2.5vw + 0.5rem, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 22ch;
+    }
+    .org-stat-strip__grid {
+      display: grid;
+      gap: var(--sem-sp-2xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .org-stat-strip__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px){ .org-stat-strip__grid { grid-template-columns: repeat(4, 1fr); } }
+    .mol-stat {
+      display: grid;
+      gap: var(--sem-sp-sm);
+      padding: var(--sem-sp-lg) 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .mol-stat__value {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(3rem, 5vw + 0.5rem, 4.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+    .mol-stat__value--accent { color: var(--prim-brass-400); font-style: italic; }
+    .mol-stat__unit {
+      font-size: 0.5em;
+      vertical-align: super;
+      margin-left: 4px;
+      letter-spacing: 0;
+    }
+    .mol-stat__label {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prim-bone-300);
+    }
+    .mol-stat__detail {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--sem-text-inverse-muted);
+      max-width: 28ch;
+      line-height: 1.4;
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-timeline — pinned horizontal
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-timeline {
+      background: var(--sem-surface-deeper);
+      color: var(--sem-text-inverse);
+      position: relative;
+    }
+    .org-timeline__pin {
+      height: 100vh;
+      height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: var(--sem-sp-2xl) 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .org-timeline__head {
+      max-width: var(--sem-container-max);
+      margin-inline: auto;
+      padding-inline: var(--sem-sp-md);
+      width: 100%;
+    }
+    @media (min-width: 768px) { .org-timeline__head { padding-inline: var(--sem-sp-2xl); } }
+    .org-timeline__eyebrow {
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--prim-brass-500);
+      margin-bottom: var(--sem-sp-sm);
+    }
+    .org-timeline__title {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.75rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      max-width: 22ch;
+    }
+    .org-timeline__title em { font-style: italic; color: var(--prim-brass-500); }
+    .org-timeline__track {
+      align-self: center;
+      display: flex;
+      gap: var(--sem-sp-3xl);
+      padding-inline: var(--sem-sp-3xl);
+      align-items: center;
+      will-change: transform;
+    }
+    .mol-timepoint {
+      flex: 0 0 min(420px, 80vw);
+      border-top: 1px solid var(--prim-brass-500);
+      padding-top: var(--sem-sp-md);
+      display: grid;
+      gap: var(--sem-sp-sm);
+    }
+    .mol-timepoint__year {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-style: italic;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--prim-brass-500);
+    }
+    .mol-timepoint__title {
+      font-family: var(--sem-font-display);
+      font-weight: 600;
+      font-size: 1.5rem;
+      line-height: 1.18;
+      color: var(--sem-text-inverse);
+      max-width: 18ch;
+    }
+    .mol-timepoint__body {
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--sem-text-inverse-muted);
+      max-width: 38ch;
+    }
+    @media (max-width: 1023px) {
+      .org-timeline__pin { height: auto; padding-block: var(--sem-sp-3xl); }
+      .org-timeline__track {
+        flex-direction: column;
+        padding-inline: var(--sem-sp-md);
+        align-items: stretch;
+      }
+      .mol-timepoint { flex: 1 1 auto; }
+    }
+
+    /* ────────────────────────────────────────────────────────────────────────
+       org-coda
+       ──────────────────────────────────────────────────────────────────────── */
+    .org-coda {
+      background: var(--sem-surface-stage);
+      color: var(--sem-text-inverse);
+      padding-block: var(--sem-sp-4xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .org-coda::before {
+      content: "";
+      position: absolute;
+      inset: -20% 30% 60%;
+      z-index: 0;
+      background: radial-gradient(ellipse at center, rgba(195,163,91,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .org-coda__inner { position: relative; z-index: 1; max-width: 64ch; margin-inline: auto; }
+    .org-coda__monogram {
+      font-family: var(--sem-font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--prim-brass-400);
+      margin-bottom: var(--sem-sp-xl);
+    }
+    .org-coda__statement {
+      font-family: var(--sem-font-display);
+      font-weight: 500;
+      font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.5rem);
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+    }
+    .org-coda__statement em { font-style: italic; color: var(--prim-brass-400); }
+    .org-coda__sign {
+      margin-top: var(--sem-sp-2xl);
+      padding-top: var(--sem-sp-xl);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      display: grid;
+      gap: var(--sem-sp-xs);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sem-text-inverse-muted);
+    }
+    .org-coda__sign strong { color: var(--sem-text-inverse); font-weight: 600; }
+
+    .org-footer {
+      background: var(--sem-surface-deeper);
+      color: var(--sem-text-inverse-muted);
+      padding-block: var(--sem-sp-2xl);
+      font-family: var(--sem-font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .org-footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sem-sp-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .org-footer a:hover { color: var(--prim-brass-400); }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor follower -->
+  <div class="atom-cursor" id="cursor" aria-hidden="true">
+    <span class="atom-cursor__label">ver</span>
+  </div>
+
+  <!-- Masthead with magnetic CTA -->
+  <header class="org-masthead" id="masthead" role="banner">
+    <div class="layout-grid">
+      <div class="org-masthead__inner">
+        <div class="org-masthead__progress" aria-hidden="true">
+          <span>Cap. <strong id="ms-chap">01</strong>/04</span>
+          <span class="org-masthead__progress-bar"></span>
+        </div>
+        <div class="org-masthead__brand">
+          ATELIER
+          <span class="org-masthead__brand-tag">Retratos del poder</span>
+        </div>
+        <a href="#newsletter" class="atom-btn-magnetic" data-magnetic data-cursor-hover="suscribir">
+          <span>Suscribirse</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Overture v2 — VIDEO + character cascade title
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-overture" aria-labelledby="overture-title">
+    <div class="org-overture__media" data-parallax="0.35" aria-hidden="true">
+      <!-- HTML5 video con poster Unsplash de fallback. Si el MP4 falla, el poster permanece. -->
+      <video autoplay muted loop playsinline preload="metadata"
+             poster="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80">
+        <source src="https://videos.pexels.com/video-files/2818443/2818443-uhd_2732_1440_25fps.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="org-overture__crops" id="overture-crops" aria-hidden="true"></div>
+
+    <div class="atom-floating-mark atom-floating-mark--top" aria-hidden="true" data-float>&mdash;&nbsp;I.</div>
+
+    <div class="layout-grid org-overture__inner">
+      <p class="org-overture__edition" data-reveal>
+        <span>VOL. 04 · NÚMERO 12</span>
+        <span>· Edición Madrid</span>
+        <span>· Sábado, 25 de abril de 2026</span>
+      </p>
+
+      <div class="org-overture__title-wrap">
+        <p class="org-overture__kicker" data-reveal>Capítulo I — El imperio</p>
+        <h1 id="overture-title" class="org-overture__title" data-split-chars>
+          James R.&nbsp;Dimon&nbsp;<em>—</em> el último monarca de Wall Street
+        </h1>
+        <p class="org-overture__deck" data-reveal>
+          Cuarenta años en la industria. Cuatro crisis financieras sobrevividas. Cuatro billones de dólares en activos. El retrato de una era que termina cuando él decida marcharse.
+        </p>
+      </div>
+
+      <div class="org-overture__byline" data-reveal>
+        <span>Por <strong>Margaux Roselli</strong> · 32 min de lectura</span>
+        <span>Fotografía · <strong>Henri Bautista</strong></span>
+        <span>Nueva York · Park Avenue</span>
+      </div>
+    </div>
+
+    <div class="org-overture__scroll" aria-hidden="true">
+      <span>Continuar</span>
+      <span class="org-overture__scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- Capítulo I -->
+  <section class="org-chapter is-light" id="cap-01" data-chapter="01" aria-labelledby="cap-01-title">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>01 — El reino</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-reveal>I.</p>
+          <p class="org-chapter__eyebrow" data-reveal>El reino</p>
+          <h2 id="cap-01-title" class="atom-title atom-title--display-h2" data-reveal>
+            En la planta cuarenta y dos hay un hombre con la <em>geografía</em> del capital americano sobre la mesa.
+          </h2>
+          <p data-reveal>
+            <strong>Eight times a week, James Dimon le concede sesenta segundos al periodista que entra en su despacho.</strong> No es una metáfora: es una norma. El consejero delegado de JPMorgan Chase no responde por correo, no responde por teléfono, no responde a través de los gabinetes de prensa. Si hay algo que decir, se dice de pie, frente a la ventana de la torre de Park Avenue, antes de que la siguiente reunión empiece.
+          </p>
+          <p data-reveal>
+            La torre tiene 1.388 pies de altura, 270 South Park Avenue, fue terminada en abril de 2025 y costó tres mil millones de dólares. La diseñó Foster + Partners. El despacho de Dimon ocupa una esquina de la cuadragésima segunda planta, mira al sur sobre Bryant Park y, según los ejecutivos que la han visto, está pintada en un único tono de blanco roto. <em>Dover White</em>, dicen.
+          </p>
+          <p data-reveal>
+            En su escritorio &mdash;una mesa de roble fumado de dos metros y veinte&mdash; hay tres cosas: una fotografía de su esposa Judith en el Hudson, un cuaderno Smythson encuadernado en piel azul cardenal y una hoja de papel tamaño carta con cinco columnas. Cada columna es un negocio del banco. <a href="#" data-cursor-hover="leer más">Existen 8.000 hojas de esas</a>, según el equipo que las custodia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Cinematic quote — Ken Burns + parallax overlay
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-cinematic-quote" aria-label="Imagen editorial">
+    <div class="org-cinematic-quote__bg" data-ken-burns aria-hidden="true">
+      <picture>
+        <img src="https://images.unsplash.com/photo-1554260570-e9689a3418b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+             alt="" loading="lazy">
+      </picture>
+    </div>
+    <div class="org-cinematic-quote__inner">
+      <p class="org-cinematic-quote__text" data-split-words>
+        Lo que JPMorgan no presta no se presta. Lo que JPMorgan no compra <em>no vale la pena comprarse.</em>
+        <span class="org-cinematic-quote__credit">Documento interno · Reserva Federal · 2018</span>
+      </p>
+    </div>
+    <div class="org-cinematic-quote__caption" aria-hidden="true">
+      <span>NYSE · Wall Street</span>
+      <span>Henri Bautista · Unsplash</span>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="org-chapter is-light">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Cita · <strong>Volcker, 2009</strong></div>
+        </aside>
+        <div class="mol-pull-quote">
+          <blockquote class="mol-pull-quote__body" data-reveal>
+            Cuando estalle la próxima crisis, no llamen a la Reserva Federal. Llamen a Jamie. Él decidirá si vale la pena salvarles.
+            <cite class="mol-pull-quote__attrib">Paul Volcker, ex-presidente de la Reserva Federal</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo II -->
+  <section class="org-chapter is-light" id="cap-02" data-chapter="02" aria-labelledby="cap-02-title">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>02 — La crisis</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-reveal>II.</p>
+          <p class="org-chapter__eyebrow" data-reveal>La crisis que lo hizo</p>
+          <h2 id="cap-02-title" class="atom-title atom-title--display-h2" data-reveal>
+            La fortuna de Dimon no es financiera. Es <em>biográfica</em>.
+          </h2>
+          <p data-reveal>
+            La leyenda de Wall Street necesita siempre un mito fundacional. La de Dimon es la del <strong>14 de marzo de 2008</strong>, el viernes en que Bear Stearns se quedó sin liquidez y la Reserva Federal no quiso salvarlo. A las diez de la noche, Henry Paulson, secretario del Tesoro, llamó a Dimon. JPMorgan compró Bear Stearns esa madrugada por dos dólares la acción.
+          </p>
+          <h3 class="atom-title atom-title--h3" data-reveal>El movimiento Washington Mutual</h3>
+          <p data-reveal>
+            Seis meses después, Washington Mutual había caído. Dimon firmó la compra en doce horas por 1.900 millones de dólares. JPMorgan adquirió 2.300 sucursales, 188.000 millones en depósitos y, de paso, se convirtió en el mayor banco minorista del país.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Photo gallery — asymmetric editorial · mask reveal stagger
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="org-photo-gallery" aria-labelledby="gallery-title">
+    <div class="layout-grid">
+      <div class="org-photo-gallery__head">
+        <p class="org-photo-gallery__eyebrow">Fotorreportaje · Park Avenue, 270</p>
+        <h2 id="gallery-title" class="org-photo-gallery__title">
+          La <em>geografía</em> visible del poder bancario.
+        </h2>
+      </div>
+
+      <div class="org-photo-gallery__grid">
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                 alt="Fachada de torre corporativa de Manhattan en blanco y negro" loading="lazy">
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 01</strong>
+            <em>Torre Park Avenue, 270.</em>
+            <span>Foster + Partners</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                 alt="Detalle de monedas y billetes apilados sobre superficie oscura" loading="lazy">
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 02</strong>
+            <em>Capital de trabajo.</em>
+            <span>Trading floor &middot; Manhattan</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                 alt="Wall Street por la noche con neones y reflejos de la actividad financiera" loading="lazy">
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 03</strong>
+            <em>NYSE · cierre del viernes.</em>
+            <span>Marzo, 2026</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mol-photo" data-photo>
+          <div class="mol-photo__frame">
+            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+                 alt="Sala de juntas vacía con larga mesa de madera y luz dramática" loading="lazy">
+            <span class="mol-photo__mask" aria-hidden="true"></span>
+          </div>
+          <figcaption class="mol-photo__caption">
+            <strong>Fig. 04</strong>
+            <em>Sala del consejo.</em>
+            <span>JPMorgan &middot; planta 42</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat strip with counters -->
+  <section class="org-stat-strip" aria-label="JPMorgan Chase en cifras">
+    <div class="layout-grid">
+      <div class="org-stat-strip__head">
+        <p class="org-stat-strip__eyebrow" data-reveal>Anatomía de un imperio</p>
+        <h2 class="org-stat-strip__title" data-reveal>JPMorgan Chase, año fiscal 2025.</h2>
+      </div>
+      <div class="org-stat-strip__grid">
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value">
+            <span data-counter data-target="4.1" data-decimals="1">0</span><span class="mol-stat__unit">B$</span>
+          </div>
+          <div class="mol-stat__label">Activos totales</div>
+          <div class="mol-stat__detail">El mayor balance bancario consolidado de Estados Unidos.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value mol-stat__value--accent">
+            <span data-counter data-target="58.5" data-decimals="1">0</span><span class="mol-stat__unit">M$</span>
+          </div>
+          <div class="mol-stat__label">Beneficio neto · 2025</div>
+          <div class="mol-stat__detail">Récord histórico en banca comercial estadounidense.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value">
+            <span data-counter data-target="320" data-decimals="0">0</span><span class="mol-stat__unit">k</span>
+          </div>
+          <div class="mol-stat__label">Empleados globales</div>
+          <div class="mol-stat__detail">Operaciones en 100 países, presencia en cada G20.</div>
+        </div>
+        <div class="mol-stat" data-reveal>
+          <div class="mol-stat__value mol-stat__value--accent">
+            <span data-counter data-target="20" data-decimals="0">0</span><span class="mol-stat__unit">a</span>
+          </div>
+          <div class="mol-stat__label">Como CEO de JPMorgan</div>
+          <div class="mol-stat__detail">El consejero delegado más longevo del Dow Jones desde 1990.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo III · método -->
+  <section class="org-chapter is-light" id="cap-03" data-chapter="03" aria-labelledby="cap-03-title">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>03 — El método</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-reveal>III.</p>
+          <p class="org-chapter__eyebrow" data-reveal>El método</p>
+          <h2 id="cap-03-title" class="atom-title atom-title--display-h2" data-reveal>
+            Desconfía de los modelos, lee a los ingenieros, evita las cenas.
+          </h2>
+          <p data-reveal>
+            <strong>El método Dimon es, en esencia, un método de auditoría continua.</strong> Cada lunes a las siete de la mañana, los responsables de las cinco divisiones recorren con él una hoja A4 con doce indicadores. No PowerPoints. No diapositivas. Una hoja por división, y un único bolígrafo &mdash;Mont Blanc&mdash; circulando entre ellos.
+          </p>
+          <p data-reveal>
+            Su biblioteca de cabecera no está dedicada a las finanzas. Está dedicada a la ingeniería: Henry Petroski, James Dyson, Robert Pirsig. Repite una idea: <em>“los buenos ingenieros leen incidentes, los malos leen casos de éxito”</em>. JPMorgan tiene un departamento de cuarenta personas dedicado exclusivamente a leer informes de fallos en otras industrias y traducirlos a riesgos bancarios. Se llama, en clave interna, <strong>“el cuaderno de Petroski”</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote 2 -->
+  <section class="org-chapter is-light">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Cita · <strong>Buffett, 2017</strong></div>
+        </aside>
+        <div class="mol-pull-quote">
+          <blockquote class="mol-pull-quote__body" data-reveal>
+            Dimon no es un banquero. Es un actuario al que le gustaron mucho las novelas históricas. Por eso es peligroso. Y por eso, también, ha sobrevivido.
+            <cite class="mol-pull-quote__attrib">Warren Buffett, Berkshire Hathaway · Carta anual 2017</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pinned horizontal timeline -->
+  <section class="org-timeline" id="timeline" aria-labelledby="timeline-title">
+    <div class="org-timeline__pin" data-pin>
+      <div class="org-timeline__head">
+        <p class="org-timeline__eyebrow">Cronología</p>
+        <h2 id="timeline-title" class="org-timeline__title">Cuarenta años, <em>cuatro</em> crisis y un solo asiento.</h2>
+      </div>
+      <div class="org-timeline__track" data-timeline-track>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">1982</p>
+          <h3 class="mol-timepoint__title">Tufts University</h3>
+          <p class="mol-timepoint__body">Se gradúa en Psicología y Económicas. Su tesis: el comportamiento de los inversores ante eventos de baja probabilidad.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">1990</p>
+          <h3 class="mol-timepoint__title">American Express</h3>
+          <p class="mol-timepoint__body">A los 30 años dirige operaciones bajo Sandy Weill. Rotación cada nueve meses por una división distinta.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2004</p>
+          <h3 class="mol-timepoint__title">CEO de JPMorgan Chase</h3>
+          <p class="mol-timepoint__body">La fusión Bank One + JPMorgan lo coloca en el sillón de Park Avenue. Mensaje al consejo: <em>“no quiero crecer, quiero no morir”</em>.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2008</p>
+          <h3 class="mol-timepoint__title">Bear Stearns + WaMu</h3>
+          <p class="mol-timepoint__body">Compra Bear Stearns en sesenta horas. Seis meses después, integra Washington Mutual. JPMorgan duplica tamaño.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2012</p>
+          <h3 class="mol-timepoint__title">El “London Whale”</h3>
+          <p class="mol-timepoint__body">Pérdida de 6.200 millones por una operación con derivados de la oficina de Londres. La herida que más le ha costado reconocer.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2020</p>
+          <h3 class="mol-timepoint__title">Pandemia · «mañana»</h3>
+          <p class="mol-timepoint__body">Convierte a JPMorgan en el primer prestamista del PPP americano. 28.000 millones distribuidos en 18 días.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2024</p>
+          <h3 class="mol-timepoint__title">First Republic Bank</h3>
+          <p class="mol-timepoint__body">Compra el banco quebrado por 10.600 millones tras la caída de SVB. Su segunda gran adquisición de competidor en una crisis.</p>
+        </article>
+        <article class="mol-timepoint">
+          <p class="mol-timepoint__year">2026</p>
+          <h3 class="mol-timepoint__title">Plan de sucesión</h3>
+          <p class="mol-timepoint__body">Anuncia que su sucesión se ejecutará "no antes de cinco años". La industria contiene la respiración.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capítulo IV · salida -->
+  <section class="org-chapter is-light" id="cap-04" data-chapter="04" aria-labelledby="cap-04-title">
+    <div class="layout-grid">
+      <div class="org-chapter__inner">
+        <aside class="org-chapter__rail" aria-hidden="true">
+          <div class="org-chapter__rail-label">Capítulo · <strong>04 — La salida</strong></div>
+        </aside>
+        <div class="org-chapter__body">
+          <p class="org-chapter__numero" data-reveal>IV.</p>
+          <p class="org-chapter__eyebrow" data-reveal>La salida</p>
+          <h2 id="cap-04-title" class="atom-title atom-title--display-h2" data-reveal>
+            La pregunta que nadie hace en voz alta es <em>qué pasa cuando se vaya</em>.
+          </h2>
+          <p data-reveal>
+            En los pasillos del banco no se discute. En las cartas a accionistas tampoco. Pero los gestores de patrimonios, las gestoras de pensiones y los soberanos del Golfo lo evalúan en silencio: <strong>la prima Dimon</strong>, el sobreprecio que el mercado paga por la acción de JPMorgan frente al sector, se calcula entre el 12 % y el 18 %.
+          </p>
+          <p data-reveal>
+            Hay una idea que circula entre los analistas que más le siguen, una idea que ninguno escribirá en voz alta porque es imposible de verificar: que la próxima crisis financiera, sea cual sea su disparador, no se considerará oficialmente terminada hasta que James Dimon &mdash;ya retirado, ya en su casa de Bedford&mdash; <strong>levante el teléfono</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coda -->
+  <section class="org-coda" aria-label="Cierre">
+    <div class="layout-grid">
+      <div class="org-coda__inner">
+        <p class="org-coda__monogram" aria-hidden="true">A</p>
+        <p class="org-coda__statement" data-split-words>
+          Los reinos no se heredan. Se <em>construyen</em>, se sostienen y, casi siempre, terminan tarde.
+        </p>
+        <div class="org-coda__sign">
+          <span><strong>Margaux Roselli</strong></span>
+          <span>Reportera senior · ATELIER</span>
+          <span>Nueva York · 25 de abril de 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="org-footer" id="newsletter" role="contentinfo">
+    <div class="layout-grid">
+      <div class="org-footer__inner">
+        <span>&copy; 2026 ATELIER · Retratos del poder</span>
+        <nav>
+          <a href="#" data-cursor-hover="leer">Aviso legal</a> &middot;
+          <a href="#" data-cursor-hover="leer">Privacidad</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─────────── Lenis smooth scroll + GSAP ─────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) document.documentElement.classList.add("reduced-motion");
+      if (!window.gsap || !window.ScrollTrigger) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ───── Lenis smooth scroll ─────
+      let lenis;
+      if (window.Lenis && !reduced) {
+        lenis = new Lenis({
+          duration: 1.1,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true
+        });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      // ───── Manual SplitText (chars + words) ─────
+      function splitChars(el) {
+        if (!el || el.dataset.split === "done") return [];
+        const text = el.innerHTML;
+        // preserve <em>, <span>, &nbsp; and word boundaries
+        const lines = text.split(/\n/);
+        el.innerHTML = "";
+        const chars = [];
+        lines.forEach((line) => {
+          const lineWrap = document.createElement("span");
+          lineWrap.className = "split-line";
+          // tokenize words to keep <em> intact
+          const temp = document.createElement("span");
+          temp.innerHTML = line;
+          temp.childNodes.forEach((node) => {
+            if (node.nodeType === 3) {
+              const words = node.textContent.split(" ");
+              words.forEach((w, i) => {
+                if (!w && i === 0) return;
+                if (i > 0) {
+                  const sp = document.createElement("span");
+                  sp.className = "split-char";
+                  sp.innerHTML = "&nbsp;";
+                  lineWrap.appendChild(sp);
+                  chars.push(sp);
+                }
+                [...w].forEach((ch) => {
+                  const sp = document.createElement("span");
+                  sp.className = "split-char";
+                  sp.textContent = ch;
+                  lineWrap.appendChild(sp);
+                  chars.push(sp);
+                });
+              });
+            } else {
+              // <em> or other inline — split its text only
+              const inner = node.textContent;
+              [...inner].forEach((ch) => {
+                const sp = document.createElement(node.tagName.toLowerCase());
+                sp.className = "split-char";
+                sp.textContent = ch;
+                if (node.tagName) sp.style.fontStyle = "italic";
+                if (node.tagName === "EM") sp.style.color = "var(--prim-brass-400)";
+                lineWrap.appendChild(sp);
+                chars.push(sp);
+              });
+            }
+          });
+          el.appendChild(lineWrap);
+        });
+        el.dataset.split = "done";
+        return chars;
+      }
+      function splitWords(el) {
+        if (!el || el.dataset.split === "done") return [];
+        const html = el.innerHTML.replace(/\s+/g, " ");
+        // split on spaces but keep tags grouped — quick + simple regex
+        const tokens = html.match(/<[^>]+>[^<]*<\/[^>]+>|[^\s<]+/g) || [];
+        el.innerHTML = "";
+        const words = [];
+        tokens.forEach((tok, i) => {
+          const sp = document.createElement("span");
+          sp.className = "split-word";
+          sp.innerHTML = tok;
+          el.appendChild(sp);
+          el.appendChild(document.createTextNode(" "));
+          words.push(sp);
+        });
+        el.dataset.split = "done";
+        return words;
+      }
+
+      // ───── Hero — character cascade ─────
+      const heroTitle = document.querySelector("[data-split-chars]");
+      if (heroTitle && !reduced) {
+        const chars = splitChars(heroTitle);
+        gsap.set(chars, { yPercent: 110, opacity: 0 });
+        gsap.to(chars, {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "expo.out",
+          stagger: 0.018,
+          delay: 0.25
+        });
+      }
+
+      // ───── data-split-words reveals ─────
+      gsap.utils.toArray("[data-split-words]").forEach((el) => {
+        if (reduced) return;
+        const words = splitWords(el);
+        gsap.set(words, { y: 30, opacity: 0, filter: "blur(8px)" });
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            gsap.to(words, {
+              y: 0, opacity: 1, filter: "blur(0px)",
+              duration: 1.0,
+              ease: "expo.out",
+              stagger: 0.05
+            });
+          }
+        });
+      });
+
+      // ───── data-reveal generic ─────
+      if (!reduced) {
+        gsap.utils.toArray("[data-reveal]").forEach((el) => {
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 85%",
+            once: true,
+            onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" })
+          });
+        });
+      }
+
+      // ───── Editorial corner crops fade-in ─────
+      const crops = document.getElementById("overture-crops");
+      if (crops && !reduced) {
+        gsap.fromTo(crops, { opacity: 0 }, { opacity: 1, duration: 1.2, delay: 1.4, ease: "power2.out" });
+      }
+
+      // ───── Floating mark ─────
+      gsap.utils.toArray("[data-float]").forEach((el) => {
+        if (reduced) return;
+        gsap.to(el, {
+          y: 18,
+          rotation: -3,
+          duration: 4,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1
+        });
+      });
+
+      // ───── Parallax ─────
+      if (!reduced) {
+        gsap.utils.toArray("[data-parallax]").forEach((el) => {
+          const speed = parseFloat(el.dataset.parallax) || 0.3;
+          gsap.to(el, {
+            yPercent: -speed * 100,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el.parentElement,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            }
+          });
+        });
+      }
+
+      // ───── Ken Burns on cinematic-quote ─────
+      gsap.utils.toArray("[data-ken-burns]").forEach((el) => {
+        if (reduced) return;
+        gsap.fromTo(el, { scale: 1.05, xPercent: 0, yPercent: 0 }, {
+          scale: 1.18,
+          xPercent: -3,
+          yPercent: -4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: el.parentElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.8
+          }
+        });
+      });
+
+      // ───── Photo gallery — mask reveal stagger ─────
+      gsap.utils.toArray("[data-photo]").forEach((fig) => {
+        const mask = fig.querySelector(".mol-photo__mask");
+        const img  = fig.querySelector("img");
+        if (!mask || !img || reduced) {
+          if (mask) gsap.set(mask, { scaleY: 0 });
+          if (img)  gsap.set(img,  { scale: 1 });
+          return;
+        }
+        gsap.set(mask, { scaleY: 1, transformOrigin: "top" });
+        gsap.set(img,  { scale: 1.18 });
+        ScrollTrigger.create({
+          trigger: fig,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            const tl = gsap.timeline();
+            tl.to(mask, { scaleY: 0, duration: 1.1, ease: "expo.inOut" })
+              .to(img,  { scale: 1.0, duration: 1.6, ease: "expo.out" }, "-=0.8");
+          }
+        });
+        // hover Ken-Burns micro-interaction
+        fig.addEventListener("mouseenter", () => {
+          gsap.to(img, { scale: 1.06, duration: 0.6, ease: "power2.out" });
+        });
+        fig.addEventListener("mouseleave", () => {
+          gsap.to(img, { scale: 1.0, duration: 0.8, ease: "power2.out" });
+        });
+      });
+
+      // ───── Counters ─────
+      gsap.utils.toArray("[data-counter]").forEach((el) => {
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || "0", 10);
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 85%",
+          once: true,
+          onEnter: () => {
+            if (reduced) { el.textContent = target.toFixed(decimals); return; }
+            const obj = { v: 0 };
+            gsap.to(obj, {
+              v: target,
+              duration: 1.6,
+              ease: "expo.out",
+              onUpdate: () => { el.textContent = obj.v.toFixed(decimals); }
+            });
+          }
+        });
+      });
+
+      // ───── Pinned timeline ─────
+      const pin = document.querySelector("[data-pin]");
+      const track = document.querySelector("[data-timeline-track]");
+      if (pin && track && window.matchMedia("(min-width: 1024px)").matches && !reduced) {
+        const distance = () => track.scrollWidth - window.innerWidth + 80;
+        gsap.to(track, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: pin,
+            start: "top top",
+            end: () => "+=" + distance(),
+            pin: true,
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+            anticipatePin: 1
+          }
+        });
+      }
+
+      // ───── Masthead light/dark + chapter + progress ─────
+      const masthead = document.getElementById("masthead");
+      const chapNum = document.getElementById("ms-chap");
+      const root = document.documentElement;
+      const lightSections = gsap.utils.toArray(".is-light");
+
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: 0,
+        end: () => document.body.scrollHeight,
+        onUpdate: () => {
+          const anyLight = lightSections.some((s) => {
+            const r = s.getBoundingClientRect();
+            return r.top <= 64 && r.bottom >= 64;
+          });
+          masthead.classList.toggle("is-light", anyLight);
+          const scrolled = root.scrollTop / (root.scrollHeight - root.clientHeight);
+          root.style.setProperty("--scroll-progress", (scrolled * 100).toFixed(1) + "%");
+        }
+      });
+      gsap.utils.toArray("[data-chapter]").forEach((sec) => {
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top 50%",
+          end: "bottom 50%",
+          onToggle: (self) => {
+            if (self.isActive && chapNum) chapNum.textContent = sec.dataset.chapter;
+          }
+        });
+      });
+
+      // ───── Cursor follower (desktop, no reduced motion) ─────
+      const cursor = document.getElementById("cursor");
+      const fineHover = window.matchMedia("(hover: hover)").matches;
+      if (cursor && fineHover && !reduced) {
+        document.body.classList.add("has-cursor");
+        const xTo = gsap.quickTo(cursor, "x", { duration: 0.5, ease: "power3" });
+        const yTo = gsap.quickTo(cursor, "y", { duration: 0.5, ease: "power3" });
+        let visible = false;
+        window.addEventListener("mousemove", (e) => {
+          if (!visible) { cursor.classList.add("is-active"); visible = true; }
+          xTo(e.clientX);
+          yTo(e.clientY);
+        }, { passive: true });
+        window.addEventListener("mouseleave", () => {
+          cursor.classList.remove("is-active"); visible = false;
+        });
+
+        const label = cursor.querySelector(".atom-cursor__label");
+        document.querySelectorAll("a, button, [data-cursor-hover]").forEach((el) => {
+          el.addEventListener("mouseenter", () => {
+            cursor.classList.add("is-hover");
+            label.textContent = el.dataset.cursorHover || "ver";
+          });
+          el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
+        });
+      }
+
+      // ───── Magnetic CTA ─────
+      gsap.utils.toArray("[data-magnetic]").forEach((el) => {
+        if (reduced) return;
+        const inner = el.querySelector("span") || el;
+        const xTo = gsap.quickTo(el, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const yTo = gsap.quickTo(el, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const xToInner = gsap.quickTo(inner, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        const yToInner = gsap.quickTo(inner, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+        el.addEventListener("mousemove", (e) => {
+          const rect = el.getBoundingClientRect();
+          const dx = e.clientX - (rect.left + rect.width / 2);
+          const dy = e.clientY - (rect.top + rect.height / 2);
+          xTo(dx * 0.25);
+          yTo(dy * 0.45);
+          xToInner(dx * 0.4);
+          yToInner(dy * 0.6);
+        });
+        el.addEventListener("mouseleave", () => {
+          xTo(0); yTo(0); xToInner(0); yToInner(0);
+        });
+      });
+
+      // ───── Video hero — handle play promise gracefully ─────
+      const heroVideo = document.querySelector(".org-overture__media video");
+      if (heroVideo) {
+        const tryPlay = heroVideo.play();
+        if (tryPlay && tryPlay.catch) tryPlay.catch(() => { /* poster permanece */ });
+      }
+    });
+  </script>
+</body>
+</html>
